@@ -1,0 +1,25 @@
+const DAY_ORDER = ["Mon","Tue","Wed","Thu","Fri"];
+const CAL_EVENTS = [
+  {t:"File handoff — Whitfield medsum & demand (Marcus Webb)", day:"Mon", s:9, e:9.75, p:"High", loc:"Virtual", type:"Handoff"},
+  {t:"Team Demand Standup", day:"Mon", s:9.5, e:10, p:"Medium", loc:"Virtual", type:"Internal"},
+  {t:"Provider list & records audit — Whitfield", day:"Mon", s:10, e:11.5, p:"High", loc:"CMS", type:"Records & Bills"},
+  {t:"Itemized bill request — Bayside Pain Management (Whitfield)", day:"Mon", s:11.5, e:12, p:"High", loc:"Phone", type:"Records & Bills"},
+  {t:"Records follow-up — Okoro (Metro Physical Therapy, day 30)", day:"Mon", s:14, e:14.5, p:"Medium", loc:"Phone", type:"Records & Bills"},
+  {t:"Medical chronology — Whitfield (records 0001–0066)", day:"Tue", s:9, e:12, p:"High", loc:"CMS", type:"Medsum"},
+  {t:"Client call — Dana Whitfield (provider list and the gap)", day:"Tue", s:11.5, e:12, p:"High", loc:"Phone", type:"Client"},
+  {t:"Medical summary draft — Whitfield", day:"Tue", s:13, e:15, p:"High", loc:"CMS", type:"Medsum"},
+  {t:"Chronology QC — Brennan (second reviewer)", day:"Tue", s:15, e:15.5, p:"Medium", loc:"CMS", type:"Medsum"},
+  {t:"Bills itemization — Whitfield", day:"Wed", s:9, e:11, p:"High", loc:"CMS", type:"Bills"},
+  {t:"Bayside itemized bill arrives — reconcile with chronology", day:"Wed", s:10.5, e:11, p:"High", loc:"CMS", type:"Bills"},
+  {t:"Duplicate charge call — Clearview Imaging billing", day:"Wed", s:13, e:13.5, p:"Medium", loc:"Phone", type:"Bills"},
+  {t:"Lien list to Case Manager — Whitfield", day:"Wed", s:15, e:15.5, p:"Medium", loc:"Email", type:"Bills"},
+  {t:"Demand draft — Whitfield", day:"Thu", s:9, e:12, p:"High", loc:"CMS", type:"Demand"},
+  {t:"Client impact statement review — Dana Whitfield", day:"Thu", s:11, e:11.5, p:"High", loc:"Phone", type:"Client"},
+  {t:"Demand to Attorney Bennett for review — Whitfield", day:"Thu", s:15, e:15.5, p:"High", loc:"Email", type:"Demand"},
+  {t:"Response deadline check — all open demands", day:"Thu", s:16, e:16.5, p:"Medium", loc:"CMS", type:"Follow-up"},
+  {t:"Attorney edits back — finalize Whitfield demand", day:"Fri", s:9, e:10, p:"High", loc:"Virtual", type:"Demand"},
+  {t:"Assemble & send packet — Whitfield (email + certified mail)", day:"Fri", s:10, e:11.5, p:"High", loc:"CMS", type:"Packet"},
+  {t:"Offer received — Okoro: log and route to attorney", day:"Fri", s:11, e:11.5, p:"High", loc:"Email", type:"Response"},
+  {t:"Calendar Whitfield response due 11/09 + follow-ups", day:"Fri", s:13, e:13.25, p:"High", loc:"CMS", type:"Follow-up"},
+  {t:"Week wrap-up", day:"Fri", s:14.5, e:15, p:"Low", loc:"Virtual", type:"Internal"}
+];
