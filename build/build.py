@@ -128,6 +128,15 @@ rep(".script-row p{margin:0;font-size:13px;line-height:1.5;}",
     ".script-row p{margin:0;font-size:13px;line-height:1.5;white-space:pre-line;}   /* numbered step scripts keep their lines */")
 rep(".script-row{margin-top:8px;}\n",
     ".script-row{margin-top:8px;}\n.script-say{margin:6px 0 0;font-size:14px;line-height:1.6;} .script-say.script-ask{margin-top:10px;font-weight:600;color:var(--navy);} .script-next{margin:10px 0 0;font-size:12px;color:var(--orange-deep);font-weight:700;} .pn-cue{margin-top:10px;} .pn-cue p{font-size:12.5px;}\n")
+# The day intro page and the Orientation cards count the day's Canva deck too (js/md-canva.js)
+rep("const mins = Math.round(n*2.5 + 25);",
+    "const cvDeck = (typeof mdCanvaDeck===\"function\") ? mdCanvaDeck(d.id) : null;\n  const mins = Math.round(n*2.5 + 25 + (cvDeck ? cvDeck.pages.length*0.75 : 0));")
+rep('<ul class="di-topics">${d.lessons.slice(0,8).map(l=>`<li>${esc(l.h)}</li>`).join("")}${n>8?`<li class="more">…and ${n-8} more topics</li>`:""}</ul>',
+    '<ul class="di-topics">${cvDeck ? `<li><span style=\"font-weight:700\">🎨 Canva deck: ${esc(cvDeck.deck.replace(/^Day \\d+:\\s*/,""))}</span> (${cvDeck.pages.length} slides)</li><li><span style=\"font-weight:700\">Then apply it to Dana Whitfield\'s file:</span></li>` : ""}${d.lessons.slice(0,cvDeck?6:8).map(l=>`<li>${esc(l.h)}</li>`).join("")}${n>(cvDeck?6:8)?`<li class="more">…and ${n-(cvDeck?6:8)} more topics</li>`:""}</ul>')
+rep("<div><span>📚</span><b>${n} topics</b><em>${slides} slides</em></div>",
+    "<div><span>📚</span><b>${cvDeck ? `${cvDeck.pages.length}-slide deck + ${n} topics` : `${n} topics`}</b><em>${slides} slides</em></div>")
+rep("<em>${d.lessons.length} topics${relatedTools(d.id)[0]",
+    "<em>${(typeof mdCanvaDeck===\"function\" && mdCanvaDeck(d.id)) ? mdCanvaDeck(d.id).pages.length + \"-slide Canva deck · \" : \"\"}${d.lessons.length} topics${relatedTools(d.id)[0]")
 # The Presenter view / Speaker Notes script engine from the EA/PA course: every slide reads
 # one flowing paragraph to read aloud (why, explanation, the points in order), then the closing question.
 i = s.index("/* ---------- trainer speaker notes (hardcoded in js/presenter-notes.js) ----------")

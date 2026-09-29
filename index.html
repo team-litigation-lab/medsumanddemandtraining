@@ -5813,7 +5813,7 @@ function trainerInline(){ return false; }
    ============================================================ */
 function orientSlides(){
   const topics = DAYS.reduce((a,d)=>a+d.lessons.length,0);
-  const dayTile = (d)=>`<div class="or-day"><span>Day ${d.id}</span><b>${esc(d.title)}</b><em>${d.lessons.length} topics${relatedTools(d.id)[0]?` · Lab: ${esc(relatedTools(d.id)[0].title)}`:""}</em></div>`;
+  const dayTile = (d)=>`<div class="or-day"><span>Day ${d.id}</span><b>${esc(d.title)}</b><em>${(typeof mdCanvaDeck==="function" && mdCanvaDeck(d.id)) ? mdCanvaDeck(d.id).pages.length + "-slide Canva deck · " : ""}${d.lessons.length} topics${relatedTools(d.id)[0]?` · Lab: ${esc(relatedTools(d.id)[0].title)}`:""}</em></div>`;
   const step = (n, icon, t, d)=>`<div class="or-step"><div class="or-step-n">${n}</div><div class="or-step-i">${icon}</div><b>${t}</b><span>${d}</span></div>`;
   const pill = (i,t,d)=>`<div class="or-pill"><div>${i}</div><b>${t}</b><span>${d}</span></div>`;
   return [
@@ -8833,7 +8833,8 @@ async function markIntroSeen(dayId){ state.introSeen = state.introSeen||{}; stat
 function renderDayIntro(d){
   const lab = relatedTools(d.id)[0];
   const n = d.lessons.length, slides = buildDaySlides(d).length;
-  const mins = Math.round(n*2.5 + 25);
+  const cvDeck = (typeof mdCanvaDeck==="function") ? mdCanvaDeck(d.id) : null;
+  const mins = Math.round(n*2.5 + 25 + (cvDeck ? cvDeck.pages.length*0.75 : 0));
   const outcomes = String(d.objective||"").split(/,\s*(?:and\s+)?|;\s*|\.\s+/).map(x=>x.trim().replace(/\.$/,"")).filter(x=>x.length>8).slice(0,4);
   // Warm-up uses the day's ungraded Quick Checks, never the Knowledge Check (so it can't leak the graded answers).
   const warm = (d.quickChecks||[]).slice(0,2);
@@ -8845,10 +8846,10 @@ function renderDayIntro(d){
         ${d.theme ? `<p class="di-theme">${esc(d.theme)}</p>` : ""}
         <div class="di-grid">
           <div class="di-box"><b>🎯 By the end of today you'll be able to</b><ul>${(outcomes.length?outcomes:[d.objective||""]).map(o=>`<li>${esc(asSentence(o).replace(/\.$/,""))}</li>`).join("")}</ul></div>
-          <div class="di-box"><b>🗺 What today covers</b><ul class="di-topics">${d.lessons.slice(0,8).map(l=>`<li>${esc(l.h)}</li>`).join("")}${n>8?`<li class="more">…and ${n-8} more topics</li>`:""}</ul></div>
+          <div class="di-box"><b>🗺 What today covers</b><ul class="di-topics">${cvDeck ? `<li><span style="font-weight:700">🎨 Canva deck: ${esc(cvDeck.deck.replace(/^Day \d+:\s*/,""))}</span> (${cvDeck.pages.length} slides)</li><li><span style="font-weight:700">Then apply it to Dana Whitfield's file:</span></li>` : ""}${d.lessons.slice(0,cvDeck?6:8).map(l=>`<li>${esc(l.h)}</li>`).join("")}${n>(cvDeck?6:8)?`<li class="more">…and ${n-(cvDeck?6:8)} more topics</li>`:""}</ul></div>
         </div>
         <div class="di-strip">
-          <div><span>📚</span><b>${n} topics</b><em>${slides} slides</em></div>
+          <div><span>📚</span><b>${cvDeck ? `${cvDeck.pages.length}-slide deck + ${n} topics` : `${n} topics`}</b><em>${slides} slides</em></div>
           ${lab ? `<div><span>🧪</span><b>Skill Builders</b><em>${esc(lab.title)}</em></div>` : ""}
           <div><span>📝</span><b>Knowledge Check</b><em>${(d.quiz||[]).length} questions · 70% to pass</em></div>
           <div><span>⏱</span><b>About ${Math.round(mins/10)*10} min</b><em>at your own pace</em></div>

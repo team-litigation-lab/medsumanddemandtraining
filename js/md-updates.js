@@ -1148,13 +1148,13 @@ function sopRunOfShow(dRaw){
   return `<section class="card sopf">
     <div class="sopf-head"><div><div class="sopx-kicker">Day ${d.id} · How to run this session</div><h2>Run of show</h2></div>
       <label class="sopf-start">Session starts at <input type="time" value="${esc(state.sopStart||"09:00")}" onchange="setSopStart(this.value)"> <button class="btn btn-ghost btn-sm" onclick="window.print()">🖨 Print</button></label></div>
-    <div class="sopf-meta"><span>⏱ About ${Math.round(liveMins/60*10)/10} hours live · ends ≈ ${endClock}</span><span>📚 ${n} topics</span><span>✔ ${qcs.length} Quick Checks</span>${tools.length?`<span>🧪 ${tools.length} Skill Builder${tools.length>1?"s":""}</span>`:""}<span>📝 ${kc}-question Knowledge Check</span></div>
+    <div class="sopf-meta"><span>⏱ About ${Math.round(liveMins/60*10)/10} hours live · ends ≈ ${endClock}</span>${cvDeck ? `<span>🎨 ${cvDeck.pages.length}-slide Canva deck</span>` : ""}<span>📚 ${n} topics</span><span>✔ ${qcs.length} Quick Checks</span>${tools.length?`<span>🧪 ${tools.length} Skill Builder${tools.length>1?"s":""}</span>`:""}<span>📝 ${kc}-question Knowledge Check</span></div>
     <ol class="sopf-steps">${rows}</ol>
-    <p style="font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;">Timings assume about 2½ minutes per topic. Built from the live portal content, so it updates automatically when topics are added in Content Studio. The detailed script for each day follows below.</p>
+    <p style="font-size:12.5px;color:var(--ink-soft);margin:12px 0 0;">Timings assume about a minute per Canva slide and 2½ minutes per topic. Built from the live portal content, so it updates automatically when topics are added in Content Studio. The detailed script for each day follows below.</p>
   </section>`;
 }
 function sopProgramFlow(){
-  const days = DAYS.map(d=>{ const tl = relatedTools(d.id); return `<tr><td><b>Day ${d.id}</b></td><td>${esc(d.title)}</td><td>${d.lessons.length}</td><td>${tl.length?tl.map(t=>esc(t.title)).join("<br>"):"—"}</td><td><button class="btn btn-ghost btn-sm" onclick="setSopDay(${d.id})">Run of show →</button></td></tr>`; }).join("");
+  const days = DAYS.map(d=>{ const tl = relatedTools(d.id); return `<tr><td><b>Day ${d.id}</b></td><td>${esc(d.title)}</td><td>${(typeof mdCanvaDeck==="function" && mdCanvaDeck(d.id)) ? `${mdCanvaDeck(d.id).pages.length}-slide deck + ` : ""}${d.lessons.length}</td><td>${tl.length?tl.map(t=>esc(t.title)).join("<br>"):"—"}</td><td><button class="btn btn-ghost btn-sm" onclick="setSopDay(${d.id})">Run of show →</button></td></tr>`; }).join("");
   return `
     <section class="card sopf"><div class="sopx-kicker">Trainer reference · The whole program</div><h2 style="font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:26px;margin:4px 0 8px;">How to facilitate the LSH Medsum &amp; Demand Training</h2>
       <p style="font-size:14.5px;line-height:1.6;margin:0;max-width:85ch;">Five live sessions, one realistic personal-injury case (Dana Whitfield, rear-end collision 03/14/2026, from the file handoff to the settlement), one rhythm every day: <b>teach → check → practise → debrief → assess → follow up</b>. This page is the big picture; open any day for its minute-by-minute run of show.</p></section>
@@ -1205,7 +1205,7 @@ function sopProgramFlow(){
         <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Simulator's Medsum &amp; Demand pack is coming soon)</td></tr>
       </tbody></table></section>
     <section class="card sopf-card" style="margin-top:14px;"><h3>The ${DAYS.length} days</h3>
-      <table class="log-table sopx-table sopf-map"><thead><tr><th>Day</th><th>Title</th><th>Topics</th><th>Skill Builders</th><th></th></tr></thead><tbody>${days}</tbody></table></section>`;
+      <table class="log-table sopx-table sopf-map"><thead><tr><th>Day</th><th>Title</th><th>Canva deck + topics</th><th>Skill Builders</th><th></th></tr></thead><tbody>${days}</tbody></table></section>`;
 }
 window.setSopStart = setSopStart;
 
