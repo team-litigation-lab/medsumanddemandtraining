@@ -40,6 +40,14 @@ const IGNORE = /Failed to load resource|ERR_|net::|favicon/;
                     catch (e) { errs.push(`Day ${d.id} slide ${i} Presenter view: ${e.message}`); }
                 });
                 d.lessons.forEach(l => [1, 2].forEach(p => { if (!slideScript(d, l, p).hand) errs.push(`Day ${d.id} "${l.h}" slide ${p}: no hand-written script`); }));
+                // the Canva deck: every page is a slide that shows its image, with its script in Presenter view
+                const deck = (window.MD_CANVA || {})[d.id], cvSlides = buildDaySlides(d).filter(s => s.type === 'canva');
+                if (!deck || cvSlides.length !== deck.pages.length) errs.push(`Day ${d.id}: ${cvSlides.length} Canva slides for ${deck ? deck.pages.length : 0} deck pages`);
+                cvSlides.forEach(sl => {
+                    const h = renderDaySlideContent(d, sl, 0), c = presenterCues(d, sl);
+                    if (!/<img [^>]*src="slides\/day\d\/\d\d\.webp"/.test(h)) errs.push(`Day ${d.id} Canva slide ${sl.page + 1}: no slide image`);
+                    if (!/class="script-say/.test(c) || !(window.CANVA_SCRIPTS || {})[`${d.id}:${sl.page + 1}`]) errs.push(`Day ${d.id} Canva slide ${sl.page + 1}: no script in Presenter view`);
+                });
                 try { if (buildDayScriptLines(d).filter(x => /^ASK: /.test(x)).length < d.lessons.length * 2) errs.push(`Day ${d.id}: Speaker Notes PDF has no script`); } catch (e) { errs.push(`Day ${d.id} Speaker Notes: ${e.message}`); }
                 state.dayViewMode = 'knowledgeCheck'; try { render(); } catch (e) { errs.push(`Day ${d.id} knowledge check: ${e.message}`); }
                 out.push(`Day ${d.id}: ${n} slides`);

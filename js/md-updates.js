@@ -1085,6 +1085,12 @@ function sopRunOfShow(dRaw){
     say:`“By the end of today you'll be able to ${esc(String(d.objective||d.title).replace(/\.$/,"").replace(/^[A-Z](?=[a-z])/, c=>c.toLowerCase()))}.”`,
     watch:"Anyone who hasn't opened today's day yet — ask them to open it now so they can follow along."});
   if(d.id===1) add(8, {title:"Meet the Case — Dana Whitfield", do:[`On the <b>Meet the Case</b> slide, open the three “Start here” documents (the handoff memo, the client intake summary, the police report) and walk the room through the case in 5–8 minutes.`, `Ask: “What would you verify first, and where would you record it?” Take two answers, then point them to 📂 <b>Case File</b> and 📁 <b>Documents</b> — every Skill Builder uses these files.`], watch:"Trainees copying the date of incident from the intake summary — it says 03/15/2026; the police report and ED record say 03/14/2026. The documents contain deliberate errors they're expected to catch."});
+  // the day's Canva deck (js/md-canva.js) comes before the topics: about a minute a page
+  const cvDeck = (typeof mdCanvaDeck==="function") ? mdCanvaDeck(d.id) : null;
+  if(cvDeck) add(Math.max(15, Math.round(cvDeck.pages.length*1.2)), {title:`Present the Canva deck — ${esc(cvDeck.deck)} (${cvDeck.pages.length} slides)`, do:[
+    `The deck is the first part of today's slides. Presenter view shows the script for every page; press Next to move on.`,
+    `Pause at the section pages for one or two questions; don't read the bullets out.`],
+    watch:"Faces that go quiet on the valuation or net-sheet pages — ask them to explain one line back to you."});
   // teaching blocks of ~45 minutes, with the Quick Checks where they fall and breaks in between
   const perTopic = 2.5, blockTopics = Math.max(8, Math.round(45/perTopic));
   let i = 0, block = 1; const blocks = Math.ceil(n/blockTopics);
@@ -1094,7 +1100,7 @@ function sopRunOfShow(dRaw){
     const j = Math.min(n, i+blockTopics);
     if(block===midBlock+1) add(0, taskStep);   // right after the break, as teaching resumes
     const inBlock = qcs.filter(q=>q.afterIndex>=i && q.afterIndex<j);
-    add(Math.round((j-i)*perTopic + inBlock.length*1.5), {title:`Teach topics ${i+1}–${j} of ${n}`, do:[
+    add(Math.round((j-i)*perTopic + inBlock.length*1.5), {title:`${cvDeck ? "Apply it to Dana's file: topics" : "Teach topics"} ${i+1}–${j} of ${n}`, do:[
       `Present each topic's two parts (principles & steps, then best practices & pitfalls). Longer topics continue on a second page — press Next.`,
       `Use your notes for each slide: the Trainer Cue, Applied Discussion Case and the Say / Ask / Listen for / If quiet script. Take one or two answers per topic, not a round-robin.`,
       inBlock.length ? `Quick Check${inBlock.length>1?"s":""} after topic${inBlock.length>1?"s":""} ${inBlock.map(q=>q.afterIndex+1).join(", ")}: let the room answer first, then reveal (the answer and rationale are in your notes).` : "",

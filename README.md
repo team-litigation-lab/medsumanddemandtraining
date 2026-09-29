@@ -58,6 +58,39 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 - **Auto-graded parts** check against keys taken from the case file and the documents. Every key scores 100% when answered correctly; this was tested with `window.__mdUI`.
 - **Written parts** use the portal's 100-point AI rubric with criteria specific to this course.
 
+### The Canva decks are the day's slides
+
+Each day opens with the trainer's own Canva deck, page by page, exactly as designed. The day then continues with **"Apply it to Dana Whitfield's file"**: the day's 13 topics take the same skills through the running case, followed by the Skill Builders and the Knowledge Check.
+
+| Day | Deck | Pages |
+|---|---|---|
+| 1 | Medical Summary / Chronology Overview | 61 |
+| 2 | Medical Summary | 23 |
+| 3 | Bills Itemization | 33 |
+| 4 | Demand Overview | 33 |
+| 5 | Demand Packet and Responses | 16 |
+
+- **Images:** `slides/dayN/NN.webp`, 1600×900, one per page.
+- **Titles and text:** `js/md-canva-decks.js` (`window.MD_CANVA`). The text is used for alt text, the slide list and the Speaker Notes fallback.
+- **Scripts:** `js/slide-scripts/canva-dayN.js` (`window.CANVA_SCRIPTS["day:page"] = {say, ask}`). They're in the same speaker-notes format as the topics.
+- **Code:** `js/md-canva.js` puts the pages into the day's slides, Presenter view, Trainer Cues and the Speaker Notes PDF.
+
+**When a deck changes in Canva:**
+
+```
+python3 build/canva/extract.py                                  # page titles + text → js/md-canva-decks.js
+node build/canva/capture.cjs "<the deck's view link>" /tmp/dayN  # every page as a 1920×1080 PNG
+node build/canva/to-webp.cjs /tmp/dayN slides/dayN 0.82 N        # → slides/dayN/NN.webp (N: apply redact.json)
+```
+
+Pass the day number as a 4th argument to `to-webp.cjs` (for example `… slides/day1 0.82 1`) to apply `build/canva/redact.json`.
+
+**Privacy blur:** the Day 1 sample-template pages (13–15) show real demand letters, so their document areas are blurred and marked "Client details blurred for privacy".
+
+**Deck notes:** `build/canva/DECK-NOTES.md` lists what to fix in the Canva decks, such as wrong definitions, typos and text clipped in Canva. The speaker notes already teach the corrected version.
+
+The view links are `MD_DECKS` in `js/md-skillbuilders.js`. `capture.cjs` needs Playwright with Chromium. If you add or remove a page, add or remove its script in `canva-dayN.js`: `check-data.mjs` fails when a page has no image or no script.
+
 ### Presenter view scripts
 
 Every lesson slide has a spoken script in the same format as the EA/PA course. The trainer sees it in **🖥 Presenter view** under "🎙 Script — read aloud", on the admin **Trainer Cues** page, and in the day's **Speaker Notes PDF**.
@@ -76,7 +109,7 @@ They're written in a teacher's voice, like the course's own Canva speaker notes.
 - **Where:** `js/slide-scripts/dayN.js` sets `window.SLIDE_SCRIPTS["<day>::<exact lesson title>"] = {p1:{why, talk, walk:[…], ask}, p2:{…}}`. If you rename a lesson, rename its key too.
 - **Engine:** `build/slide_script_engine.js` is the EA/PA engine, swapped in by `build.py`. When a long slide is split over pages, the script follows the page: page 1 has the opening, the points are shared across the pages that show them, and the last page ends with the question.
 - **Fallback:** a topic with no script, such as one added later in the Content Studio, gets a script built from what's on the slide.
-- **Check:** `check-data.mjs` fails if a lesson has no script, a key doesn't match a lesson title, the number of walk lines doesn't match the How-To steps or the Best Practices, or a line points at the slide instead of explaining it.
+- **Check:** `check-data.mjs` fails if a lesson (or a Canva page) has no script, a key doesn't match a lesson title, the number of walk lines doesn't match the How-To steps or the Best Practices, or a line points at the slide instead of explaining it.
 
 **Content source:** the lessons were written for this build from standard personal-injury medsum and demand practice. The Canva decks the course follows couldn't be opened from the build environment. Before the first live batch, compare `build/day1.js`–`day5.js` with the decks and adjust.
 

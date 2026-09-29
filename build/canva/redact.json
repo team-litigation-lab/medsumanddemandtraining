@@ -1,0 +1,8 @@
+{
+  "_about": "Areas blurred when a page is converted to WebP (to-webp.cjs), in 1600x900 pixels: [x, y, width, height]. The sample-template pages in the Day 1 deck show real demand letters (client, insured and adjuster names, a date of birth, claim numbers), so the documents are blurred: the layout stays visible, the personal details don't.",
+  "1": {
+    "13": [[302, 262, 483, 627], [817, 262, 515, 627]],
+    "14": [[140, 256, 448, 632], [597, 256, 424, 632], [1030, 256, 424, 632]],
+    "15": [[140, 256, 448, 632], [597, 256, 432, 632], [1038, 256, 428, 632]]
+  }
+}
