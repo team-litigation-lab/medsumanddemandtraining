@@ -141,10 +141,10 @@ function mdTool(id){
 }
 window.mdTool = mdTool;
 function toolHref(t){
-  // The CMS serves every LSH program: ?program=md tags the Medsum & Demand course's saved cases.
-  if(t.id==="cms") return t.url + (t.url.includes("?") ? "&" : "?") + "program=md";
-  if(!t.portalSim) return t.url;
-  const q = new URLSearchParams({program:"MD"});
+  if(t.id!=="cms" && !t.portalSim) return t.url;
+  // The CMS serves every LSH program: ?program=md tags the Medsum & Demand course's saved cases,
+  // and from=md lets a registered trainee in with just their name (filled in from name= and batch=).
+  const q = new URLSearchParams(t.id==="cms" ? {program:"md", from:"md"} : {program:"MD"});
   const name = String(state.certName || state.traineeName || "").trim(), batch = String(state.traineeBatch || "").trim();
   if(name && !state.isAdmin) q.set("name", name);
   if(batch && !state.isAdmin) q.set("batch", batch);
