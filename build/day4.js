@@ -229,7 +229,7 @@ const DAY4 = {
         ],
         discussionCase: "The draft's total is $19,666.40; the itemization says $19,516.40. How do you find where the difference came from, and what do you fix?"
       },
-      trainerCue: "The difference is $150.00, so the Northgate line ($275.00) doesn't explain it by itself. Re-add the draft's table line by line against Ex. D, remove Northgate, and make the total $19,516.40 — never assume one error explains another."
+      trainerCue: "The difference is $150.00, so the Northgate line ($275.00) doesn't explain it by itself: the draft's own table lines add up to $19,791.40, so its total is mis-added too. Re-add the draft's table line by line against Ex. D, remove Northgate, and make the total $19,516.40 — never assume one error explains another."
     },
     { h: "Non-Economic Damages: the Human Story",
       layout: "ICONLIST",

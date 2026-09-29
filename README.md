@@ -40,6 +40,7 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 | **🎨 Canva decks** | one deck per day, linked on the Handouts page and named in each day's SOP (`MD_DECKS` in `js/md-skillbuilders.js`) |
 | **🧪 Practice** | `js/md-practice.js`: every day has three columns — 🧠 Skill Builder, 🗣 Communication (live roleplay), 🗂 Systems (the CMS) |
 | **🔥 Live Roleplay** | `build/md_roleplay.js`: 12 situations with the client, records and billing offices and the adjuster, plus a live call inside each Skill Builder |
+| **🎙 Presenter view scripts** (the trainer's spoken script for every slide, in the EA/PA format) | `js/slide-scripts/day1.js` – `day5.js`; see below |
 | Portal features (Presenter view, SOP, top bar) | `js/md-updates.js`, a copy of the PD course's `js/pd-updates.js` |
 
 ### The days
@@ -56,6 +57,24 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 
 - **Auto-graded parts** check against keys taken from the case file and the documents. Every key scores 100% when answered correctly; this was tested with `window.__mdUI`.
 - **Written parts** use the portal's 100-point AI rubric with criteria specific to this course.
+
+### Presenter view scripts
+
+Every lesson slide has a spoken script, written in the same format as the EA/PA course. The trainer sees it in **🖥 Presenter view** under "🎙 Script — read aloud", on the admin **Trainer Cues** page, and in the day's **Speaker Notes PDF**. Each slide follows four beats:
+
+| Beat | What it is |
+|---|---|
+| **① The why** | the punchline: why this slide matters, in one sentence |
+| **② Talk it through** | the slide explained in plain spoken words, not the bullets read out |
+| **③ Walk through it** | the points in order ("First… Next… Then… Finally…"): one line per Step-by-Step How-To on slide 1, and one per Best Practice on slide 2, with the pitfall last |
+| **④ Ask the room / Your turn** | a question on slide 1; on slide 2, a task on Dana's file (the day's last topic sends trainees into its Skill Builder) |
+
+They're written in a teacher's voice, like the course's own Canva speaker notes. They say "you" and "we", use short sentences, and explain jargon on the way ("MMI — maximum medical improvement — means…"). Every figure, date and page cite matches `build/md_casefile.js`.
+
+- **Where:** `js/slide-scripts/dayN.js` sets `window.SLIDE_SCRIPTS["<day>::<exact lesson title>"] = {p1:{why, talk, walk:[…], ask}, p2:{…}}`. If you rename a lesson, rename its key too.
+- **Engine:** `build/slide_script_engine.js` is the EA/PA engine, swapped in by `build.py`. When a long slide is split over pages, the script follows the page: page 1 has the why and the talk, the walk-through is shared across the pages that show the steps, and the last page ends with the question.
+- **Fallback:** a topic with no script, such as one added later in the Content Studio, gets the same four beats built from what's on the slide.
+- **Check:** `check-data.mjs` fails if a lesson has no script, if a key doesn't match a lesson title, or if the number of walk lines doesn't match the How-To steps or the Best Practices.
 
 **Content source:** the lessons were written for this build from standard personal-injury medsum and demand practice. The Canva decks the course follows couldn't be opened from the build environment. Before the first live batch, compare `build/day1.js`–`day5.js` with the decks and adjust.
 
@@ -82,9 +101,9 @@ Carry new features by hand:
 `.github/workflows/checks.yml` runs on every pull request and every push to `main`:
 
 - JavaScript syntax, local files and JSON (`check-site.mjs`)
-- every case document and handout exists, and every document packet points at a real document (`check-data.mjs`)
+- every case document and handout exists, every document packet points at a real document, and every lesson has its Presenter view script (`check-data.mjs`)
 - `wrangler deploy --dry-run`
-- a browser smoke test that signs in and renders every slide, Knowledge Check, page and Skill Builder part at desktop and phone width (`smoke.cjs`)
+- a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width (`smoke.cjs`)
 
 To run them locally:
 

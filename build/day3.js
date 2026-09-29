@@ -148,7 +148,7 @@ const DAY3 = {
         bestPractices: [
           "Compare the health plan's list of payments (BlueHarbor's reimbursement claim notice, DW09) with your health-insurance column; plans' lists sometimes include unrelated claims — flag any to the attorney and the Case Manager.",
           "Note the date and source of every payment — the balances will be confirmed again before settlement.",
-          "Pitfall: posting a PIP payment in the health-insurance column — BlueHarbor's column then shows $3,955.00 instead of $2,575.00, and its claim looks bigger than it is."
+          "Pitfall: posting Clearview's $1,380.00 PIP payment in the health-insurance column — BlueHarbor's column then shows $3,955.00 instead of $2,575.00, and its claim looks bigger than it is."
         ],
         discussionCase: "Dana asks why BlueHarbor “wants its money back” when she pays premiums. Who answers that question, and what do you tell her today?"
       },
@@ -303,7 +303,7 @@ const DAY3 = {
         ],
         discussionCase: "Dana tells you her chiropractor once mentioned she “might need maintenance visits.” Nothing in the records says so. Does it go in the future medical figure? What do you do with the information?"
       },
-      trainerCue: "Future medical on Dana's file: $7,800.00 from Dr. Patel's 08/21/2026 note (WHITFIELD 0057). It's the only future-care line — Harbor Spine discharged her improved (p. 38) with no further plan."
+      trainerCue: "Future medical on Dana's file: $7,800.00 from Dr. Patel's 08/21/2026 note (WHITFIELD 0057). It's the only future-care line — Harbor Spine's 4 more weeks (p. 38) were recommended at discharge and declined, not future care after MMI."
     },
     { h: "Lost Wages and Out-of-Pocket Costs",
       layout: "ICONLIST",
@@ -317,7 +317,7 @@ const DAY3 = {
       fourPart: {
         corePrinciples: [
           "Lost wages are the pay the client lost because the injuries kept her from working. They need two kinds of proof: a medical reason to be off work and the employer's confirmation of the days and the pay.",
-          "Dana's wage loss is 14 workdays × $224.00 = $3,136.00, verified by Lakeside USD payroll, with Harbor Spine's off-work notes (pp. 15, 26) and her return to work on 04/03/2026.",
+          "Dana's wage loss is 14 workdays × $224.00 = $3,136.00, verified by Lakeside USD payroll, with Harbor Spine's off-work note (p. 15) and its release to return to work on 04/03/2026 (p. 26).",
           "Out-of-pocket costs are accident expenses the client paid that aren't already on a provider's bill. Dana's $661.40 in payments to her providers is already inside the $19,516.40 billed — don't add it again."
         ],
         howTo: [

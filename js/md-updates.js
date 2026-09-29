@@ -10,7 +10,8 @@
         don't fit continue on balanced extra pages (Next/Prev step pages first).
      2. Admin ↔ Trainee view switch (top bar) without signing out.
      3. SOP Reference: readable layout + a "Present" mode for live discussion.
-     4. Presenter view: share only the slides in Meet, see trainer cues yourself.
+     4. Presenter view: share only the slides in Meet, see the spoken script yourself
+        (EA/PA four beats; hand-written scripts in js/slide-scripts/dayN.js).
      5. All lesson content centred; Orientation deck + Blueprint refreshed.
      6. Email Outreach: capstone Day 4 topic + Email Outreach Simulator (Day 4 lab, Part 4).
      7. Inbox Triage + Inbox Zero merged into one Gmail inbox with labels & sub-labels (Day 2 lab).
@@ -692,12 +693,12 @@ function presenterCues(d, slide){
   const out = [];
   if(slide.type==="topic"){
     const l = d.lessons[slide.lessonIndex];
-    out.push(`<h3>${esc(l.h)} <small style="font-size:12px;color:var(--ink-soft);">Part ${slide.part} of 2</small></h3>`);
-    if(l.trainerCue) out.push(`<div class="tc-tag">🧑‍🏫 Trainer Cue</div><p>${esc(l.trainerCue)}</p>`);
-    const disc = trainerDiscussionHtml(l); if(disc) out.push(`<b class="cue-sub">Applied Discussion Case</b>${disc}`);
-    // The script (no AI): the engine's hardcoded-notes helper; the course's topics use the lesson's own lines.
-    out.push((()=>{ const n = presenterNote(d, l, slide.part), row = (k, v)=> v ? `<div class="script-row"><b>${k}</b><p>${esc(v)}</p></div>` : "";
-      return `<div class="script-block"><div class="script-head"><span>🎙 Script</span></div>${row("Say", n.say)}${row("Ask", n.ask)}${row("Wrap", n.wrap)}</div>`; })());
+    out.push(`<h3>${esc(l.h)}${l.singleSlide ? "" : ` <small style="font-size:12px;color:var(--ink-soft);">Part ${slide.part} of 2</small>`}</h3>`);
+    // The spoken script, in the EA/PA four beats (① The why · ② Talk it through · ③ Walk through it ·
+    // ④ Ask the room / Your turn), following the page when a long slide is split over pages.
+    const pageInfo = state.presentSecsFor === (state.lessonSlide||0);
+    out.push(renderPresenterNote(d, l, slide.part, pageInfo ? state.presentSecs : null, pageInfo ? state.presentAllSecs : null,
+      pageInfo ? {page: state.presentPage||0, pages: state.presentPages||1, secsByPage: state.presentSecsByPage} : null));   // scripts: js/slide-scripts/dayN.js
   }else if(slide.type==="quickCheck"){
     out.push(`<h3>Quick Check</h3><p>Let the room answer first — then reveal and use the rationale.</p>`);
     (d.quickChecks||[]).filter(c=>c.afterIndex===slide.lessonIndex).forEach(c=>{
@@ -737,6 +738,7 @@ function renderPresenterConsole(d){
           <div class="pv-mirror" id="pvMirror"><iframe class="pv-frame" id="pvFrame" src="/?audience=mirror&day=${d.id}" tabindex="-1" inert title="Live copy of the slides window"></iframe></div>
           <div class="pv-nav">
             <button class="btn btn-ghost" onclick="presenterStep(-1)">← Previous</button>
+            <button class="btn btn-ghost btn-sm" onclick="presenterJump(0)" title="Go back to the first slide">⏮ Slide 1</button>
             <select id="pvJump" onchange="presenterJump(this.value)" title="Jump to a slide">${slides.map((s,i)=>`<option value="${i}" ${i===idx?"selected":""}>${i+1}. ${esc(daySlideTitle(d,s))}</option>`).join("")}</select>
             <button class="btn btn-primary" onclick="presenterStep(1)">Next →</button>
           </div>
@@ -754,7 +756,8 @@ function presenterRefresh(){
   const c = document.getElementById("pvCount"); if(c) c.textContent = presenterCountText(d);
   const n = document.getElementById("pvNext"); if(n) n.innerHTML = presenterNextText(d);
   const j = document.getElementById("pvJump"); if(j) j.value = String(idx);
-  const cu = document.getElementById("pvCues"); if(cu && cu.dataset.slide !== String(idx)){ cu.dataset.slide = String(idx); cu.innerHTML = presenterCues(d, slides[idx]); cu.parentElement.scrollTop = 0; }
+  const cueKey = idx + "|" + (state.presentSecsFor===idx ? (state.presentSecs||[]).join(",") + "|" + (state.presentPage||0) + "/" + (state.presentPages||1) : "");
+  const cu = document.getElementById("pvCues"); if(cu && cu.dataset.slide !== cueKey){ cu.dataset.slide = cueKey; cu.innerHTML = presenterCues(d, slides[idx]); cu.parentElement.scrollTop = 0; }
 }
 function presenterFitMirror(){
   const box = document.getElementById("pvMirror"), f = document.getElementById("pvFrame"); if(!box || !f) return;
@@ -795,7 +798,8 @@ if(pvChannel() && !PV_IS_AUDIENCE){
     if(m.type==="hello") presenterSend();
     if(m.type==="key") presenterStep(m.dir);
     if(m.type==="rendered" && m.dayId===state.dayId && m.slide===(state.lessonSlide||0)){
-      state.presentPage = m.page; state.presentPages = m.pages;
+      state.presentSecs = m.secs || null; state.presentAllSecs = m.allSecs || null; state.presentSecsFor = m.slide;
+      state.presentPage = m.page; state.presentPages = m.pages; state.presentSecsByPage = m.secsByPage || null;
       if(!PV.size || PV.size.w!==m.w || PV.size.h!==m.h){ PV.size = {w:m.w, h:m.h}; presenterFitMirror(); }
       presenterRefresh();
     }
@@ -836,7 +840,14 @@ if(PV_IS_AUDIENCE){
     state.stageInnerOnly = false;
     decorateCallouts(root);
     paginateLessonSlide();
-    if(isMain) pvChannel().postMessage({type:"rendered", dayId:d.id, slide:m.slide, page:state.slidePage||0, pages:state.slidePages||1, w:root.clientWidth, h:root.clientHeight});
+    // which numbered sections (① Core Principles … ④ Go Deeper) are on this page, so the
+    // presenter's notes can follow the page instead of the whole slide
+    const secNum = (s)=>+((s.querySelector(".fp-num")||{}).textContent||0);
+    const allSecs = [...root.querySelectorAll(".fp-section")].map(secNum).filter(Boolean);
+    const secs = [...root.querySelectorAll(".fp-section")].filter(s=>!s.closest(".pg-hide")).map(secNum).filter(Boolean);
+    // the sections on every page, so each page of a long slide gets its own part of the script
+    const secsByPage = __slidePg ? __slidePg.pages.map(([a,b])=>[...new Set(__slidePg.units.slice(a,b+1).map(u=>{ const s = u.closest(".fp-section"); return s ? secNum(s) : 0; }).filter(Boolean))]) : [allSecs];
+    if(isMain) pvChannel().postMessage({type:"rendered", dayId:d.id, slide:m.slide, page:state.slidePage||0, pages:state.slidePages||1, w:root.clientWidth, h:root.clientHeight, secs, allSecs, secsByPage});
   };
   if(pvChannel()){
     PV.ch.addEventListener("message", (e)=>{

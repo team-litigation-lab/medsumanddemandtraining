@@ -99,7 +99,7 @@ window.MD_DOCS = [
   /* ---------- DAMAGES ---------- */
   {id:"DW25", folder:"damages", file:"damages/DW_25_Lakeside_USD_Wage_Verification.html", title:"Lakeside USD — Wage & Time-Loss Verification", cms:"Case Files", day:3,
    desc:"Rate of pay, days missed (03/16–04/02/2026) and the lost wages, signed by payroll.",
-   key:"14 workdays × $224.00 = $3,136.00. Exhibit F. Matches the off-work notes (pp. 8, 15, 26)."},
+   key:"14 workdays × $224.00 = $3,136.00. Exhibit F. Matches the work notes (pp. 8, 15, 26)."},
   {id:"DW26", folder:"damages", file:"damages/DW_26_Client_Impact_Statement.html", title:"Client Impact Statement (signed 09/30/2026)", cms:"Case Files", day:4,
    desc:"Dana describes, in her own words, how the injury changed her daily life.",
    key:"Exhibit G. Specifics for the non-economic section: couldn't lift her son for six weeks; couldn't check her blind spot; stopped Saturday 5Ks; wakes at night 1–2 times a week. Also confirms the childcare reason for the gap."},

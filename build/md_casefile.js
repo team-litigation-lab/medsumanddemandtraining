@@ -25,9 +25,9 @@ const CLIENT_PROFILE_DOC = [
     "PRIOR (before the DOI): Harbor Spine & Chiropractic, 01/08/2025–01/29/2025 — low back strain after lifting boxes; 3 visits; released (pp. 10–11). Include and FLAG as a prior injury to the low back.",
     "03/14/2026 · Riverside Medical Center ED (pp. 1–9) — neck pain 7/10, low back pain 5/10; CT cervical spine: no acute fracture; Dx cervical strain, lumbar strain; Rx cyclobenzaprine and ibuprofen; off work until cleared by follow-up care.",
     "03/17/2026 · Harbor Spine & Chiropractic initial exam (pp. 12–15) — neck pain 7/10 radiating to the right shoulder, LBP 5/10, cervical ROM reduced 40%, TTP C5–C7; plan: chiropractic care 3x/week for 8 weeks; work status: off work, re-evaluate 03/31 (p. 15). Treated on a letter of protection (LOP).",
-    "03/31/2026 · Harbor Spine re-evaluation (p. 26) — neck 5/10, LBP 3/10; released to return to work 04/03/2026, no lifting over 15 lb.",
     "03/30/2026 · Clearview Imaging (pp. 39–41) — MRI cervical spine without contrast: 3 mm central disc protrusion at C5-6 abutting the ventral thecal sac; no fracture (report p. 41).",
-    "04/20/2026 · Summit Orthopedic Associates, Dr. Anita Patel (pp. 52–55) — neck pain radiating to the right arm; Dx C5-6 disc protrusion with right C6 radiculopathy; plan: continue therapy, refer to pain management for an ESI if no improvement; CAUSATION: “within a reasonable degree of medical probability, the C5-6 injury is causally related to the 03/14/2026 MVC” (p. 55); referral to Bayside Pain Management (p. 59).",
+    "03/31/2026 · Harbor Spine re-evaluation (p. 26) — neck 5/10, LBP 3/10; released to return to work 04/03/2026, no lifting over 15 lb.",
+    "04/20/2026 · Summit Orthopedic Associates, Dr. Anita Patel (new-patient paperwork pp. 42–51; consult pp. 52–55) — neck pain radiating to the right arm; Dx C5-6 disc protrusion with right C6 radiculopathy; plan: continue therapy, refer to pain management for an ESI if no improvement; CAUSATION: “within a reasonable degree of medical probability, the C5-6 injury is causally related to the 03/14/2026 MVC” (p. 55); referral to Bayside Pain Management (p. 59).",
     "05/14/2026 · Harbor Spine & Chiropractic, visit 24 of 24 (p. 38) — neck 4/10, LBP 2/10; the 8-week plan is complete; the chiropractor recommends 2 visits a week for 4 more weeks, but Dana declines because of childcare (her mother, who watched her son, was hospitalized); discharged, improved, with a home exercise program.",
     "GAP IN TREATMENT: 43 days, 05/14/2026 → 06/26/2026. Explained in the records: recommended care declined because of childcare (p. 38) and neck symptoms that continued and worsened after therapy stopped (p. 60).",
     "06/26/2026 · Bayside Pain Management, Dr. Luis Romero (pp. 60–63) — new patient; neck pain 6/10 with right-arm tingling “since the MVC of 03/14/2026,” worse since stopping therapy; plan: C5-6 interlaminar epidural steroid injection (ESI). Treated on an LOP.",
@@ -51,7 +51,7 @@ const CLIENT_PROFILE_DOC = [
   {section:"Damages Summary (for the demand)", items:[
     "Past medical specials (billed): $19,516.40",
     "Future medical (Dr. Patel, 08/21/2026): 2 C5-6 ESIs × $3,900.00 = $7,800.00",
-    "Lost wages: 14 workdays (03/16/2026–04/02/2026) × $224.00 = $3,136.00 — verified by Lakeside USD payroll; off-work notes from Harbor Spine (pp. 15, 26), return to work 04/03/2026",
+    "Lost wages: 14 workdays (03/16/2026–04/02/2026) × $224.00 = $3,136.00 — verified by Lakeside USD payroll; Harbor Spine off-work note (p. 15) and release to return to work 04/03/2026 (p. 26)",
     "Total economic damages: $30,452.40",
     "Non-economic (client impact statement, signed 09/30/2026): for six weeks she couldn't lift her 3-year-old son or turn her head to check her blind spot; she stopped her Saturday 5K runs; she still wakes at night with neck pain once or twice a week.",
     "Demand (set by Attorney Bennett): $85,000.00, open 30 days"

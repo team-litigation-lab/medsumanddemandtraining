@@ -414,7 +414,7 @@ TOOLS.mdIntake1 = ()=>[
       {item:"Clearview Imaging (MRI)", shows:"MRI report WHITFIELD 0039–0041; ledger received.", answer:"OK", why:"The report and the ledger are in (the ledger's duplicate line is Day 3's job)."},
       {item:"Summit Orthopedic", shows:"Records WHITFIELD 0042–0059: consult 04/20, follow-up 08/21 with MMI and future care; ledger received.", answer:"OK", why:"Includes the two sentences the demand needs most: causation (p. 55) and future care (p. 57)."},
       {item:"Bayside Pain Management", shows:"Records WHITFIELD 0060–0066 received. Billing: a balance-due statement of $4,325.00 — no dates of service, no CPT codes.", answer:"Missing", why:"The itemized bill is missing. The ESI is the largest charge — request the itemized statement with dates of service and CPT codes today."},
-      {item:"Lost wages", shows:"Lakeside USD payroll verification: 14 workdays × $224.00.", answer:"OK", why:"Verified by the employer, and the off-work notes are in the Harbor Spine records (pp. 15, 26)."},
+      {item:"Lost wages", shows:"Lakeside USD payroll verification: 14 workdays × $224.00.", answer:"OK", why:"Verified by the employer, and the off-work note and return-to-work release are in the Harbor Spine records (pp. 15, 26)."},
       {item:"Client impact statement", shows:"Signed by Dana on 09/30/2026.", answer:"OK", why:"Ready for the non-economic damages section."}
     ], ["OK","Missing","Inconsistent","Needs follow-up"]))},
   {label:"Today's Plan", html: part("B. What do you do today?",

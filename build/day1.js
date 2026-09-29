@@ -94,7 +94,7 @@ const DAY1 = {
         ],
         howTo: [
           "01 Intake & retainer — Dana signed the retainer and HIPAA authorization on 03/18/2026.",
-          "02–03 Claims, liability and treatment — Keystone accepted liability on 04/02/2026; Marcus Webb tracked her care from 03/14 to 08/21/2026.",
+          "02–03 Claims, liability and treatment — Keystone accepted liability on 04/02/2026; her care ran from 03/14 to 08/21/2026, and Marcus Webb tracked it from the day the firm was retained (03/18/2026).",
           "04–05 MMI, records and bills — Dr. Patel placed Dana at MMI on 08/21/2026; records and bills were requested on 08/24/2026.",
           "06–07 Medsum, specials and demand — your work, for Attorney Bennett's review and signature.",
           "08 Resolution — settlement or suit (the attorney's call); the Case Manager handles liens and disbursement."
@@ -401,7 +401,7 @@ const DAY1 = {
       fourPart: {
         corePrinciples: [
           "Protected health information (PHI) is health information that identifies a person: name, DOB, member ID, diagnoses, treatment and bills. Dana's whole file is PHI.",
-          "“Minimum necessary” is HIPAA's rule that providers and health plans use and share only the PHI needed for the purpose. The firm applies the same idea to what it requests, stores and sends.",
+          "“Minimum necessary” is HIPAA's rule that providers and health plans use and share only the PHI needed for the purpose (a release under the patient's signed authorization is limited by the authorization's own scope instead). The firm applies the same idea to what it requests, stores and sends.",
           "Once records reach the firm, they're protected by the firm's duty of confidentiality, privacy laws and firm policy. Handle them as PHI at every step."
         ],
         howTo: [

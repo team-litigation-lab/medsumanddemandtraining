@@ -26,7 +26,7 @@ const DAY5 = {
         howTo: [
           "Start from the exhibit index (DW28) and TP05, the Exhibit Index & Packet Checklist.",
           "Put the signed letter first, then the index, then Exhibits A–G in order.",
-          "Build Ex. E by provider, in the order Dana first saw them, with each provider's pages in date order: WHITFIELD 0001–0066, then the bills.",
+          "Build Ex. E by provider, in the order Dana first saw each one after the crash, with each provider's pages in Bates order: WHITFIELD 0001–0066, then the bills.",
           "Check each exhibit off against the index: title, page range, page count."
         ],
         bestPractices: [
@@ -142,7 +142,7 @@ const DAY5 = {
       fourPart: {
         corePrinciples: [
           "Insurer responses come in a few types: an offer, a request for information, a dispute, a denial, a request for more time — or silence.",
-          "One letter can be several types at once. Keystone's 11/04/2026 response was an offer ($18,500.00), a dispute (four arguments) and a request (5 years of prior records).",
+          "One letter can be several types at once. Keystone's 11/04/2026 response was an offer ($18,500.00), a dispute (five arguments) and a request (5 years of prior records).",
           "Every type ends the same way for you: logged, routed to the attorney, calendared."
         ],
         howTo: [
@@ -174,7 +174,7 @@ const DAY5 = {
       fourPart: {
         corePrinciples: [
           "Adjusters raise the same arguments on most injury claims: gaps, prior conditions, too much treatment, billed versus paid, speculative future care, and low property damage.",
-          "Four of them are in Keystone's 11/04/2026 letter: the 43-day gap, the 2025 low back history, “excessive” chiropractic (24 visits), and paid-not-billed amounts.",
+          "Five of them are in Keystone's 11/04/2026 letter: the 43-day gap, the 2025 low back history, “excessive” chiropractic (24 visits), paid-not-billed amounts and “speculative” future injections.",
           "Your job is to find where the records answer each one; the attorney decides the legal argument and the strategy."
         ],
         howTo: [
@@ -210,7 +210,7 @@ const DAY5 = {
         ],
         howTo: [
           "Log the offer in the CMS: $18,500.00, from Tom Reyes, received 11/04/2026, with the letter attached.",
-          "Send Attorney Bennett a same-day summary: the amount, the four arguments, the records request, and any deadline.",
+          "Send Attorney Bennett a same-day summary: the amount, the five arguments, the records request, and any deadline.",
           "If the adjuster calls with an offer, write it down, read it back, and say: “I'll get this to Attorney Bennett today.”",
           "If Dana calls asking about it, tell her Attorney Bennett will speak with her, and let the attorney know she called."
         ],
@@ -391,7 +391,7 @@ const DAY5 = {
         ],
         bestPractices: [
           "Name the attorney and a time frame on every call: “I'll get this to Attorney Bennett today.”",
-          "Read each response twice — Keystone's 11/04 response carried an offer, four arguments and a records request.",
+          "Read each response twice — Keystone's 11/04 response carried an offer, five arguments and a records request.",
           "Pitfall: promising the adjuster an answer “tomorrow” on what Dana will take — you don't know, and it isn't yours to say."
         ],
         discussionCase: "Keystone's 11/04/2026 offer and its prior-records request arrive together. Which do you route first, and what goes in your summary to Attorney Bennett?"
@@ -410,7 +410,7 @@ const DAY5 = {
     { q: "After the letter is written, someone re-stamps the Bates numbers. The main risk is:", opts: ["The PDF gets bigger", "Nothing — the numbers are cosmetic", "The adjuster gets extra pages", "Every cite in the letter may now point to the wrong page"], a: 3, r: "Bates numbers are fixed page addresses; the letter's cites depend on them." },
     { q: "Dana's demand went to Tom Reyes on 10/09/2026 by:", opts: ["Fax only", "Email with a delivery receipt and certified mail", "Regular mail only", "A phone call"], a: 1, r: "The attorney chose the method; keep the proof of both." },
     { q: "The response deadline calendared for Dana's demand is:", opts: ["10/09/2026", "11/09/2026", "11/04/2026", "03/14/2028"], a: 1, r: "Sent 10/09/2026, open 30 days. 11/04 is when Keystone answered; 03/14/2028 is the SOL." },
-    { q: "Keystone's 11/04/2026 response offered $18,500.00, raised four arguments and asked for prior records. It is:", opts: ["Only an offer", "A denial", "An offer, a dispute and a request for information at once", "Silence"], a: 2, r: "Label every part; each one needs its own next step." },
+    { q: "Keystone's 11/04/2026 response offered $18,500.00, raised five arguments and asked for prior records. It is:", opts: ["Only an offer", "A denial", "An offer, a dispute and a request for information at once", "Silence"], a: 2, r: "Label every part; each one needs its own next step." },
     { q: "Which argument did Keystone NOT raise in its 11/04/2026 response?", opts: ["Low property damage (a “minor impact”)", "The 43-day gap", "The 2025 low back history", "Paid, not billed"], a: 0, r: "Keystone argued the gap, the 2025 low back history, “excessive” chiropractic, paid-not-billed and “speculative” future injections — not low property damage (the CR-V needed $6,480.00 in repairs)." },
     { q: "The pages that answer Keystone's gap argument are:", opts: ["WHITFIELD 0041 and 0055", "WHITFIELD 0010–0011", "WHITFIELD 0001–0009", "WHITFIELD 0038 (childcare) and 0060 (symptoms continued and worsened)"], a: 3, r: "Page 38 and page 60 explain the 05/14 → 06/26/2026 gap." },
     { q: "Tom Reyes calls with an offer. You say:", opts: ["“That's too low — we need at least $50,000.”", "“She'll take it.”", "“I've noted it — I'll get it to Attorney Bennett today.”", "“Call the client directly.”"], a: 2, r: "Log it, route it, never respond on value." },
@@ -421,5 +421,5 @@ const DAY5 = {
     { q: "After the settlement, the release is:", opts: ["Signed by the Demand Specialist", "Sent straight to the client to sign", "Reviewed by the attorney, who explains it to the client before she signs", "Filed without review"], a: 2, r: "The release ends the claim — attorney review, always." },
     { q: "Bayside's billing office asks what Dana's case settled for. You:", opts: ["Tell them $47,500.00", "Don't share it; refer them to Marcus Webb, who handles liens with the attorney", "Tell them to call Keystone", "Offer them a reduced payment"], a: 1, r: "Never share settlement amounts with providers or agree to a lien reduction." }
   ],
-  discussionQuestion: "Walk Dana's file from 10/09/2026 to the handoff: how you assembled and sent the packet, what you calendared, how you handled Keystone's 11/04 response — the $18,500.00 offer, its four arguments with the record cites you gave Attorney Bennett, and the prior-records request — what you did (and didn't do) when Tom Reyes offered $31,000.00, and what you handed Marcus Webb after the $47,500.00 settlement."
+  discussionQuestion: "Walk Dana's file from 10/09/2026 to the handoff: how you assembled and sent the packet, what you calendared, how you handled Keystone's 11/04 response — the $18,500.00 offer, its five arguments with the record cites you gave Attorney Bennett, and the prior-records request — what you did (and didn't do) when Tom Reyes offered $31,000.00, and what you handed Marcus Webb after the $47,500.00 settlement."
 };
