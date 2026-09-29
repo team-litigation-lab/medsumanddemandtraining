@@ -38,7 +38,8 @@ for (const f of fs.readdirSync(path.join(ROOT, 'js')).filter(f => f.endsWith('.j
 
 // Presenter view scripts (js/slide-scripts/dayN.js): every lesson has a hand-written script for both
 // slides in the four beats (why · talk · walk · ask), keyed by its exact title, with one walk line per
-// How-To step (slide 1) and per Best Practice (slide 2). A renamed lesson would otherwise quietly lose its script.
+// How-To step (slide 1) and per Best Practice (slide 2), and no line that only points at the slide.
+// A renamed lesson would otherwise quietly lose its script.
 let scripted = 0;
 for (let n = 1; n <= 5; n++) {
     const dc = {}; vm.createContext(dc);
@@ -54,6 +55,8 @@ for (let n = 1; n <= 5; n++) {
             const s = e[p];
             if (!s || !s.why || !s.talk || !s.ask || !Array.isArray(s.walk) || !s.walk.length) { problems.push(`Day ${n} "${l.h}" ${p}: the script needs why, talk, walk and ask`); continue; }
             if (s.walk.length !== want) problems.push(`Day ${n} "${l.h}" ${p}: ${s.walk.length} walk lines for ${want} ${p === 'p1' ? 'How-To steps' : 'Best Practices'}`);
+            // it's read aloud as speaker notes, so it explains the idea instead of pointing at the slide
+            for (const x of [s.why, s.talk, ...s.walk, s.ask]) if (/\b(this|the) slide\b|\bon the (left|right)\b|\bGo Deeper\b/i.test(x)) problems.push(`Day ${n} "${l.h}" ${p}: explain it instead of pointing at the slide — "${x.slice(0, 80)}…"`);
         }
         scripted++;
     }

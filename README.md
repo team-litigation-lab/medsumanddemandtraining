@@ -60,21 +60,23 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 
 ### Presenter view scripts
 
-Every lesson slide has a spoken script, written in the same format as the EA/PA course. The trainer sees it in **🖥 Presenter view** under "🎙 Script — read aloud", on the admin **Trainer Cues** page, and in the day's **Speaker Notes PDF**. Each slide follows four beats:
+Every lesson slide has a spoken script in the same format as the EA/PA course. The trainer sees it in **🖥 Presenter view** under "🎙 Script — read aloud", on the admin **Trainer Cues** page, and in the day's **Speaker Notes PDF**.
 
-| Beat | What it is |
+It reads like speaker notes: **one flowing paragraph to say out loud, then the closing question on its own line**. Below that is the lesson's trainer note, marked "not read aloud". Each script is written in four parts, which the paragraph runs together in order:
+
+| Part | What it is |
 |---|---|
-| **① The why** | the punchline: why this slide matters, in one sentence |
-| **② Talk it through** | the slide explained in plain spoken words, not the bullets read out |
-| **③ Walk through it** | the points in order ("First… Next… Then… Finally…"): one line per Step-by-Step How-To on slide 1, and one per Best Practice on slide 2, with the pitfall last |
-| **④ Ask the room / Your turn** | a question on slide 1; on slide 2, a task on Dana's file (the day's last topic sends trainees into its Skill Builder) |
+| `why` | the punchline: why this slide matters, in one sentence |
+| `talk` | the idea explained in plain words, with Dana's file as the example (never "the table on this slide…") |
+| `walk` | the points in order ("First… Next… Then… Finally…"): one line per Step-by-Step How-To on slide 1, and one per Best Practice on slide 2, with the pitfall last |
+| `ask` | a question for the room on slide 1; on slide 2, a task on Dana's file (the day's last topic sends trainees into its Skill Builder) |
 
 They're written in a teacher's voice, like the course's own Canva speaker notes. They say "you" and "we", use short sentences, and explain jargon on the way ("MMI — maximum medical improvement — means…"). Every figure, date and page cite matches `build/md_casefile.js`.
 
 - **Where:** `js/slide-scripts/dayN.js` sets `window.SLIDE_SCRIPTS["<day>::<exact lesson title>"] = {p1:{why, talk, walk:[…], ask}, p2:{…}}`. If you rename a lesson, rename its key too.
-- **Engine:** `build/slide_script_engine.js` is the EA/PA engine, swapped in by `build.py`. When a long slide is split over pages, the script follows the page: page 1 has the why and the talk, the walk-through is shared across the pages that show the steps, and the last page ends with the question.
-- **Fallback:** a topic with no script, such as one added later in the Content Studio, gets the same four beats built from what's on the slide.
-- **Check:** `check-data.mjs` fails if a lesson has no script, if a key doesn't match a lesson title, or if the number of walk lines doesn't match the How-To steps or the Best Practices.
+- **Engine:** `build/slide_script_engine.js` is the EA/PA engine, swapped in by `build.py`. When a long slide is split over pages, the script follows the page: page 1 has the opening, the points are shared across the pages that show them, and the last page ends with the question.
+- **Fallback:** a topic with no script, such as one added later in the Content Studio, gets a script built from what's on the slide.
+- **Check:** `check-data.mjs` fails if a lesson has no script, a key doesn't match a lesson title, the number of walk lines doesn't match the How-To steps or the Best Practices, or a line points at the slide instead of explaining it.
 
 **Content source:** the lessons were written for this build from standard personal-injury medsum and demand practice. The Canva decks the course follows couldn't be opened from the build environment. Before the first live batch, compare `build/day1.js`–`day5.js` with the decks and adjust.
 

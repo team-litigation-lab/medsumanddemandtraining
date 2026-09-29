@@ -11,7 +11,7 @@
      2. Admin ↔ Trainee view switch (top bar) without signing out.
      3. SOP Reference: readable layout + a "Present" mode for live discussion.
      4. Presenter view: share only the slides in Meet, see the spoken script yourself
-        (EA/PA four beats; hand-written scripts in js/slide-scripts/dayN.js).
+        (EA/PA speaker notes; hand-written scripts in js/slide-scripts/dayN.js).
      5. All lesson content centred; Orientation deck + Blueprint refreshed.
      6. Email Outreach: capstone Day 4 topic + Email Outreach Simulator (Day 4 lab, Part 4).
      7. Inbox Triage + Inbox Zero merged into one Gmail inbox with labels & sub-labels (Day 2 lab).
@@ -694,8 +694,8 @@ function presenterCues(d, slide){
   if(slide.type==="topic"){
     const l = d.lessons[slide.lessonIndex];
     out.push(`<h3>${esc(l.h)}${l.singleSlide ? "" : ` <small style="font-size:12px;color:var(--ink-soft);">Part ${slide.part} of 2</small>`}</h3>`);
-    // The spoken script, in the EA/PA four beats (① The why · ② Talk it through · ③ Walk through it ·
-    // ④ Ask the room / Your turn), following the page when a long slide is split over pages.
+    // The spoken script, as EA/PA speaker notes: one paragraph to read aloud, then the closing question;
+    // it follows the page when a long slide is split over pages.
     const pageInfo = state.presentSecsFor === (state.lessonSlide||0);
     out.push(renderPresenterNote(d, l, slide.part, pageInfo ? state.presentSecs : null, pageInfo ? state.presentAllSecs : null,
       pageInfo ? {page: state.presentPage||0, pages: state.presentPages||1, secsByPage: state.presentSecsByPage} : null));   // scripts: js/slide-scripts/dayN.js

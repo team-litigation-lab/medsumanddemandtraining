@@ -33,14 +33,14 @@ const IGNORE = /Failed to load resource|ERR_|net::|favicon/;
                 goto('day', d.id); state.dayViewMode = 'slides'; await sleep(30);
                 const n = buildDaySlides(d).length;
                 for (let i = 0; i < n; i++) { state.lessonSlide = i; try { render(); } catch (e) { errs.push(`Day ${d.id} slide ${i}: ${e.message}`); } }
-                // Presenter view: every topic slide shows the four-beat script, read from js/slide-scripts/dayN.js
+                // Presenter view: every topic slide shows its spoken script (js/slide-scripts/dayN.js) and closing question
                 buildDaySlides(d).forEach((sl, i) => {
                     if (sl.type !== 'topic') return;
-                    try { const h = presenterCues(d, sl); if (!/① The why/.test(h) || !/③ Walk through it/.test(h)) errs.push(`Day ${d.id} slide ${i}: Presenter view script is missing its four beats`); }
+                    try { const h = presenterCues(d, sl); if ((h.match(/class="script-say/g) || []).length < 2 || !/script-ask/.test(h)) errs.push(`Day ${d.id} slide ${i}: Presenter view script is missing its paragraph or its closing question`); }
                     catch (e) { errs.push(`Day ${d.id} slide ${i} Presenter view: ${e.message}`); }
                 });
                 d.lessons.forEach(l => [1, 2].forEach(p => { if (!slideScript(d, l, p).hand) errs.push(`Day ${d.id} "${l.h}" slide ${p}: no hand-written script`); }));
-                try { if (!buildDayScriptLines(d).some(x => /^THE WHY: /.test(x))) errs.push(`Day ${d.id}: Speaker Notes PDF has no script`); } catch (e) { errs.push(`Day ${d.id} Speaker Notes: ${e.message}`); }
+                try { if (buildDayScriptLines(d).filter(x => /^ASK: /.test(x)).length < d.lessons.length * 2) errs.push(`Day ${d.id}: Speaker Notes PDF has no script`); } catch (e) { errs.push(`Day ${d.id} Speaker Notes: ${e.message}`); }
                 state.dayViewMode = 'knowledgeCheck'; try { render(); } catch (e) { errs.push(`Day ${d.id} knowledge check: ${e.message}`); }
                 out.push(`Day ${d.id}: ${n} slides`);
             }

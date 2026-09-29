@@ -5,7 +5,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::What a Demand Letter Is": {
   "p1": {
    "why": "The demand letter is usually the adjuster's first full look at Dana's injury claim, so it has to be easy to evaluate and hard to argue with.",
-   "talk": "A demand letter is our written settlement proposal to the at-fault driver's insurer, which for Dana means Keystone Mutual and its adjuster, Tom Reyes. It lays out liability and damages, attaches the proof, and asks for a specific amount by a deadline. The six icons on this slide are the six jobs it does: tell the story, prove liability, prove the injury, prove the damages, make the demand, and carry the proof in Exhibits A through G. The adjuster often needs a supervisor's authority to pay more, so he has to be able to hand our letter up the chain and have it hold up. That only works when every fact traces to an exhibit page and nothing is exaggerated.",
+   "talk": "It's our written settlement proposal to the at-fault driver's insurer, which for Dana means Keystone Mutual and its adjuster, Tom Reyes. It lays out liability and damages, attaches the proof, and asks for a specific amount by a deadline. In practice, it does six jobs: tell the story, prove liability, prove the injury, prove the damages, make the demand, and carry the proof in Exhibits A through G. The adjuster often needs a supervisor's authority to pay more, so he has to be able to hand our letter up the chain and have it hold up. That only works when every fact traces to an exhibit page and nothing is exaggerated.",
    "walk": [
     "First, open the firm's template, TP04. Never start from a blank page, and never start from another client's letter.",
     "Next, pull your facts from the source documents: the police report, the medsum, the itemization, the wage verification and Dana's impact statement.",
@@ -17,7 +17,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "Facts persuade adjusters; adjectives make them suspicious.",
-   "talk": "Adjusters read a lot of demand letters, and plenty of them shout. The ones that work are calm, organized and exact. So these practices are about writing for a busy reader and letting the records do the persuading. And the pitfall is one that's embarrassed a lot of firms: the recycled letter.",
+   "talk": "Adjusters read a lot of demand letters, and plenty of them shout. The ones that work are calm, organized and exact. So the job is to write for a busy reader and let the records do the persuading. And there's one pitfall that's embarrassed a lot of firms: the recycled letter.",
    "walk": [
     "First, write for a busy adjuster: short paragraphs, clear headings, and dates and page cites he can scan.",
     "Next, let the facts carry the weight. “A 3 mm central disc protrusion at C5-6” does more for Dana than “a severe, devastating injury” ever could.",
@@ -29,7 +29,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::When to Send: MMI and the Pre-Demand Checklist": {
   "p1": {
    "why": "Settlement is final, so a demand sent too early leaves the client's later care out for good.",
-   "talk": "A demand usually goes out once the client has finished treating or reached MMI — maximum medical improvement — the point where the doctor says she's as good as she's going to get. Before that, nobody knows the full damages, and settlement is final: care nobody knew about when the claim settles, like another injection next year, can't be added later. The process on this slide is the pre-demand checklist, eight gates in order, from MMI all the way to the attorney's approval. On Dana's file, Dr. Patel documented MMI on 08/21/2026. And the attorney decides when to send: she may go before MMI in some cases, like when the injuries clearly exceed the policy limits, but that's her call, not the calendar's.",
+   "talk": "A demand usually goes out once the client has finished treating or reached MMI — maximum medical improvement — the point where the doctor says she's as good as she's going to get. Before that, nobody knows the full damages, and care nobody knew about when the claim settles, like another injection next year, can't be added later. Before we send, the file has to pass the pre-demand checklist: eight gates in order, from MMI all the way to the attorney's approval. On Dana's file, Dr. Patel documented MMI on 08/21/2026. And the attorney decides when to send: she may go before MMI in some cases, like when the injuries clearly exceed the policy limits, but that's her call, not the calendar's.",
    "walk": [
     "First, confirm MMI or discharge in the records and note the page. For Dana, that's Dr. Patel's 08/21/2026 visit, WHITFIELD 0056 to 0058.",
     "Next, go provider by provider: complete records, and itemized bills with dates of service and CPT codes, the billing codes for each procedure. A statement that only says “balance due” doesn't count.",
@@ -41,7 +41,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "A ready file beats a fast file, because whatever's missing when we send stays missing.",
-   "talk": "Two habits and one trap. Keep an eye on the statute of limitations, the legal deadline to file a lawsuit, so we know how much room there is to negotiate. Wait for the last real bill. And never let the age of a file push a demand out the door while the client is still treating.",
+   "talk": "It comes down to two habits and one trap. Keep an eye on the statute of limitations, the legal deadline to file a lawsuit, so we know how much room there is to negotiate. Wait for the last real bill. And never let the age of a file push a demand out the door while the client is still treating.",
    "walk": [
     "First, check the statute of limitations every time. Under our training state's rule, Dana's is 03/14/2028, so there's time to negotiate. A demand sent a few weeks before the SOL leaves almost none.",
     "Next, hold the draft for the last bill. Bayside's balance-due statement wasn't enough; the itemized bill came in on 10/07/2026.",
@@ -53,7 +53,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Your Role vs the Attorney's": {
   "p1": {
    "why": "We build the letter; Attorney Bennett owns it, and her signature makes it the firm's legal position.",
-   "talk": "The two columns on this slide split the work. On the left is you, the Demand Specialist: you build the medsum, the chronology and the itemization, draft from the template, cite every fact, assemble the exhibits and flag what's weak or missing. On the right is Attorney Laura Bennett: she decides when the demand goes out, sets the amount and the deadline, writes the legal arguments, signs the letter and advises Dana on every offer. Her signature is what turns our draft into the firm's legal position. So valuation and advice are hers alone. You never state what a case is worth, predict a result or tell a client what to do, not in the letter and not on the phone.",
+   "talk": "The work splits cleanly in two. You, the Demand Specialist, build the medsum, the chronology and the itemization, draft from the template, cite every fact, assemble the exhibits and flag what's weak or missing. Attorney Laura Bennett decides when the demand goes out, sets the amount and the deadline, writes the legal arguments, signs the letter and advises Dana on every offer. So valuation and advice are hers alone. You never state what a case is worth, predict a result or tell a client what to do, not in the letter and not on the phone.",
    "walk": [
     "First, draft every factual section completely, with its cites, so the attorney is reviewing a finished draft, not filling holes.",
     "Next, clearly mark the parts that are hers: the amount, the deadline and any legal argument.",
@@ -64,7 +64,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "When anyone asks what the case is worth, the answer always comes from the attorney.",
-   "talk": "These practices keep that line clean. Clients ask about value all the time, and it's a fair thing for them to wonder. Your job is to acknowledge the question warmly, not answer it, and get it to Attorney Bennett the same day.",
+   "talk": "Clients ask about value all the time, and it's a fair thing for them to wonder. Your job is to acknowledge the question warmly, not answer it, and get it to Attorney Bennett the same day.",
    "walk": [
     "First, make the attorney's review fast: what's in, what's flagged, and what needs her decision.",
     "Next, if a client, a provider or an adjuster asks “how much are you asking for?”, route it to the attorney.",
@@ -76,7 +76,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::The Parts of a Demand Letter": {
   "p1": {
    "why": "Every demand has the same backbone, and the order walks the adjuster from fault, to injury, to money.",
-   "talk": "The table on this slide lays out the parts in order: what each one does, and where Dana's version gets its facts. The heading comes straight from Keystone's own letters: claim number KM-26-0418823, adjuster Tom Reyes, and the date of incident, 03/14/2026. Then the letter walks the adjuster through the facts and liability, the injuries and treatment, the medical specials, the other economic losses and the non-economic harm. It closes with the attorney's demand and the enclosure list, Exhibits A through G. The template gives you the structure and the firm's standard language; your job is to supply the facts from the file.",
+   "talk": "Let's take the parts in order: what each one does, and where Dana's version gets its facts. The heading comes straight from Keystone's own letters: claim number KM-26-0418823, adjuster Tom Reyes, and the date of incident, 03/14/2026. Then the letter walks the adjuster through the facts and liability, the injuries and treatment, the medical specials, the other economic losses and the non-economic harm. It closes with the attorney's demand and the enclosure list, Exhibits A through G. The template gives you the structure and the firm's standard language; your job is to supply the facts from the file.",
    "walk": [
     "First, open TP04 and fill the heading from Keystone's own letters: the claim number, the insured, Grant Mercer, and the adjuster. Copy them; don't type them from memory.",
     "Next, write the facts from the police report, the injuries from the medsum, and the specials from the itemization.",
@@ -90,7 +90,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
    "why": "Adjusters often go straight to the numbers and the causation opinion, so those have to be flawless.",
    "talk": "Most adjusters don't read a demand front to back. They flip to the specials and the doctor's causation opinion, the sentence that says the crash caused the injury. So make those easy to find, keep out what doesn't belong, and make sure the total matches the exhibit.",
    "walk": [
-    "First, use headings the adjuster can scan. Many go straight to the specials and the causation opinion.",
+    "First, use headings the adjuster can scan, so he lands on the specials and the causation opinion without hunting for them.",
     "Next, keep property damage out. Dana's $6,480.00 repair was handled and paid separately.",
     "Finally, the pitfall: a specials total that doesn't match the itemization exhibit. The adjuster will find that before anything else."
    ],
@@ -100,7 +100,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Facts & Liability": {
   "p1": {
    "why": "The insured's own words prove fault better than any adjective we could write.",
-   "talk": "The facts section tells the crash in a few clear sentences: where, when, what each driver was doing and who was at fault. The table on this slide pairs each fact with its source, and almost all of it comes from the police report, Exhibit A. Dana was stopped at a red light, eastbound on Oak St at 5th Ave, on 03/14/2026 at about 4:15 PM, when Grant Mercer's F-150 hit the rear of her CR-V. He told Officer Alvarez he “looked down at my phone for a second,” and he was cited for Following Too Closely. Keystone accepted liability on 04/02/2026, but these facts still matter, because a stopped car, a distracted driver and a citation show fault and the kind of impact the adjuster has to weigh.",
+   "talk": "The facts section tells the crash in a few clear sentences: where, when, what each driver was doing and who was at fault. Every one of those facts needs a source, and almost all of them come from the police report, Exhibit A. Dana was stopped at a red light, eastbound on Oak St at 5th Ave, on 03/14/2026 at about 4:15 PM, when Grant Mercer's F-150 hit the rear of her CR-V. He told Officer Alvarez he “looked down at my phone for a second,” and he was cited for Following Too Closely. Keystone accepted liability on 04/02/2026, but these facts still matter, because a stopped car, a distracted driver and a citation show fault and the kind of impact the adjuster has to weigh.",
    "walk": [
     "First, write the facts in time order, in the past tense, with the date, time and location.",
     "Next, quote the insured and the witness exactly, with the cite. Mercer's phone quote and Priya Desai's “had been stopped for a few seconds” both come from the police report, Exhibit A.",
@@ -122,8 +122,8 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  },
  "4::Injuries & Treatment (from the Medsum)": {
   "p1": {
-   "why": "This section retells the medsum as a story, in the doctors' own words, with a page cite for every key finding.",
-   "talk": "The process on this slide is Dana's treatment in date order, eight stops from the emergency department on 03/14 to MMI on 08/21. The injuries section tells that story: what hurt, what the doctors found, what they did, and where she ended up. Use the providers' exact words. The radiologist wrote “3 mm central disc protrusion,” so our letter says protrusion, not herniation. And three kinds of sentences matter most: the objective findings like the MRI, Dr. Patel's causation opinion, and the future-care plan, each one with its page cite.",
+   "why": "The injuries section retells the medsum as a story, in the doctors' own words, with a page cite for every key finding.",
+   "talk": "Dana's treatment runs in date order through eight stops, from the emergency department on 03/14 to MMI on 08/21. We tell that story plainly: what hurt, what the doctors found, what they did, and where she ended up. Use the providers' exact words. The radiologist wrote “3 mm central disc protrusion,” so our letter says protrusion, not herniation. And three kinds of sentences matter most: the objective findings like the MRI, Dr. Patel's causation opinion, and the future-care plan, each one with its page cite.",
    "walk": [
     "First, work from the approved medsum, Exhibit C, not from memory.",
     "Next, give each provider a short paragraph: dates, complaints and pain scores, findings, diagnosis, treatment and result.",
@@ -146,7 +146,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Medical Specials & Economic Damages": {
   "p1": {
    "why": "The adjuster should be able to check Dana's specials in a minute and land on $19,516.40 to the cent.",
-   "talk": "“Specials” — short for special damages — are the losses you can put an exact dollar figure on, like medical bills. The table on this slide is Dana's specials section: each related provider, the dates, and what they billed, adding up to $19,516.40, the same total as the itemization, Exhibit D. Economic damages are past medical plus future medical plus lost wages, so for Dana that's $19,516.40 plus $7,800.00 plus $3,136.00, or $30,452.40. Under our training state's rule, the letter uses the full billed amounts and the itemization keeps the paid amounts. Other states treat billed versus paid differently, and either way the attorney decides what goes in the letter.",
+   "talk": "“Specials” — short for special damages — are the losses you can put an exact dollar figure on, like medical bills. Dana's specials section lists each related provider, the dates, and what they billed, adding up to $19,516.40, the same total as the itemization, Exhibit D. Economic damages are past medical plus future medical plus lost wages, so for Dana that's $19,516.40 plus $7,800.00 plus $3,136.00, or $30,452.40. Under our training state's rule, the letter uses the full billed amounts and the itemization keeps the paid amounts. Other states treat billed versus paid differently, and either way the attorney decides what goes in the letter.",
    "walk": [
     "First, copy the lines from the final itemization. Never retype totals from a draft or a provider's ledger.",
     "Next, leave out what the itemization leaves out: the 2025 Harbor Spine charges of $285.00, Clearview's duplicate MRI line, and Northgate's $275.00 wellness exam.",
@@ -170,7 +170,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Non-Economic Damages: the Human Story": {
   "p1": {
    "why": "Non-economic damages have no bill attached, so specific, true details are the only proof we have.",
-   "talk": "Non-economic damages are the losses that don't come with a bill: pain, limits on daily life, lost activities, lost sleep, worry, and what the future might hold. The icons on this slide are Dana's version of that, and every one comes from her signed impact statement, Exhibit G, or her records. For six weeks she couldn't lift her 3-year-old son or turn her head to check her blind spot, she stopped her Saturday 5K runs, and she still wakes with neck pain once or twice a week. The records back her up: 24 chiropractic visits, an MRI, an injection in her neck, and up to two more if her symptoms come back. Notice how specific that is. “Couldn't lift her son for six weeks” proves more than “suffered greatly” ever will.",
+   "talk": "They cover pain, limits on daily life, lost activities, lost sleep, worry, and what the future might hold. Every detail in Dana's version comes from her signed impact statement, Exhibit G, or her records. For six weeks she couldn't lift her 3-year-old son or turn her head to check her blind spot, she stopped her Saturday 5K runs, and she still wakes with neck pain once or twice a week. The records back her up: 24 chiropractic visits, an MRI, an injection in her neck, and up to two more if her symptoms come back. Notice how specific that is. “Couldn't lift her son for six weeks” proves more than “suffered greatly” ever will.",
    "walk": [
     "First, read Dana's impact statement, DW26, signed 09/30/2026, and pick out the concrete, specific facts.",
     "Next, pair each life fact with a record where you can, like the neck pain and 40 percent loss of motion at WHITFIELD 0012 to 0015, or the injection at WHITFIELD 0064.",
@@ -181,7 +181,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "Dana's story is strong because it's true and specific; exaggeration only weakens it.",
-   "talk": "This is the section where writers are most tempted to overdo it. Don't. Use only what Dana told us, show the before and after, and let the adjuster reach his own conclusion.",
+   "talk": "Non-economic damages are where writers are most tempted to overdo it. Don't. Use only what Dana told us, show the before and after, and let the adjuster reach his own conclusion.",
    "walk": [
     "First, use the client's facts exactly as she gave them. Never add a detail she didn't give.",
     "Next, show before and after. She ran a 5K every Saturday; after the crash, she stopped.",
@@ -193,7 +193,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Addressing Weaknesses Before the Adjuster Does": {
   "p1": {
    "why": "The adjuster will find the weaknesses anyway; the only question is who explains them first.",
-   "talk": "Every file has weaknesses, and Dana's has two: a low back strain in January 2025, at WHITFIELD 0010 to 0011, and a 43-day gap in treatment, from 05/14 to 06/26/2026. The left side of this slide is DW27 hiding them: it claims she'd “never experienced neck or back problems” and says nothing about the gap. The right side is the honest version, and every line has a cite. Her only prior care was three chiropractic visits for her low back, and she was released; the injury Dr. Patel ties to this crash is in her neck, at C5-6. As for the gap, she finished all 24 scheduled chiropractic visits, couldn't add the extra ones because her mother, who watched her son, was hospitalized, and her neck got worse until she started pain management on 06/26.",
+   "talk": "Every file has weaknesses, and Dana's has two: a low back strain in January 2025, at WHITFIELD 0010 to 0011, and a 43-day gap in treatment, from 05/14 to 06/26/2026. Done badly, the letter hides them, the way DW27 does: it claims she'd “never experienced neck or back problems” and says nothing about the gap. Done well, the letter is honest, and every line has a cite. Her only prior care was three chiropractic visits for her low back, and she was released; the injury Dr. Patel ties to this crash is in her neck, at C5-6. As for the gap, she finished all 24 scheduled chiropractic visits, couldn't add the extra ones because her mother, who watched her son, was hospitalized, and her neck got worse until she started pain management on 06/26.",
    "walk": [
     "First, list the weaknesses from the chronology's flags: a prior injury, a gap, missed visits, anything unrelated.",
     "Next, for each one, find the record that explains it. The page, not a guess. For Dana's gap, that's WHITFIELD 0038 for childcare and 0060 for the continuing symptoms.",
@@ -228,7 +228,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "In a time-limited demand, one changed word can change its legal effect, so the terms are never ours to touch.",
-   "talk": "We're the ones watching the calendar and the mail, so we're usually the first to see a problem. These practices make sure we spot it. Our job is to flag it to Attorney Bennett, not to fix it ourselves.",
+   "talk": "We're the ones watching the calendar and the mail, so we're usually the first to see a problem. Careful records and a close read of every response make sure we spot it. Our job is to flag it to Attorney Bennett, not to fix it ourselves.",
    "walk": [
     "First, whether an insurer has to disclose its limits before a lawsuit depends on the state, so record how and when you got them.",
     "Next, know what the attorney's terms require, like a date, what gets released or a payment deadline, and flag any response that doesn't match.",
@@ -240,14 +240,14 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Cite Every Fact: Persuasive and Accurate": {
   "p1": {
    "why": "An adjuster who checks three cites and finds them exact will trust the rest of the letter.",
-   "talk": "Every fact in the letter needs a source the adjuster can open: the exhibit letter plus the Bates page. Bates numbers are the page stamps on the records, WHITFIELD 0001 through 0066 on Dana's file, so a cite looks like “Ex. E, WHITFIELD 0055.” On the left of this slide are facts written the way people talk: “a herniated disc,” “about three weeks of work,” “bills total about $19,500.” On the right are the same facts, exact and cited: a 3 mm central disc protrusion at WHITFIELD 0041, 14 workdays for $3,136.00 at Exhibit F, and $19,516.40 at Exhibit D. The right side isn't just more accurate; it's more persuasive, and one overstated fact costs more than it gains.",
+   "talk": "Every fact in the letter needs a source the adjuster can open: the exhibit letter plus the Bates page. Bates numbers are the page stamps on the records, WHITFIELD 0001 through 0066 on Dana's file, so a cite looks like “Ex. E, WHITFIELD 0055.” Done badly, facts get written the way people talk: “a herniated disc,” “about three weeks of work,” “bills total about $19,500.” Done well, the same facts are exact and cited: a 3 mm central disc protrusion at WHITFIELD 0041, 14 workdays for $3,136.00 at Exhibit F, and $19,516.40 at Exhibit D. The exact version isn't just more accurate; it's more persuasive, and one overstated fact costs more than it gains.",
    "walk": [
     "First, after each factual sentence, add the cite: the exhibit letter, then the Bates page or range.",
     "Next, open the page and confirm it says exactly what your sentence says.",
     "Then, quote the key medical sentences word for word: causation, MMI and future care.",
     "Finally, use the exhibit letters from the exhibit index, DW28, so the cites match the packet."
    ],
-   "ask": "Look at the left column. Which of those sentences would worry you most if you were the attorney signing the letter?"
+   "ask": "Think back to those loose versions: the herniated disc, the three weeks, the $19,500. Which one would worry you most if you were the attorney signing the letter?"
   },
   "p2": {
    "why": "A wrong cite is worse than no cite, because it looks careless or misleading.",
@@ -255,7 +255,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
    "walk": [
     "First, cite the narrowest page that proves the point: WHITFIELD 0055, not WHITFIELD 0042 to 0059.",
     "Next, use one cite format throughout the letter.",
-    "Finally, the pitfall: a cite that points to the wrong page. That's worse than no cite at all, because it looks careless or misleading."
+    "Finally, the pitfall: a cite that points to the wrong page. When the adjuster opens it and the page doesn't match, the whole letter starts to look careless or misleading."
    ],
    "ask": "Your turn: find the three medical statements in DW27 that fail the cite test, and say what each one needs."
   }
@@ -263,7 +263,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Quality Control: Numbers, Names, Dates, Exhibits": {
   "p1": {
    "why": "The errors that hurt most are the small ones, and you only catch them with the source documents open.",
-   "talk": "Quality control is a separate pass, done after you draft, with the source documents open next to you. It isn't a re-read of your own sentences, because your eyes will see what you meant to write. The table on this slide is the checklist: what to check, what to check it against, and in the right-hand column, what DW27 actually got wrong. Look how small those errors are: two digits swapped in the claim number, March 15 instead of March 14, a total that's off by $150.00. Small errors like that do the most damage, so nothing goes to Attorney Bennett for signature until every number, name, date and cite ties to a document.",
+   "talk": "Quality control is a separate pass, done after you draft, with the source documents open next to you. It isn't a re-read of your own sentences, because your eyes will see what you meant to write. The checklist is simple: for every item, you know what to check and what to check it against. DW27 shows what happens when nobody does. Look how small its errors are: two digits swapped in the claim number, March 15 instead of March 14, a total that's off by $150.00. So nothing goes to Attorney Bennett for signature until every number, name, date and cite ties to a document.",
    "walk": [
     "First, check the heading against Keystone's letters digit by digit: KM-26-0418823.",
     "Next, check every date against the records. The DOI is 03/14/2026 everywhere in the letter.",
@@ -275,7 +275,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
   },
   "p2": {
    "why": "Your brain autocorrects familiar numbers, so check them in a way it can't.",
-   "talk": "These habits catch what a normal read misses. You have to slow yourself down on purpose, look for things that don't belong, and remember where the facts came from in the first place.",
+   "talk": "A normal read won't catch them. You have to slow yourself down on purpose, look for things that don't belong, and remember where the facts came from in the first place.",
    "walk": [
     "First, read numbers aloud or check them backwards. A transposition like 8823 versus 8832 hides from a normal read.",
     "Next, search the draft for any leftover name, claim number or date from the template or another file.",
@@ -287,7 +287,7 @@ window.SLIDE_SCRIPTS = Object.assign(window.SLIDE_SCRIPTS || {}, {
  "4::Skill Builder: The Demand Draft Audit": {
   "p1": {
    "why": "An audit reads the draft against the documents, line by line, and every correction comes with its proof.",
-   "talk": "This is where today comes together. A demand audit reads the draft line by line against the documents and sorts every statement: OK, wrong so we fix it, or missing so we add it. Every correction comes with its proof, the document and page that shows the right fact. The six steps on this slide are the Skill Builder you're about to do: check readiness, audit DW27, sort the sentences, write the human story, report to the attorney and log it in the CMS. Done right, the audit protects Dana, Attorney Bennett's signature and the firm's credibility with Keystone.",
+   "talk": "This is where today comes together. You sort every statement in DW27: OK, wrong so we fix it, or missing so we add it. The proof for each correction is the document and page that shows the right fact. The Skill Builder you're about to do has six steps: check readiness, audit DW27, sort the sentences, write the human story, report to the attorney and log it in the CMS. Done right, the audit protects Dana, Attorney Bennett's signature and the firm's credibility with Keystone.",
    "walk": [
     "First, open DW27, the medsum, the itemization, the police report and Keystone's letters side by side.",
     "Next, mark each statement OK, Fix or Missing, and write the correction with its cite.",

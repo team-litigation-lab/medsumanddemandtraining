@@ -126,8 +126,10 @@ replace_block("const CRISIS_SCENARIO_SETS = {", "\n};\n", "const CRISIS_SCENARIO
 replace_block("const QUICK_PRACTICE_TOPIC_IDS = [", "];", 'const QUICK_PRACTICE_TOPIC_IDS = ["worth","gapcall","impact","takeit","priorrecords","paidbilled","itemized","recordsfee","lopcall"];')
 rep(".script-row p{margin:0;font-size:13px;line-height:1.5;}",
     ".script-row p{margin:0;font-size:13px;line-height:1.5;white-space:pre-line;}   /* numbered step scripts keep their lines */")
+rep(".script-row{margin-top:8px;}\n",
+    ".script-row{margin-top:8px;}\n.script-say{margin:6px 0 0;font-size:14px;line-height:1.6;} .script-say.script-ask{margin-top:10px;font-weight:600;color:var(--navy);} .script-next{margin:10px 0 0;font-size:12px;color:var(--orange-deep);font-weight:700;} .pn-cue{margin-top:10px;} .pn-cue p{font-size:12.5px;}\n")
 # The Presenter view / Speaker Notes script engine from the EA/PA course: every slide reads
-# "① The why · ② Talk it through · ③ Walk through it · ④ Ask the room / Your turn".
+# one flowing paragraph to read aloud (why, explanation, the points in order), then the closing question.
 i = s.index("/* ---------- trainer speaker notes (hardcoded in js/presenter-notes.js) ----------")
 j = s.index("function downloadDayScriptsPdf(dayId){", i)
 s = s[:i] + rd("slide_script_engine.js") + "\n" + s[j:]
@@ -135,7 +137,7 @@ s = s[:i] + rd("slide_script_engine.js") + "\n" + s[j:]
 # ---------- 3. scripts: this course's pack (relative paths, so the page also works from a subfolder) ----------
 rep_re(r'<script src="/js/cm-mindset\.js[^"]*"></script>\n?', '', min_count=0)
 rep_re(r'<script src="/js/cm-updates\.js\?v=[^"]*"></script>',
-       "".join(f'<script src="js/slide-scripts/day{n}.js?v=1"></script>\n' for n in range(1, 6)) + '<script src="js/md-updates.js?v=2"></script>')
+       "".join(f'<script src="js/slide-scripts/day{n}.js?v=2"></script>\n' for n in range(1, 6)) + '<script src="js/md-updates.js?v=3"></script>')
 rep_re(r'<script src="/js/cm-documents\.js\?v=[^"]*"></script>', '<script src="js/md-documents.js?v=2"></script>')
 rep_re(r'<script src="/js/cm-skillbuilders\.js\?v=[^"]*"></script>', '<script src="js/md-skillbuilders.js?v=2"></script>')
 rep_re(r'<script src="/js/cm-practice\.js\?v=[^"]*"></script>', '<script src="js/md-practice.js?v=1"></script>')
