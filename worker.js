@@ -242,6 +242,15 @@ async function listAll(env, prefix) {
   return keys;
 }
 
+/* The month's server requests for the admin pages' meter (js/request-budget.js), as the Request budget
+   workflow (EA-PA-TRAINING) saved them to KV under "_request-usage": the same key for every LSH site, so
+   it's read without this course's key prefix. null until the workflow has run. */
+async function requestMeter(kv) {
+  const raw = kv ? await kv.get("_request-usage") : null;
+  if (!raw) return null;
+  try { const u = JSON.parse(raw); delete u.cache; return u; } catch (e) { return null; }
+}
+
 export default {
   async fetch(request, env) {
     const kv = kvOf(env);
@@ -303,6 +312,12 @@ export default {
 
       const tok = secure ? await readToken(env, request) : { role: "a", id: "open-mode" };
       if (!tok) return json({ error: "Sign-in required" }, 401);
+
+      /* ---------- 📊 server request meter (admins; README → Server request meter) ---------- */
+      if (path === "/api/request-budget") {
+        if (tok.role !== "a") return json({ error: "Admins only" }, 403);
+        return json({ ok: true, usage: await requestMeter(env.LSH_KV) });
+      }
 
       /* ---------- AI proxy (signed-in users only, so strangers can't spend your credits) ---------- */
       // (the path keeps its old name so pages already open in browsers keep working)
