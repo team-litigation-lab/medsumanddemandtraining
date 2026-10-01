@@ -64,8 +64,13 @@ async function daLoad(force){
   const s = daState();
   if(!force && s.loadedAt && Date.now() - s.loadedAt < 60000) return;
   s.loading = true;
-  await Promise.all(DAYS.map(async d => { try{ s.byDay[d.id] = (await sharedGet("activities:day" + d.id)) || {items:[]}; }catch(e){ /* keep the last copy */ } }));
-  if(state.traineeId && !state.isAdmin){ try{ s.subs = (await sharedGet("actsub:" + state.traineeId)) || {items:{}}; }catch(e){ s.subs = s.subs || {items:{}}; } }
+  // Every day's activities (and a trainee's own submissions) in one request (/api/storage/get-many).
+  const keys = DAYS.map(d => "activities:day" + d.id), mine = state.traineeId && !state.isAdmin ? "actsub:" + state.traineeId : "";
+  try{
+    const got = await sharedGetMany(mine ? keys.concat(mine) : keys);
+    DAYS.forEach((d, i) => { s.byDay[d.id] = got[i] || {items:[]}; });
+    if(mine) s.subs = got[keys.length] || {items:{}};
+  }catch(e){ if(mine) s.subs = s.subs || {items:{}}; /* keep the last copy */ }
   s.loadedAt = Date.now(); s.loading = false;
 }
 function daMySub(actId){ const s = daState(); return (s.subs && s.subs.items && s.subs.items[actId]) || null; }
@@ -304,15 +309,16 @@ async function daLoadReview(){
     if(!state.adminData && typeof loadAdminLedgerQuiet === "function"){ try{ await loadAdminLedgerQuiet(); }catch(e){} }
     const keys = (await sharedList("actsub:")).filter(k => /^actsub:.+/.test(k));
     const rows = [];
-    await runPool(keys, async (k) => {
-      const doc = await sharedGet(k); const tid = k.slice(7);
+    // In a few requests (/api/storage/get-many), not one per trainee; a trainee's submissions can be large, so 20 at a time.
+    (await sharedGetMany(keys, 20)).forEach((doc, i) => {
+      const tid = keys[i].slice(7);
       Object.entries((doc && doc.items) || {}).forEach(([aid, sub]) => { if(sub && sub.submittedAt) rows.push({tid, aid, sub}); });
-    }, 4);
+    });
     rows.sort((a, b) => String(b.sub.submittedAt).localeCompare(String(a.sub.submittedAt)));
     // Names for trainees the ledger hasn't loaded (their own registration record).
     s.names = s.names || {};
     const unknown = [...new Set(rows.map(r => r.tid))].filter(t => !(state.adminData || []).some(x => x.id === t && x.name) && !s.names[t]);
-    await runPool(unknown, async (t) => { const rec = await sharedGet("trainee:" + t); const nm = rec && (rec.name || [rec.firstName, rec.lastName].filter(Boolean).join(" ")); if(nm) s.names[t] = nm; }, 4);
+    (await sharedGetMany(unknown.map(t => "trainee:" + t))).forEach((rec, i) => { const nm = rec && (rec.name || [rec.firstName, rec.lastName].filter(Boolean).join(" ")); if(nm) s.names[unknown[i]] = nm; });
     s.review = rows;
   }catch(e){ showActionError(e, "Loading submissions"); s.review = s.review || []; }
   s.reviewLoading = false;
@@ -468,7 +474,8 @@ if(typeof feedbackPrompt === "function"){
   window.feedbackPrompt = function(){ return __fbFeedbackPrompt.apply(this, arguments) + fbStyleBlock(); };
 }
 setTimeout(() => { if(state.traineeId || state.isAdmin) fbEnsureStyle(); }, 2500);
-setInterval(() => { if(state.traineeId || state.isAdmin) fbEnsureStyle(true); }, 10 * 60000);
+// Skipped while the tab is in the background: every /api/ request counts toward Cloudflare's request limit.
+setInterval(() => { if((state.traineeId || state.isAdmin) && document.visibilityState !== "hidden") fbEnsureStyle(true); }, 10 * 60000);
 
 function fbSampleText(fb){
   const part = (h, arr) => (arr || []).length ? `${h}\n${arr.map(x => "- " + x).join("\n")}` : "";
@@ -529,9 +536,9 @@ async function fbImport(){
   try{
     const texts = {review:[], activity:[]};
     const fk = (await sharedList("feedback:")).filter(k => /^feedback:.+/.test(k));
-    await runPool(fk, async (k) => { const doc = await sharedGet(k); Object.values((doc && doc.days) || {}).forEach(fb => { if(fb && (fb.editedByTrainer || (fb.status === "sent" && !fb.auto))) texts.review.push(fbSampleText(fb)); }); }, 4);
+    (await sharedGetMany(fk, 20)).forEach(doc => { Object.values((doc && doc.days) || {}).forEach(fb => { if(fb && (fb.editedByTrainer || (fb.status === "sent" && !fb.auto))) texts.review.push(fbSampleText(fb)); }); });
     const ak = (await sharedList("actsub:")).filter(k => /^actsub:.+/.test(k));
-    await runPool(ak, async (k) => { const doc = await sharedGet(k); Object.values((doc && doc.items) || {}).forEach(it => [it && it.feedback, it && it.prevFeedback].forEach(fb => { if(fb && fb.editedByTrainer) texts.activity.push(fbSampleText(fb)); })); }, 4);
+    (await sharedGetMany(ak, 20)).forEach(doc => { Object.values((doc && doc.items) || {}).forEach(it => [it && it.feedback, it && it.prevFeedback].forEach(fb => { if(fb && fb.editedByTrainer) texts.activity.push(fbSampleText(fb)); })); });
     const n = fbAddTexts(texts.review, "review") + fbAddTexts(texts.activity, "activity");
     await fbSaveSamples();
     toast(n ? `Imported ${n} piece(s) of feedback you wrote or edited.` : "No new trainer-written feedback found yet — edit and send a few reviews first, or paste examples.");
