@@ -219,7 +219,7 @@ These changes are made in `index.html` and `js/daily-activities.js` here. If `in
 - JavaScript syntax, local files and JSON (`check-site.mjs`)
 - every case document and handout exists, every document packet points at a real document, every lesson has its Presenter view script, and the Case Workspace files match their answer key (`check-data.mjs`)
 - `wrangler deploy --dry-run`
-- a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width (`smoke.cjs`)
+- a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width, and checks that the top bar fits on one row from 1181px to 2560px wide (`smoke.cjs`)
 - a browser test of how often the page asks the server (`requests.cjs`): `get-many` gives a trainee only their own and public records and an Admin every one, reads this course's `md:` keys and refuses more than 100 keys. With the checks sped up, a trainee's page reads their record and today's task about once per check, checks for a new version rarely, and asks nothing while the tab is in the background (catching up when it's back) or on a quick switch to another tab and back. A server that doesn't answer doesn't sign the trainee out; a revoke does. The Trainee Audit reads every trainee in two requests.
 
 To run them locally:

@@ -75,6 +75,26 @@ const IGNORE = /Failed to load resource|ERR_|net::|favicon/;
         if (vp.name === 'desktop') console.log(report.out.join('\n'));
         try { await page.evaluate(() => goto('practice')); await page.waitForTimeout(200); } catch (e) { failures.push(`[${vp.name}] Practice page: ${e.message.split('\n')[0]}`); }
         if (await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)) failures.push(`[${vp.name}] the page scrolls sideways`);
+        if (vp.name === 'desktop') {
+            // The top bar fits on one row at laptop and desktop widths (js/md-updates.js): nothing runs over the
+            // logo or the course name, nothing runs off the right, and the course name shows whole or not at all.
+            for (const admin of [false, true]) for (const w of [1181, 1280, 1366, 1440, 1536, 1600, 1680, 1920, 2560]) {
+                await page.setViewportSize({ width: w, height: 900 });
+                await page.evaluate((a) => { state.isAdmin = a; goto('casedocs'); }, admin); await page.waitForTimeout(60);
+                const bad = await page.evaluate(() => {
+                    const shown = (e) => !!e && e.getClientRects().length > 0, box = (e) => e.getBoundingClientRect();
+                    const right = document.querySelector('.topbar-right'), brand = document.querySelector('.topbar .brand'), title = document.querySelector('.topbar .brand-text b');
+                    const kids = [...right.children].filter(shown), left = Math.min(...kids.map(k => box(k).left)), end = Math.max(...kids.map(k => box(k).right));
+                    if (box(brand).right > left + 1) return 'something runs over the logo or the course name';
+                    if (left < box(right).left - 1 || end > box(right).right + 1 || end > innerWidth) return 'the tabs run past the bar';
+                    if (shown(title) && title.scrollWidth > title.clientWidth + 1) return 'the course name is cut off';
+                    if (box(document.querySelector('.topbar')).height > 90) return 'the bar wraps onto a second row';
+                    return '';
+                });
+                if (bad) failures.push(`[top bar, ${admin ? 'admin' : 'trainee'}, ${w}px] ${bad}`);
+            }
+            await page.setViewportSize({ width: vp.width, height: vp.height });
+        }
         await page.close();
     }
     await browser.close();

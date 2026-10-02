@@ -1253,3 +1253,127 @@ if(document.querySelector(".topbar")) render();
 .topbar.nav-open .nav .nav-tools-menu button{color:#fff}
 .topbar.nav-open .nav .nav-tools-menu button:hover{background:rgba(255,255,255,.09)}
 `; document.head.appendChild(s); })();
+
+/* ---------- the top bar fits on one row ----------
+   The bar holds more than most laptop screens have room for, and other files add to it
+   (js/portal-link.js adds ← Training Directory). So instead of fixed breakpoints, it is measured
+   after every render and resize, and steps down only as far as it has to:
+     1. smaller tabs, and the search box shrinks to its 🔍 (it opens when clicked);
+     2. the two least-used tabs move into a "More ▾" menu, so the course name can stay;
+     3. the course name hides (the logo stays);
+     4. more tabs move into More, least-used first.
+   The current page's tab, Dashboard, Tools, ← Training Directory and the ⧉ ⛶ buttons never move.
+   Below 1181px the bar keeps its own layouts (two rows, or the ☰ menu on phones). */
+(function(){
+  const s = document.createElement("style"); s.textContent = `
+@media(min-width:1181px){
+  .topbar:not(.tf-logo) .brand-text{display:flex !important;}
+  .topbar.tf-logo .brand-text{display:none !important;}
+  .topbar .brand-text b,.topbar .brand-text span{max-width:none !important;}
+  .topbar .nav > button,.topbar .nav > .nav-tools > button{padding:8px 9px;font-size:13px;}
+  .topbar.tf-tight .nav > button,.topbar.tf-tight .nav > .nav-tools > button{padding:7px 7px;font-size:12.5px;}
+  .topbar.tf-tight .topbar-search{flex:0 0 38px !important;min-width:38px !important;max-width:38px !important;padding:8px 11px;overflow:hidden;cursor:pointer;justify-content:center;}
+  .topbar.tf-tight .topbar-search .sicon{cursor:pointer;}
+  .topbar.tf-tight .topbar-search:not(:focus-within):not(:has(#searchResultsWrap)) input{flex:0 0 0;width:0;padding:0;opacity:0;}
+  /* opened, the box keeps its place and the field opens to the right, over the first tabs, while you type */
+  .topbar.tf-tight .topbar-search:focus-within,.topbar.tf-tight .topbar-search:has(#searchResultsWrap){overflow:visible;z-index:5;}
+  .topbar.tf-tight .topbar-search .sicon{position:relative;z-index:1;}
+  .topbar.tf-tight .topbar-search:focus-within input,.topbar.tf-tight .topbar-search:has(#searchResultsWrap) input{position:absolute;left:-1px;top:-1px;bottom:-1px;width:320px !important;max-width:none !important;flex:none;opacity:1;padding:0 14px 0 36px;background:#3A3F5C;border:1px solid rgba(255,255,255,.35);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.25);}
+  .topbar.tf-tight .topbar-search #searchResultsWrap{right:auto;width:380px;}
+}
+/* tablets and phones: the course name has its own row (or sits by ☰ Menu), so no fixed cap on it */
+@media(max-width:1180px){ .topbar .brand-text b,.topbar .brand-text span{max-width:none !important;} }
+@media(max-width:420px){ .topbar .brand-text b{font-size:13px;} }
+.nav-more .nav-tools-menu{left:auto;right:0;}
+.nav-more .nav-tools-menu .nav-badge{margin-left:6px;}
+`; document.head.appendChild(s);
+
+  const MOVABLE = ["handouts","notes","facilitatorguide","orientation","clientprofile","activities","tasks","casedocs","workspace","practice"];
+  const viewOf = (el)=>{ const m = /goto\('([a-z]+)'/.exec(el.getAttribute("onclick")||""); return m ? m[1] : ""; };
+  let fitting = false;
+  // Least-used first; the current page's tab never moves.
+  function candidates(nav){
+    const kids = [...nav.children].filter(el=>el.tagName==="BUTTON" && !el.classList.contains("active"));
+    const byView = MOVABLE.map(v=>kids.find(el=>viewOf(el)===v)).filter(Boolean);
+    const rest = kids.filter(el=>el.classList.contains("nav-focus") || /^openAdmin\(/.test(el.getAttribute("onclick")||""));
+    return byView.concat(rest);
+  }
+  const shown = (el)=> !!el && el.getClientRects().length > 0;
+  function fits(tb){
+    const right = tb.querySelector(".topbar-right"), brand = tb.querySelector(".brand");
+    if(!right || !brand) return true;
+    const kids = [...right.children].filter(shown);
+    if(!kids.length) return true;
+    const r = right.getBoundingClientRect(), b = brand.getBoundingClientRect();
+    const left = Math.min(...kids.map(k=>k.getBoundingClientRect().left)), rightEdge = Math.max(...kids.map(k=>k.getBoundingClientRect().right));
+    const title = tb.querySelector(".brand-text b");
+    const cut = shown(title) && title.scrollWidth > title.clientWidth + 1;
+    return left >= r.left - 1 && rightEdge <= r.right + 1 && b.right <= left + 1 && !cut;
+  }
+  function moreBox(nav){
+    let box = nav.querySelector("#navMore");
+    if(!box){
+      box = document.createElement("div");
+      box.className = "nav-tools nav-more"; box.id = "navMore";
+      box.innerHTML = `<button type="button" aria-haspopup="true" title="More pages">More ▾</button><div class="nav-tools-menu" role="menu"></div>`;
+      box.firstChild.addEventListener("click", (e)=>{ e.stopPropagation(); box.classList.toggle("open"); });
+      const at = [...nav.children].find(el=>el.matches(".nav-focus, .nav-viewswitch, .nav-portal, .nav-fs") || /^openAdmin\(/.test(el.getAttribute("onclick")||""));
+      nav.insertBefore(box, at || null);
+    }
+    return box;
+  }
+  function moveToMore(nav, el){
+    const box = moreBox(nav), item = el.cloneNode(true);
+    item.removeAttribute("onclick"); item.removeAttribute("id"); item.className = ""; item.type = "button"; item.setAttribute("role","menuitem");
+    item.addEventListener("click", ()=>{ box.classList.remove("open"); el.click(); });
+    // a menu item mirrors its tab (the tab stays in the bar, hidden, so its own handlers still run)
+    el.classList.add("tf-moved"); el.style.display = "none";
+    box.querySelector(".nav-tools-menu").appendChild(item);
+  }
+  function reset(tb){
+    tb.classList.remove("tf-tight","tf-logo","tf-measure");
+    tb.querySelectorAll(".tf-moved").forEach(el=>{ el.classList.remove("tf-moved"); el.style.display = ""; });
+    const box = tb.querySelector("#navMore"); if(box) box.remove();
+  }
+  function fit(){
+    const tb = document.querySelector(".topbar"), nav = tb && tb.querySelector(".nav");
+    if(!nav || fitting) return;
+    fitting = true;
+    try{
+      reset(tb);
+      tb.dataset.fit = "0";
+      if(!window.matchMedia("(min-width:1181px)").matches) return;
+      tb.classList.add("tf-measure");
+      const steps = [()=>tb.classList.add("tf-tight")];
+      const list = candidates(nav);
+      list.slice(0, 2).forEach(el=>steps.push(()=>moveToMore(nav, el)));
+      steps.push(()=>tb.classList.add("tf-logo"));
+      list.slice(2).forEach(el=>steps.push(()=>moveToMore(nav, el)));
+      let i = 0;
+      while(!fits(tb) && i < steps.length){ steps[i++](); }
+      tb.dataset.fit = String(i);
+    } finally {
+      tb.classList.remove("tf-measure");
+      observer.takeRecords();
+      fitting = false;
+    }
+  }
+  window.mdFitTopbar = fit;
+  // Re-fit when the bar is drawn again or something else adds to it; resizes are batched per frame.
+  const observer = new MutationObserver((records)=>{
+    if(fitting) return;
+    const tb = document.querySelector(".topbar");
+    if(!tb) return;
+    if(!tb.dataset.fit || records.some(r=>r.target.closest && r.target.closest(".topbar .nav") && !(r.target.closest(".nav-tools-menu")))) fit();
+  });
+  observer.observe(document.body, {childList:true, subtree:true});
+  let queued = false;
+  window.addEventListener("resize", ()=>{ if(queued) return; queued = true; requestAnimationFrame(()=>{ queued = false; fit(); }); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  document.addEventListener("click", (e)=>{
+    const box = document.getElementById("navMore"); if(box && !box.contains(e.target)) box.classList.remove("open");
+    const s = e.target.closest && e.target.closest(".topbar.tf-tight .topbar-search");
+    if(s){ const inp = s.querySelector("input"); if(inp && document.activeElement !== inp) inp.focus(); }
+  });
+  fit();
+})();

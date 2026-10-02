@@ -86,12 +86,7 @@ body.md-tf-open{overflow:hidden}
 .md-filter{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
 .md-lesson-visual{margin:12px 0 4px}
 .svg-diagram-card .md-lesson-visual{text-align:left}
-/* The course has two more nav items than EA/PA: on laptop widths collapse the search box to its icon (expands on focus) */
-@media(min-width:761px) and (max-width:1600px){
-  .topbar-search{flex:0 0 38px !important;min-width:38px !important;max-width:38px !important;overflow:hidden;transition:max-width .2s ease,flex-basis .2s ease}
-  .topbar-search:focus-within{flex-basis:230px !important;max-width:230px !important}
-  .nav button{padding:7px 7px;font-size:12.5px}
-}
+/* The top bar fits itself to the screen (js/md-updates.js, "the top bar fits on one row"). */
 @media(max-width:700px){.md-calc{grid-template-columns:1fr}.md-doc-row{flex-wrap:wrap}}
 `; document.head.appendChild(st);
 
