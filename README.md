@@ -170,6 +170,38 @@ Carry new features by hand:
 - from the PD course's `js/pd-updates.js` and `js/pd-skillbuilders.js` (or the CM originals) into `js/md-updates.js` and `js/md-skillbuilders.js`;
 - `js/daily-activities.js` is the same file as in the CM course.
 
+## Staying under Cloudflare's monthly request limit
+
+Every request to this course's Worker (everything under `/api/`, and `/version`) counts toward Cloudflare's request limit for the whole account. The account is on Workers Paid: **10 million requests a month**, shared by every LSH site (the courses, the CMS, the Training Portal and the rest). Just before the limit, the EA/PA course's **Request budget** workflow switches the sites' servers off until the next billing month, so one page that asks too often uses up everyone's requests. Static files (the page, `js/`, `slides/`, `documents/`) don't count.
+
+So an open page asks the server sparingly (`POLL` in `index.html`), and not at all while its tab is in the background. When the tab is back, whatever came due runs then; a quick look at another tab (Google Meet) asks nothing:
+
+| What | How often | Before |
+|---|---|---|
+| A trainee's access and today's task (`startApprovalPolling`) | every minute: their record (and today's task, on the dashboard) | every 45 s, the record read twice, also in the background |
+| A Skill Builders attempt reset (`liveTick`) | every minute (the minute check above counts) | every 10 s |
+| Trainer feedback and Focus items | every 2 minutes | every 45 s |
+| Waiting for approval | every 15 s | every 8 s |
+| Admin: Trainee Audit, Rankings, Trainee Feedback | every minute, every trainee in one request | every 30 s, one request per trainee |
+| A new version (`/version`) | every 3 minutes | every 45 s, also in the background |
+| The facilitator voice for AI feedback | every 10 minutes, not in the background | every 10 minutes |
+
+That takes an open trainee page from about 10 requests a minute (4–5 in the background) to about 3 (none in the background), and an Admin on the Trainee Audit with 30 trainees from about 60 a minute to about 2.
+
+Lists of records are read with `/api/storage/get-many` (up to 100 keys; for each key, the same rules and the same `md:` prefix as `/api/storage/get`), not one request per record: the Trainee Audit, Trainee Feedback, Daily Activities (each day's activities, the submissions to review, the feedback import) and, when the page opens, every day's published extra lessons and quiz questions. A trainee is signed out as revoked only when the server answers that their record is gone or not approved. A server that doesn't answer (offline, or switched off at the limit) no longer signs anyone out.
+
+These changes are made in `index.html` and `js/daily-activities.js` here. If `index.html` is rebuilt from a CM page that doesn't have them yet, carry them over again: `requests.cjs` fails until you do.
+
+## 📊 Server request meter
+
+Admins see how much of the month's server requests is used, on every LSH site's admin side: a small chip in the bottom-left corner once signed in to 🛡 Admin. 🟢 on track; 🟠 from 75%, or when this month's pace reaches the limit before the allowance resets; 🔴 from 90%; 🟥 paused (the limit was reached); ⚪ not set up yet, or no recent numbers. When it's amber or red, a note appears above the chip; click the chip for the total, the projection, each day and each site.
+
+- The numbers come from the Request budget workflow in EA-PA-TRAINING (README there → *Monthly request budget* and *Server request meter*), which saves them to KV (`_request-usage`, the same key for every LSH site, so it's read without this course's key prefix).
+- This site's server answers its admins with them: `POST /api/request-budget` (admins only, `worker.js`).
+- The meter is `js/request-budget.js`, **the same file in every LSH platform** (change it in EA-PA-TRAINING and copy it here). It asks once when an admin opens the page, then every 15 minutes while the tab is in view.
+- `index.html` loads it next to the other scripts at the end of the page. If `index.html` is rebuilt from a page that doesn't load it yet, carry those lines over again: `request-meter.cjs` fails until you do.
+- Tests: `.github/scripts/request-meter-widget.cjs` (the meter itself; the same test in every platform) and `.github/scripts/request-meter.cjs` (this site: admins only, one request).
+
 ## Checks
 
 `.github/workflows/checks.yml` runs on every pull request and every push to `main`:
@@ -178,6 +210,8 @@ Carry new features by hand:
 - every case document and handout exists, every document packet points at a real document, every lesson has its Presenter view script, and the Case Workspace files match their answer key (`check-data.mjs`)
 - `wrangler deploy --dry-run`
 - a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width (`smoke.cjs`)
+- a browser test of how often the page asks the server (`requests.cjs`): `get-many` gives a trainee only their own and public records and an Admin every one, reads this course's `md:` keys and refuses more than 100 keys. With the checks sped up, a trainee's page reads their record and today's task about once per check, checks for a new version rarely, and asks nothing while the tab is in the background (catching up when it's back) or on a quick switch to another tab and back. A server that doesn't answer doesn't sign the trainee out; a revoke does. The Trainee Audit reads every trainee in two requests.
+- the server request meter (`.github/scripts/request-meter-widget.cjs`, `request-meter.cjs`): only admins see it and only their pages ask for it, once on opening; `/api/request-budget` refuses trainees; every level of the meter shows as it should; a background tab asks nothing.
 
 To run them locally:
 
@@ -186,9 +220,12 @@ node .github/scripts/check-site.mjs
 node .github/scripts/check-data.mjs
 node .github/scripts/server.mjs 8787 &
 node .github/scripts/smoke.cjs http://localhost:8787/
+node .github/scripts/requests.cjs http://localhost:8787/
+node .github/scripts/request-meter-widget.cjs js/request-budget.js
+node .github/scripts/request-meter.cjs http://localhost:8787/
 ```
 
-The smoke test needs Playwright.
+The smoke and requests tests need Playwright.
 
 ## Deploy (Cloudflare Workers)
 
