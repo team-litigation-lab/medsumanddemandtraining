@@ -41,6 +41,7 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 | **🧪 Practice** | `js/md-practice.js`: every day has three columns — 🧠 Skill Builder, 🗣 Communication (live roleplay), 🗂 Systems (the CMS) |
 | **🔥 Live Roleplay** | `build/md_roleplay.js`: 12 situations with the client, records and billing offices and the adjuster, plus a live call inside each Skill Builder |
 | **🎙 Presenter view scripts** (the trainer's spoken script for every slide, in the EA/PA format) | `js/slide-scripts/day1.js` – `day5.js`; see below |
+| **🗂 Case Workspace** (each trainee works the file in their own Google Drive folder) | `js/md-workspace.js`, `/api/workspace/*` in `worker.js`, `build/workspace/`; see below |
 | Portal features (Presenter view, SOP, top bar) | `js/md-updates.js`, a copy of the PD course's `js/pd-updates.js` |
 
 ### The days
@@ -113,6 +114,44 @@ They're written in a teacher's voice, like the course's own Canva speaker notes.
 
 **Content source:** the lessons were written for this build from standard personal-injury medsum and demand practice. The Canva decks the course follows couldn't be opened from the build environment. Before the first live batch, compare `build/day1.js`–`day5.js` with the decks and adjust.
 
+### 🗂 Case Workspace (Google Drive)
+
+Trainees work Dana Whitfield's file the way they will on the job, so trainers can see how they arrange the
+file and how they build the demand, not only their quiz scores.
+
+- **The case folder.** Each trainee gets their own copy of the master case folder in the firm's Google Drive
+  (team-litigation@legalsupporthelp.com), shared with their @legalsupporthelp.com account only. They can't
+  share it onward. It holds:
+  - `01 Incoming — unsorted`: 27 PDFs as they reach the firm (fax headers, unhelpful names, out of order, one
+    duplicate fax). The records are unstamped and add up to WHITFIELD 0001–0066.
+  - `02 Case File`: nine empty subfolders to sort into.
+  - `03 Work Product`: Google Docs for the Day 1 File Audit, the medical summary, the demand letter, the exhibit
+    index and the reply to Keystone, and Google Sheets for the chronology and the itemization.
+  - `04 Received after the demand`: Keystone's two letters for Day 5.
+- **In the portal** (🗂 Workspace in the top bar):
+  - A trainee creates their folder there, opens it, and submits each day's work.
+  - Submitting reads their Docs and Sheets, plus the folder tree on Days 1 and 5, and returns an AI pre-review
+    scored against the answer key.
+  - Trainers see every trainee's folder as it is now. Each file shows the name it arrived with and a ✓ or ✗
+    against where it belongs. Trainers can also re-run a review and read the answer key.
+- **How it fits together:**
+  - `js/md-workspace.js` is the page.
+  - `worker.js` (`/api/workspace/*`) checks who is asking, keeps the record (`workspace:<id>`,
+    `wsreview:<id>`; trainees can read but not write them) and runs the review.
+  - A Google Apps Script web app (`build/workspace/apps-script/`) does the Drive work.
+  - The answer key (`build/workspace/answer_key.json`) is bundled into the Worker. It never goes into Drive or
+    the public site.
+- **Setup (once, about 5 minutes):** follow
+  [`build/workspace/apps-script/SETUP.md`](build/workspace/apps-script/SETUP.md). Until the Worker has
+  `WORKSPACE_URL` and `WORKSPACE_SECRET`, the page says the workspace isn't switched on yet.
+- **Rebuilding the files:**
+  - `python3 build/workspace/make_received.py` writes the record pages, `workspace/manifest.json` and the
+    answer key.
+  - `node build/workspace/render-pdfs.cjs` renders `workspace/files/fNN.pdf`. It needs Playwright.
+  - `python3 build/workspace/make_templates.py` writes the Docs templates that were uploaded to the master
+    folder. It needs openpyxl for the reference .xlsx copies; the Sheets themselves are built by the script's
+    `setup()`.
+
 ## Building
 
 `index.html` is generated from the **Case Management course's** `index.html` (Case-Management-Training, built from its `main` at `6993a3a`). That page is itself generated from the EA/PA portal, so the chain is EA/PA → CM → Medsum & Demand, the same as the Property Damage course.
@@ -136,7 +175,7 @@ Carry new features by hand:
 `.github/workflows/checks.yml` runs on every pull request and every push to `main`:
 
 - JavaScript syntax, local files and JSON (`check-site.mjs`)
-- every case document and handout exists, every document packet points at a real document, and every lesson has its Presenter view script (`check-data.mjs`)
+- every case document and handout exists, every document packet points at a real document, every lesson has its Presenter view script, and the Case Workspace files match their answer key (`check-data.mjs`)
 - `wrangler deploy --dry-run`
 - a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width (`smoke.cjs`)
 
@@ -159,6 +198,7 @@ The smoke test needs Playwright.
    - `ADMIN_PASSPHRASE`: admin sign-in; turns on secure mode.
    - `GEMINI_API_KEY`: AI grading and roleplays. The name must be exactly this.
    - `SESSION_SECRET`: optional.
+   - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). `WORKSPACE_DOMAIN` is optional (default `legalsupporthelp.com`).
 4. **Training Portal (optional):**
    - To have the Training Portal's **Progress & Feedback** page list this course's trainees, add the program to `PROGRAMS` in the portal's `functions/api/program-progress.js` with key prefix `md:`, 5 days and the course address.
    - The shared Call Simulator has no Medsum & Demand call pack yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once a pack exists.

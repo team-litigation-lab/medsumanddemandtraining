@@ -1,0 +1,311 @@
+{
+ "incoming": "01 Incoming — unsorted",
+ "later": "04 Received after the demand — open on Day 5",
+ "files": [
+  {
+   "id": "DW10",
+   "name": "FAX_2026-08-26_0931.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f21.pdf",
+   "pages": 9,
+   "is": "Riverside Medical Center ED record, 03/14/2026",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0001–0009"
+  },
+  {
+   "id": "DW11",
+   "name": "HarborSpine_old records.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f03.pdf",
+   "pages": 2,
+   "is": "Harbor Spine & Chiropractic 2025 prior records (low back strain, 01/08–01/29/2025)",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0010–0011"
+  },
+  {
+   "id": "DW12",
+   "name": "scan0042.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f20.pdf",
+   "pages": 27,
+   "is": "Harbor Spine & Chiropractic 2026 records, 03/17–05/14/2026",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0012–0038"
+  },
+  {
+   "id": "DW13",
+   "name": "Clearview MRI report.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f24.pdf",
+   "pages": 3,
+   "is": "Clearview Imaging MRI cervical spine report, 03/30/2026",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0039–0041"
+  },
+  {
+   "id": "DW13-DUP",
+   "name": "FAX_2026-09-02_1415.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f25.pdf",
+   "pages": 3,
+   "is": "Duplicate fax of the Clearview MRI report (same 3 pages): keep one copy, don't Bates it twice",
+   "belongs": null,
+   "bates": null
+  },
+  {
+   "id": "DW14",
+   "name": "SOA records Whitfield.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f02.pdf",
+   "pages": 18,
+   "is": "Summit Orthopedic Associates records, 04/20 and 08/21/2026",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0042–0059"
+  },
+  {
+   "id": "DW15",
+   "name": "Bayside_PM_records.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f14.pdf",
+   "pages": 7,
+   "is": "Bayside Pain Management records, 06/26 and 07/10/2026",
+   "belongs": "04 Medical Records",
+   "bates": "WHITFIELD 0060–0066"
+  },
+  {
+   "id": "DW01",
+   "name": "Handoff memo - Whitfield (M. Webb).pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f07.pdf",
+   "belongs": "01 Intake & Retainer",
+   "bates": null,
+   "is": "Case handoff memo from Marcus Webb, 10/05/2026"
+  },
+  {
+   "id": "DW02",
+   "name": "Intake_Whitfield_Dana.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f29.pdf",
+   "belongs": "01 Intake & Retainer",
+   "bates": null,
+   "is": "Client intake summary, 03/18/2026 (gives the DOI as 03/15 and no prior injuries)"
+  },
+  {
+   "id": "DW03",
+   "name": "Retainer+HIPAA signed.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f27.pdf",
+   "belongs": "01 Intake & Retainer",
+   "bates": null,
+   "is": "Retainer and HIPAA authorization, signed 03/18/2026"
+  },
+  {
+   "id": "DW04",
+   "name": "LPD report 26-031477.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f15.pdf",
+   "belongs": "02 Police & Liability",
+   "bates": null,
+   "is": "Police report LPD-26-031477, 03/14/2026"
+  },
+  {
+   "id": "DW05",
+   "name": "Photos log.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f12.pdf",
+   "belongs": "02 Police & Liability",
+   "bates": null,
+   "is": "Photo log, scene and vehicles"
+  },
+  {
+   "id": "DW06",
+   "name": "Keystone ltr 04-02-2026.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f26.pdf",
+   "belongs": "03 Insurance & Payers",
+   "bates": null,
+   "is": "Keystone liability acceptance, 04/02/2026"
+  },
+  {
+   "id": "DW07",
+   "name": "Keystone limits ltr.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f11.pdf",
+   "belongs": "03 Insurance & Payers",
+   "bates": null,
+   "is": "Keystone policy limits letter, 07/15/2026"
+  },
+  {
+   "id": "DW08",
+   "name": "SummitRidge PIP log.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f16.pdf",
+   "belongs": "03 Insurance & Payers",
+   "bates": null,
+   "is": "Summit Ridge PIP payment log"
+  },
+  {
+   "id": "DW09",
+   "name": "BlueHarbor notice.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f05.pdf",
+   "belongs": "03 Insurance & Payers",
+   "bates": null,
+   "is": "BlueHarbor Health reimbursement claim notice"
+  },
+  {
+   "id": "DW16",
+   "name": "RMC UB04.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f22.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Riverside Medical Center itemized statement (UB-04), 03/14/2026"
+  },
+  {
+   "id": "DW17",
+   "name": "REP 1500.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f28.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Riverside Emergency Physicians statement (CMS-1500)"
+  },
+  {
+   "id": "DW18",
+   "name": "receipt - corner pharmacy.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f10.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Corner Pharmacy receipt, 03/14/2026"
+  },
+  {
+   "id": "DW19",
+   "name": "HSC ledger LOP.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f08.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Harbor Spine ledger (LOP; includes the 2025 charges)"
+  },
+  {
+   "id": "DW20",
+   "name": "Clearview acct ledger.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f09.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Clearview Imaging ledger (lists the MRI twice)"
+  },
+  {
+   "id": "DW21",
+   "name": "SOA ledger.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f13.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Summit Orthopedic ledger"
+  },
+  {
+   "id": "DW22",
+   "name": "Bayside stmt 08-28.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f17.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Bayside balance-due statement, 08/28/2026 (not itemized)"
+  },
+  {
+   "id": "DW23",
+   "name": "Bayside itemized 10-07.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f19.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Bayside itemized bill with CPT codes, 10/07/2026"
+  },
+  {
+   "id": "DW24",
+   "name": "Northgate FP stmt.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f04.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Northgate Family Practice statement, 05/02/2026 wellness exam (unrelated)"
+  },
+  {
+   "id": "DW25",
+   "name": "LUSD wage verif.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f06.pdf",
+   "belongs": "06 Wages & Damages",
+   "bates": null,
+   "is": "Lakeside USD wage and time-loss verification"
+  },
+  {
+   "id": "DW26",
+   "name": "Impact statement signed.pdf",
+   "drive": "01 Incoming — unsorted",
+   "file": "workspace/files/f18.pdf",
+   "belongs": "06 Wages & Damages",
+   "bates": null,
+   "is": "Client impact statement, signed 09/30/2026"
+  },
+  {
+   "id": "DW29",
+   "name": "Keystone response 11-04-2026.pdf",
+   "drive": "04 Received after the demand — open on Day 5",
+   "file": "workspace/files/f23.pdf",
+   "belongs": "08 Correspondence",
+   "bates": null,
+   "is": "Keystone response and $18,500.00 offer, 11/04/2026"
+  },
+  {
+   "id": "DW30",
+   "name": "Keystone records request 11-04-2026.pdf",
+   "drive": "04 Received after the demand — open on Day 5",
+   "file": "workspace/files/f01.pdf",
+   "belongs": "08 Correspondence",
+   "bates": null,
+   "is": "Keystone request for 5 years of prior records, 11/04/2026"
+  }
+ ],
+ "rubric": {
+  "1": [
+   "Files sorted: intake/retainer/handoff memo → 01 Intake & Retainer; police report and photo log → 02 Police & Liability; Keystone letters, PIP log, BlueHarbor notice → 03 Insurance & Payers; the six record sets → 04 Medical Records; the ten bills, ledgers and statements → 05 Medical Bills; wage verification and impact statement → 06 Wages & Damages; the duplicate MRI fax → 09 Duplicates & not used. 01 Incoming is empty.",
+   "Names follow YYYY-MM-DD Source – Document, using each document's own date.",
+   "Medical records in Bates order with ranges at the front of each name: WHITFIELD 0001-0009 Riverside Medical Center ED (03/14/2026); 0010-0011 Harbor Spine 2025 prior records; 0012-0038 Harbor Spine 2026; 0039-0041 Clearview Imaging MRI; 0042-0059 Summit Orthopedic; 0060-0066 Bayside Pain Management. The duplicate MRI fax gets no Bates numbers.",
+   "Audit catches: the intake gives the DOI as 03/15/2026 but the police report and ED record say 03/14/2026; the intake says no prior injuries but Harbor Spine treated a low back strain 01/08–01/29/2025 (WHITFIELD 0010–0011); the MRI report was faxed twice (keep one); Bayside's 08/28 statement is balance-due only (the itemized bill with CPT codes is the one to use); Clearview's ledger lists the same MRI twice; Harbor Spine's ledger includes 2025 charges; the Northgate 05/02/2026 wellness exam is unrelated; the 43-day gap 05/14 → 06/26/2026 (reasons at WHITFIELD 0038 and 0060).",
+   "Actions go to the right person: corrections and legal questions to Attorney Bennett, treatment-phase questions to Marcus Webb; nothing is deleted."
+  ],
+  "2": [
+   "Chronology: one row per encounter in date order, starting with the 2025 prior visits (WHITFIELD 0010–0011), then ED 03/14/2026 (0001–0009), Harbor Spine 03/17 initial exam (0012–0015), daily visits (0016–0025, 0027–0037), re-evaluation 03/31 with return to work 04/03 (0026), Clearview MRI 03/30 (0039–0041), Summit consult 04/20 (0052–0055) and referral (0059), Harbor Spine discharge 05/14 (0038), Bayside 06/26 (0060–0063), ESI 07/10 (0064–0066), Summit follow-up/MMI 08/21 (0056–0058). Daily visits may be grouped by date range with their page range.",
+   "Provider's words: the MRI is a “3 mm central disc protrusion at C5-6” (0041), never a herniation; Dx C5-6 disc protrusion with right C6 radiculopathy (0055).",
+   "Flags: prior injury (0010–0011); gap in treatment 05/14 → 06/26/2026, 43 days, with the reasons (childcare, 0038; continuing and worsening symptoms, 0060); objective findings (MRI 0041; Spurling, reflexes, sensation 0053); causation opinion (0055); procedure (ESI 07/10, 0064–0066); MMI and future care: up to 2 ESIs at $3,900.00 each = $7,800.00 (0057). The Northgate wellness exam is not in the injury chronology.",
+   "Medical summary: the six sections (overview, initial treatment, diagnostics, treatment course, prior history and gaps, current status and future care), neutral and factual, a Bates cite for every statement, no opinions on value or causation beyond quoting Dr. Patel."
+  ],
+  "3": [
+   "Related lines only, billed amounts: Riverside Medical Center $4,850.00; Riverside Emergency Physicians $1,120.00; Corner Pharmacy $86.40; Harbor Spine 24 visits × $240.00 = $5,760.00; Clearview MRI (CPT 72141) $2,400.00; Summit 04/20 $650.00; Bayside 06/26 $425.00; Bayside ESI 07/10 (CPT 62321) $3,900.00; Summit 08/21 $325.00.",
+   "Totals tie out: billed $19,516.40; adjustments $2,675.00; BlueHarbor paid $2,575.00; PIP paid $2,500.00 (Riverside Emergency Physicians $1,120.00 + Clearview $1,380.00); client paid $661.40; balance $11,105.00.",
+   "Exclusions with reasons: Harbor Spine 2025 prior charges $285.00 (before the DOI); Clearview duplicate MRI line $2,400.00 (duplicate); Northgate 05/02/2026 wellness exam $275.00 (unrelated). The all-lines total would be $22,476.40.",
+   "Balances & liens: Harbor Spine LOP $5,760.00; Bayside LOP $4,325.00; Clearview balance after PIP $1,020.00; BlueHarbor reimbursement claim $2,575.00 to date (final figure after settlement). PIP has no reimbursement claim under the training state's rule.",
+   "Every line has its source (file and page). Payments are in the right payer column (PIP is not health insurance)."
+  ],
+  "4": [
+   "Heading facts: Tom Reyes, Keystone Mutual Insurance Co.; insured Grant Mercer; claim KM-26-0418823; client Dana Whitfield; date of loss 03/14/2026 (not 03/15).",
+   "Liability: stopped at a red light at Oak St & 5th Ave; rear-ended; Mercer “looked down at my phone for a second”; cited for Following Too Closely; Keystone accepted liability 04/02/2026. Cites the police report and photos as exhibits.",
+   "Injuries and treatment in date order with exhibit and Bates cites; the MRI described as a 3 mm central disc protrusion at C5-6 (never “herniated”); Dr. Patel's causation opinion quoted with WHITFIELD 0055; MMI and future care with 0057.",
+   "Damages tie out: past medical $19,516.40 (billed, related lines only, no Northgate exam); future medical $7,800.00; lost wages 14 workdays × $224.00 = $3,136.00; total economic $30,452.40; non-economic examples from the signed impact statement (couldn't lift her 3-year-old son or turn her head to check her blind spot for six weeks; stopped her Saturday 5K runs; still wakes at night with neck pain).",
+   "Addresses the January 2025 low back strain (resolved, different body part; Dr. Patel 0055) and the 43-day gap (childcare 0038; continuing symptoms 0060) truthfully. No “never had neck or back problems”.",
+   "Demand $85,000.00 with 30 days to respond, as Attorney Bennett instructed; signed by the attorney; exhibits listed; no opinions about value or the law of its own."
+  ],
+  "5": [
+   "Exhibit index in the LSH standard order: A police report; B photos; C medical summary and chronology; D itemized medical specials; E medical records and bills by provider in date order (WHITFIELD 0001–0066, then the bills); F wage verification; G client impact statement. Ranges and page counts correct; no duplicate or unrelated records.",
+   "07 Demand Packet holds shortcuts named Ex. A … Ex. G in order.",
+   "The two 11/04/2026 Keystone letters filed in 08 Correspondence with the naming convention.",
+   "Reply draft answers each of Keystone's five arguments with the record: the 43-day gap (childcare 0038; continuing symptoms 0060); the 2025 low back history (resolved, different body part, Dr. Patel 0055); “excessive” chiropractic (plan 3x/week for 8 weeks, 0012–0015; discharged improved, 0038); paid-not-billed (the attorney's legal question; both columns on the itemization); “speculative” future injections (Dr. Patel's MMI note, 0057; the first ESI took pain from 6/10 to 2/10, 0064–0066).",
+   "Leaves the $18,500.00 offer, any counter and the scope of the 5-year prior-records request to Attorney Bennett, with the facts she needs."
+  ]
+ }
+}

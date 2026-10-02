@@ -148,11 +148,15 @@ rep_re(r'<script src="/js/cm-mindset\.js[^"]*"></script>\n?', '', min_count=0)
 rep_re(r'<script src="/js/cm-updates\.js\?v=[^"]*"></script>',
        "".join(f'<script src="js/slide-scripts/day{n}.js?v=2"></script>\n' for n in range(1, 6)) +
        "".join(f'<script src="js/slide-scripts/canva-day{n}.js?v=1"></script>\n' for n in range(1, 6)) +
-       '<script src="js/md-canva-decks.js?v=1"></script>\n<script src="js/md-updates.js?v=4"></script>')
+       '<script src="js/md-canva-decks.js?v=1"></script>\n<script src="js/md-updates.js?v=5"></script>')
 rep_re(r'<script src="/js/cm-documents\.js\?v=[^"]*"></script>', '<script src="js/md-documents.js?v=2"></script>')
 rep_re(r'<script src="/js/cm-skillbuilders\.js\?v=[^"]*"></script>', '<script src="js/md-skillbuilders.js?v=2"></script>')
 rep_re(r'<script src="/js/cm-practice\.js\?v=[^"]*"></script>', '<script src="js/md-practice.js?v=1"></script>')
-rep_re(r'<script src="/js/daily-activities\.js\?v=[^"]*"></script>', '<script src="js/daily-activities.js?v=1"></script>\n<script src="js/md-canva.js?v=1"></script>')   # the Canva decks as the day's slides (last: it wraps other functions)
+rep_re(r'<script src="/js/daily-activities\.js\?v=[^"]*"></script>', '<script src="js/daily-activities.js?v=1"></script>\n<script src="js/md-workspace.js?v=1"></script>\n<script src="js/md-canva.js?v=1"></script>')   # the Canva decks as the day's slides (last: it wraps other functions)
+# 🗂 Case Workspace (js/md-workspace.js): each trainee's own Google Drive copy of the case file.
+rep('  else if(state.view==="activities") body = typeof renderActivitiesPage==="function" ? renderActivitiesPage() : "";',
+    '  else if(state.view==="activities") body = typeof renderActivitiesPage==="function" ? renderActivitiesPage() : "";\n'
+    '  else if(state.view==="workspace") body = typeof renderCaseWorkspace==="function" ? renderCaseWorkspace() : "";')
 s = re.sub(r'var APP_BUILD = "md-[^"]*";', f'var APP_BUILD = "md-{datetime.date.today().isoformat().replace("-", ".")}-a";', s, count=1)
 
 open(OUT, "w", encoding="utf8").write(s)

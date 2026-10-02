@@ -1,8 +1,8 @@
 // Course data checks (run by .github/workflows/checks.yml).
 // Every case document and handout the portal links to must exist in documents/,
 // document ids must be unique, every document packet a Skill Builder opens
-// must point at a real document, every lesson has its Presenter view script, and every
-// Canva deck page has its image and its script.
+// must point at a real document, every lesson has its Presenter view script, every
+// Canva deck page has its image and its script, and the Case Workspace files match their answer key.
 import fs from 'fs';
 import path from 'path';
 import vm from 'vm';
@@ -86,6 +86,35 @@ for (let n = 1; n <= 5; n++) {
     for (const k of Object.keys(CV_SCRIPTS).filter(k => k.startsWith(n + ':'))) if (+k.split(':')[1] > deck.pages.length) problems.push(`js/slide-scripts/canva-day${n}.js: "${k}" is past the deck's last page`);
 }
 
-console.log(`Checked ${MD_DOCS.length} documents, ${MD_HANDOUTS.length} handouts, ${scripted} lesson speaker scripts and ${canvaPages} Canva slides.`);
+// The Case Workspace (build/workspace, /api/workspace/* in worker.js): every file the Apps Script setup imports
+// exists, the answer key covers the same files, the records' page counts match their PDFs and run
+// WHITFIELD 0001–0066 without a gap, and the answer key stays out of the public site.
+const WS_MAN = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace/manifest.json'), 'utf8'));
+const WS_KEY = JSON.parse(fs.readFileSync(path.join(ROOT, 'build/workspace/answer_key.json'), 'utf8'));
+const manByName = new Map(WS_MAN.files.map(f => [f.name, f]));
+for (const f of WS_MAN.files) {
+    if (!/^workspace\/files\/f\d\d\.pdf$/.test(f.url)) problems.push(`Case Workspace: "${f.name}" should be served under a neutral name (workspace/files/fNN.pdf), not ${f.url}`);
+    else if (!fs.existsSync(path.join(ROOT, f.url))) problems.push(`Case Workspace: ${f.url} ("${f.name}") is missing`);
+    if (Object.keys(f).some(k => !['folder', 'name', 'url'].includes(k))) problems.push(`Case Workspace: workspace/manifest.json gives away more than folder, name and url for "${f.name}"`);
+}
+let wsPages = 0; const bates = [];
+for (const f of WS_KEY.files) {
+    const m = manByName.get(f.name);
+    if (!m) { problems.push(`Case Workspace answer key: "${f.name}" isn't in workspace/manifest.json`); continue; }
+    if (m.url !== f.file || m.folder !== f.drive) problems.push(`Case Workspace answer key: "${f.name}" doesn't match its manifest entry`);
+    if (!f.bates) continue;
+    const pdf = fs.existsSync(path.join(ROOT, f.file)) ? fs.readFileSync(path.join(ROOT, f.file), 'latin1') : '';
+    const n = (pdf.match(/\/Type\s*\/Page[^s]/g) || []).length, r = f.bates.match(/WHITFIELD (\d{4})–(\d{4})/);
+    if (n !== f.pages) problems.push(`Case Workspace: "${f.name}" has ${n} pages; the answer key says ${f.pages}`);
+    if (!r || +r[2] - +r[1] + 1 !== f.pages) problems.push(`Case Workspace: "${f.name}" is ${f.bates}, which isn't ${f.pages} pages`);
+    else bates.push([+r[1], +r[2]]);
+    wsPages += f.pages || 0;
+}
+bates.sort((a, b) => a[0] - b[0]).forEach(([a], i) => { if (a !== (i ? bates[i - 1][1] + 1 : 1)) problems.push(`Case Workspace: the records' Bates ranges have a gap or overlap at WHITFIELD ${String(a).padStart(4, '0')}`); });
+if (wsPages !== 66) problems.push(`Case Workspace: the medical records add up to ${wsPages} pages, not WHITFIELD 0001–0066`);
+for (const n of ['1', '2', '3', '4', '5']) if (!(WS_KEY.rubric[n] || []).length) problems.push(`Case Workspace: no expected results for Day ${n} in the answer key`);
+if (!/^build\/?$/m.test(fs.readFileSync(path.join(ROOT, '.assetsignore'), 'utf8'))) problems.push('.assetsignore must keep build/ (the Case Workspace answer key) off the public site');
+
+console.log(`Checked ${MD_DOCS.length} documents, ${MD_HANDOUTS.length} handouts, ${scripted} lesson speaker scripts, ${canvaPages} Canva slides and ${WS_MAN.files.length} Case Workspace files.`);
 if (problems.length) { console.log(`\n${problems.length} problem(s):\n`); problems.forEach((p, i) => console.log(`${i + 1}. ${p}`)); process.exit(1); }
 console.log('All good.');

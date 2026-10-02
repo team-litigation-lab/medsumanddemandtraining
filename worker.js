@@ -12,10 +12,16 @@
  *                        into SECURE MODE: every storage and AI request must carry
  *                        a signed session token.
  *   SESSION_SECRET     — optional; signs session tokens (defaults to ADMIN_PASSPHRASE)
+ *   WORKSPACE_URL      — the Case Workspace Apps Script web app (…/exec) that copies each trainee's
+ *                        Google Drive case folder (build/workspace/apps-script, SETUP.md)
+ *   WORKSPACE_SECRET   — the secret setup() printed in that script
+ *   WORKSPACE_DOMAIN   — optional, default "legalsupporthelp.com": the trainees' Google accounts
  *
  * Without ADMIN_PASSPHRASE the Worker runs in the old open mode so nothing breaks
  * before you've configured it (the Admin screen shows a warning).
  */
+import WS_KEY from "./build/workspace/answer_key.json" with { type: "json" };
+
 /* ---------- KV with the "md:" namespace prefix ---------- */
 const KV_PREFIX = "md:";
 function kvOf(env) {
@@ -81,7 +87,7 @@ function candidateIds(name, batch) {
 // Daily Activities: activities:dayN and their attachments (actfile:*) are published by admins for everyone;
 // settings:feedback-style is the facilitator voice the portal's AI feedback is written in.
 const PUBLIC_READ = [/^blueprint:meta$/, /^settings:(feedback|certificate|cms|tools|feedback-style)$/, /^activities:day\d+$/, /^actfile:[a-z0-9]{1,40}$/, /^surprise-task-day\d+$/, /^extralessons:day\d+$/, /^lessonx:day\d+$/, /^extraquiz:day\d+$/, /^handouts:links$/];
-const OWN = (id) => [`trainee:${id}`, `progress:${id}`, `feedback:${id}`, `focus:${id}`, `actsub:${id}`];
+const OWN = (id) => [`trainee:${id}`, `progress:${id}`, `feedback:${id}`, `focus:${id}`, `actsub:${id}`, `workspace:${id}`, `wsreview:${id}`];
 const PROTECTED_TRAINEE_FIELDS = ["approved", "rejected", "archived", "labAttemptsResetAt", "certTrainer", "aiReview", "flaggedInvalidInput", "assignedRoleplay", "registeredAt"];
 
 function canRead(tok, key) {
@@ -204,6 +210,100 @@ async function callGemini(env, rawBody) {
   return json({ error: { message: (status === 502 && /API key/i.test(last.msg) ? "invalid x-api-key (Gemini): " : status === 429 ? "rate limit (Gemini free tier): " : "") + last.msg } }, status);
 }
 
+/* ---------- Case Workspace ----------
+   Each trainee works on the Dana Whitfield file in their own Google Drive folder, a copy of the master
+   case folder owned by the firm's account, so trainers can see how it was arranged and built.
+   The Apps Script bridge (WORKSPACE_URL) does the Drive work; this Worker checks who is asking,
+   keeps the record (workspace:<id>) and writes the AI pre-review (wsreview:<id>). Trainees can read
+   both but can't write them. */
+const WS_DAYS = {
+  1: { title: "Organize the file", roles: ["audit"], tree: true, task: "Sort every file from 01 Incoming into the right 02 Case File subfolder, rename each with the LSH convention (YYYY-MM-DD Source – Document; records with their Bates range first), put the medical records in Bates order WHITFIELD 0001 onward, move the duplicate to 09 Duplicates & not used, and record every problem in the Day 1 File Audit." },
+  2: { title: "Medical chronology and medical summary", roles: ["chronology", "medsum"], task: "Build the medical chronology (one row per encounter, date order, provider's words, Bates cite, flags) and write the medical summary (six sections, neutral, a Bates cite for every statement)." },
+  3: { title: "Bills itemization", roles: ["itemization"], task: "Build the bills itemization: related charges only, billed, adjustments, payments by payer, balance and source; exclusions with reasons; balances and liens." },
+  4: { title: "The demand letter", roles: ["demand"], task: "Draft the demand letter to Tom Reyes at Keystone on the LSH structure, using $85,000.00 with 30 days to respond (Attorney Bennett's instruction), addressing the 2025 low back strain and the gap in treatment, with exhibit and Bates cites for every fact." },
+  5: { title: "The packet and the response", roles: ["exhibits", "reply"], tree: true, task: "Build the exhibit index (LSH standard order A–G), add exhibit shortcuts to 07 Demand Packet, file Keystone's 11/04/2026 letters in 08 Correspondence, and draft the reply to Keystone with record cites, leaving the offer, any counter and the records-request scope to the attorney." },
+};
+async function bridge(env, action, payload) {
+  if (!env.WORKSPACE_URL || !env.WORKSPACE_SECRET) throw Object.assign(new Error("The Case Workspace isn't connected yet: add WORKSPACE_URL and WORKSPACE_SECRET to this Worker (see build/workspace/apps-script/SETUP.md)."), { status: 501 });
+  const r = await fetch(env.WORKSPACE_URL, { method: "POST", redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(Object.assign({ secret: env.WORKSPACE_SECRET, action }, payload || {})) });
+  const text = await r.text();
+  let data; try { data = JSON.parse(text); } catch (e) { throw Object.assign(new Error("The Case Workspace script didn't answer as expected (is it deployed for “Anyone”?)."), { status: 502 }); }
+  if (data.error) throw Object.assign(new Error(data.error), { status: 400 });
+  return data;
+}
+function wsTreeText(tree) {
+  return (tree.items || []).map((x) => `${x.path || "(top)"} / ${x.name}${x.orig && x.orig !== x.name ? ` (arrived as “${x.orig}”)` : ""}${x.type === "shortcut" ? ` → shortcut to: ${x.target}` : ""}`).join("\n");
+}
+async function wsReview(env, kv, traineeId, day) {
+  const spec = WS_DAYS[day]; if (!spec) throw Object.assign(new Error("Unknown day"), { status: 400 });
+  const exp = await bridge(env, "export", { traineeId, roles: spec.roles });
+  const tree = spec.tree ? await bridge(env, "inspect", { traineeId }) : null;
+  const docs = Object.entries(exp.docs || {}).map(([role, d]) => `=== ${d.name || role} (last changed ${d.updated || "?"}) ===\n${d.text || d.error || ""}`).join("\n\n");
+  const filesKey = day === 1 ? "\n\nWhat each incoming file is (answer key):\n" + WS_KEY.files.map((f) => `- ${f.name}: ${f.is || ""} belongs in ${f.belongs || "09 Duplicates & not used"}${f.bates ? `, ${f.bates}` : ""}`).join("\n") : "";
+  const system = "You review a trainee Demand Specialist's work at a personal-injury law firm (training simulation, fictional case). Be specific, fair and brief. Score against the expected results only; quote the trainee's own words when pointing out an error. Never invent facts. Reply with JSON only.";
+  const prompt = `DAY ${day} — ${spec.title}\nTask: ${spec.task}\n\nExpected results (answer key):\n- ${(WS_KEY.rubric[String(day)] || []).join("\n- ")}${filesKey}\n\n` +
+    (tree ? `The trainee's folder now (path / file name):\n${wsTreeText(tree)}\n\n` : "") +
+    `The trainee's documents:\n${docs || "(empty)"}\n\n` +
+    `Return JSON: {"score": 0-100, "verdict": "one sentence", "strengths": ["…"], "fixes": [{"what": "…", "where": "file/section/row"}], "checks": [{"item": "short expected result", "ok": true|false}]}. ` +
+    `Score 0 if the work is empty or still the template. Cap at 60 if a core figure, date or Bates cite is wrong. Keep each list to 6 items or fewer.`;
+  const res = await callGemini(env, JSON.stringify({ system, messages: [{ role: "user", content: prompt }], max_tokens: 1500 }));
+  const data = await res.json();
+  if (!res.ok) throw Object.assign(new Error((data.error && data.error.message) || "AI review failed"), { status: 502 });
+  const txt = (data.content || []).map((c) => c.text || "").join("");
+  let out; try { out = JSON.parse(txt.replace(/^[^{]*/, "").replace(/[^}]*$/, "")); } catch (e) { out = { score: null, verdict: txt.slice(0, 400), strengths: [], fixes: [], checks: [] }; }
+  const review = { score: typeof out.score === "number" ? Math.max(0, Math.min(100, Math.round(out.score))) : null, verdict: String(out.verdict || ""), strengths: (out.strengths || []).slice(0, 6), fixes: (out.fixes || []).slice(0, 6), checks: (out.checks || []).slice(0, 10), at: new Date().toISOString(), model: data.model || "" };
+  const cur = JSON.parse((await kv.get(`wsreview:${traineeId}`)) || '{"days":{}}');
+  cur.days[day] = review;
+  await kv.put(`wsreview:${traineeId}`, JSON.stringify(cur));
+  return review;
+}
+async function workspaceApi(env, kv, tok, path, body) {
+  try {
+    const isAdmin = tok.role === "a";
+    const id = isAdmin && body.traineeId ? String(body.traineeId) : tok.id;
+    const read = async (k) => JSON.parse((await kv.get(k)) || "null");
+    if (path === "/api/workspace/status") {
+      if (isAdmin && !body.traineeId) {
+        const out = [];
+        for (const k of await listAll(env, "workspace:")) { const tid = k.slice(10); out.push({ ws: await read(k), review: await read(`wsreview:${tid}`), trainee: await read(`trainee:${tid}`) }); }
+        // Trainers also get the answer key (never sent to trainees).
+        return json({ connected: !!(env.WORKSPACE_URL && env.WORKSPACE_SECRET), days: WS_DAYS, key: { rubric: WS_KEY.rubric, files: WS_KEY.files.map((f) => ({ name: f.name, is: f.is, belongs: f.belongs || "09 Duplicates & not used", bates: f.bates || "" })) }, workspaces: out });
+      }
+      return json({ connected: !!(env.WORKSPACE_URL && env.WORKSPACE_SECRET), domain: env.WORKSPACE_DOMAIN || "legalsupporthelp.com", days: WS_DAYS, ws: await read(`workspace:${id}`), review: await read(`wsreview:${id}`) });
+    }
+    if (path === "/api/workspace/provision") {
+      const domain = (env.WORKSPACE_DOMAIN || "legalsupporthelp.com").toLowerCase();
+      const email = String(body.email || "").trim().toLowerCase();
+      if (!email.endsWith("@" + domain) || !/^[^@\s]+@[^@\s]+$/.test(email)) return json({ error: `Use your @${domain} Google account.` }, 400);
+      const tr = await read(`trainee:${id}`);
+      if (!isAdmin && !(tr && tr.approved === true)) return json({ error: "Your trainer needs to approve your account first." }, 403);
+      const ws = await bridge(env, "provision", { traineeId: id, email, name: (tr && tr.name) || id, batch: (tr && tr.batch) || "" });
+      const prev = (await read(`workspace:${id}`)) || {};
+      const rec = Object.assign({}, prev, ws, { traineeId: id, provisionedAt: prev.provisionedAt || new Date().toISOString(), submissions: prev.submissions || {} });
+      await kv.put(`workspace:${id}`, JSON.stringify(rec));
+      return json({ ws: rec });
+    }
+    if (path === "/api/workspace/inspect") return json(await bridge(env, "inspect", { traineeId: id }));
+    if (path === "/api/workspace/submit" || path === "/api/workspace/review") {
+      const day = Number(body.day);
+      if (!WS_DAYS[day]) return json({ error: "Unknown day" }, 400);
+      if (path === "/api/workspace/review" && !isAdmin) return json({ error: "Not allowed" }, 403);
+      const rec = await read(`workspace:${id}`);
+      if (!rec) return json({ error: "Create the case folder first." }, 400);
+      if (path === "/api/workspace/submit") {
+        rec.submissions = rec.submissions || {};
+        rec.submissions[day] = { at: new Date().toISOString(), count: ((rec.submissions[day] || {}).count || 0) + 1 };
+        await kv.put(`workspace:${id}`, JSON.stringify(rec));
+      }
+      if (!env.GEMINI_API_KEY) return json({ ws: rec, review: null, note: "Submitted. (No AI key on this Worker, so there's no pre-review; your trainer will review it.)" });
+      return json({ ws: rec, review: await wsReview(env, kv, id, day) });
+    }
+    return json({ error: "Unknown endpoint" }, 404);
+  } catch (e) {
+    return json({ error: String((e && e.message) || e) }, (e && e.status) || 500);
+  }
+}
+
 async function listAll(env, prefix) {
   const kv = kvOf(env);
   const keys = []; let cursor;
@@ -297,6 +397,9 @@ export default {
         }
         return json({ batch: me ? me.batch : "", trainees: out });
       }
+
+      /* ---------- Case Workspace (Google Drive, through the Apps Script bridge) ---------- */
+      if (path.startsWith("/api/workspace/")) return await workspaceApi(env, kv, tok, path, await request.json().catch(() => ({})));
 
       /* ---------- storage ---------- */
       const body = await request.json().catch(() => ({}));

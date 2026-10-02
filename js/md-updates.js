@@ -201,11 +201,11 @@ function narratorAfterRender(pageOnly){
 }
 // Skill Builders, Simulators, Tools and Roleplay all live under 🧪 Practice (js/md-practice.js).
 const PRACTICE_SUBVIEWS = ["tool","calls","tools","crisisroleplay"];
-window.EXTRA_ROUTE_VIEWS = ["casedocs"];   // course-only page gets its own address (#/casedocs)
+window.EXTRA_ROUTE_VIEWS = ["casedocs","workspace"];   // course-only pages get their own address (#/casedocs, #/workspace)
 // Page names for the "← Back to …" button, matching this top bar.
-window.EXTRA_ROUTE_LABELS = {clientprofile:"Case File", casedocs:"Documents", practice:"Practice", notes:"Notes"};
+window.EXTRA_ROUTE_LABELS = {clientprofile:"Case File", casedocs:"Documents", workspace:"Workspace", practice:"Practice", notes:"Notes"};
 function renderTopbar(){
-  let views = [["dashboard","Dashboard"],["tasks","🎲 Tasks"],["clientprofile","Case File"],["casedocs","📁 Documents"],["practice","🧪 Practice"],["activities","📋 Activities"],["notes","Notes"],["handouts","Handouts"]];
+  let views = [["dashboard","Dashboard"],["tasks","🎲 Tasks"],["clientprofile","Case File"],["casedocs","📁 Documents"],["workspace","🗂 Workspace"],["practice","🧪 Practice"],["activities","📋 Activities"],["notes","Notes"],["handouts","Handouts"]];
   if(state.isAdmin){
     // Admin is a trainer monitoring dashboard, not a trainee workspace — hide
     // the trainee-facing-only views that have no role here.

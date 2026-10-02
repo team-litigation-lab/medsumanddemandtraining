@@ -7890,6 +7890,7 @@ function render(){
   else if(state.view==="tools"||state.view==="cms") body=renderTrainingTools();
   else if(state.view==="calls") body=renderCallSimulator();
   else if(state.view==="activities") body = typeof renderActivitiesPage==="function" ? renderActivitiesPage() : "";
+  else if(state.view==="workspace") body = typeof renderCaseWorkspace==="function" ? renderCaseWorkspace() : "";
   else if(state.view==="orientation") body = state.isAdmin ? renderOrientation() : renderDashboard();
   const presenterView = false;   // the presenter now lives inside the lesson stage
   app.innerHTML = renderTopbar() + `<main class="${state.view==="dashboard"?"main-dash":""}${presenterView?" has-presenter":""}"><div id="navBackSlot"></div>${body}</main>` + (presenterView ? `<img class="slide-presenter" src="${PRESENTER_IMG}" alt="" aria-hidden="true">` : "")
@@ -17657,7 +17658,7 @@ window.downloadProjectCompliance6Pdf = downloadProjectCompliance6Pdf;
    that was clicked, and any failure is shown on screen instead of
    disappearing silently in the browser console.
    ============================================================ */
-var APP_BUILD = "md-2026.09.29-a";
+var APP_BUILD = "md-2026.10.02-a";
 console.info("LSH EA/PA portal build", APP_BUILD);
 let busyDepth = 0;
 function showActionError(e, label){
@@ -17711,11 +17712,12 @@ window.addEventListener("error", (ev)=>{ if(state.isAdmin && ev && ev.message &&
 <script src="js/slide-scripts/canva-day4.js?v=1"></script>
 <script src="js/slide-scripts/canva-day5.js?v=1"></script>
 <script src="js/md-canva-decks.js?v=1"></script>
-<script src="js/md-updates.js?v=4"></script>
+<script src="js/md-updates.js?v=5"></script>
 <script src="js/md-documents.js?v=2"></script>
 <script src="js/md-skillbuilders.js?v=2"></script>
 <script src="js/md-practice.js?v=1"></script>
 <script src="js/daily-activities.js?v=1"></script>
+<script src="js/md-workspace.js?v=1"></script>
 <script src="js/md-canva.js?v=1"></script>
 </body>
 </html>
