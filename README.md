@@ -92,7 +92,7 @@ node build/canva/capture.cjs "<the deck's view link>" /tmp/dayN  # every page as
 node build/canva/to-webp.cjs /tmp/dayN slides/dayN 0.82 N        # → slides/dayN/NN.webp (N: apply redact.json)
 ```
 
-Pass the day number as a 4th argument to `to-webp.cjs` (for example `… slides/day1 0.82 1`) to apply `build/canva/redact.json`.
+`to-webp.cjs` blurs the areas listed in `build/canva/redact.json` for that day. The day is the 4th argument, or the N in `slides/dayN` when it's left out, so the blur is never skipped.
 
 **Privacy blur:** the Day 1 sample-template pages (13–15) show real demand letters, so their document areas are blurred and marked "Client details blurred for privacy".
 
@@ -130,18 +130,25 @@ file and how they build the demand, not only their quiz scores.
 - **The case folder.** Each trainee gets their own copy of the master case folder in the firm's Google Drive
   (team-litigation@legalsupporthelp.com), shared with their @legalsupporthelp.com account only. They can't
   share it onward. It holds:
-  - `01 Incoming — unsorted`: 27 PDFs as they reach the firm (fax headers, unhelpful names, out of order, one
+  - `01 Incoming — unsorted`: 26 PDFs as they reach the firm (fax headers, unhelpful names, out of order, one
     duplicate fax). The records are unstamped and add up to WHITFIELD 0001–0066.
   - `02 Case File`: nine empty subfolders to sort into.
   - `03 Work Product`: Google Docs for the Day 1 File Audit, the medical summary, the demand letter, the exhibit
     index and the reply to Keystone, and Google Sheets for the chronology and the itemization.
-  - `04 Received after the demand`: Keystone's two letters for Day 5.
+  - `04 Received Wednesday — open on Day 3`: Bayside's itemized bill, which trainees find they need to request
+    on Day 1.
+  - `05 Received after the demand — open on Day 5`: Keystone's two letters.
 - **In the portal** (🗂 Workspace in the top bar):
   - A trainee creates their folder there, opens it, and submits each day's work.
-  - Submitting reads their Docs and Sheets, plus the folder tree on Days 1 and 5, and returns an AI pre-review
-    scored against the answer key.
+  - Submitting reads their Docs and Sheets, plus the folder tree on Days 1, 3 and 5, and returns an AI pre-review
+    scored against the answer key. The review says what to check and where, without giving the answers. A trainee
+    can submit again after two minutes, with up to 10 AI reviews per day; after that, the trainer reviews.
+  - The workspace only runs in secure mode (with an admin password on the Worker). A trainee can't change the
+    Google account their folder is shared with; a trainer can.
   - Trainers see every trainee's folder as it is now. Each file shows the name it arrived with and a ✓ or ✗
-    against where it belongs. Trainers can also re-run a review and read the answer key.
+    against where it belongs, and any received file that's missing. Trainers can also re-run a review, change
+    a trainee's Google account, **Start over** (the folder goes to the Drive trash and the trainee makes a fresh
+    one), and read the answer key.
 - **How it fits together:**
   - `js/md-workspace.js` is the page.
   - `worker.js` (`/api/workspace/*`) checks who is asking, keeps the record (`workspace:<id>`,
@@ -183,6 +190,10 @@ python3 build/build.py ../Case-Management-Training/index.html      # path to the
 ```
 
 `build.py` rewords the CM page for this course, then inserts the content from `build/`. Every edit checks that its anchor exists, so the script stops with an error if the CM page changed that part. When that happens, update the anchor in `build.py` and run it again.
+
+`index.html` has also been edited directly since it was last generated (shared scripts and engine changes from other
+LSH courses). A rebuild keeps every script tag the committed page has, and prints how many other lines differ: check
+those with `git diff` and carry them over before committing.
 
 Carry new features by hand:
 
@@ -243,7 +254,7 @@ The smoke and requests tests need Playwright.
    - `ADMIN_PASSPHRASE`: admin sign-in; turns on secure mode.
    - `GEMINI_API_KEY`: AI grading and roleplays. The name must be exactly this.
    - `SESSION_SECRET`: optional.
-   - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). `WORKSPACE_DOMAIN` is optional (default `legalsupporthelp.com`).
+   - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). The trainees' Google domain is `WS_DOMAIN` in `worker.js` and `CONFIG.DOMAIN` in `Code.gs`; change both together.
 4. **Training Portal (optional):**
    - To have the Training Portal's **Progress & Feedback** page list this course's trainees, add the program to `PROGRAMS` in the portal's `functions/api/program-progress.js` with key prefix `md:`, 5 days and the course address.
    - The shared Call Simulator has no Medsum & Demand call pack yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once a pack exists.

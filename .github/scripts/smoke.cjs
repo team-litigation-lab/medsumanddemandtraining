@@ -63,6 +63,8 @@ const IGNORE = /Failed to load resource|ERR_|net::|favicon/;
                 state.isAdmin = admin; goto('workspace'); await sleep(700);
                 const t = (document.querySelector('main') || {}).innerText || '';
                 if (!/Case Workspace/.test(t) || !(admin ? /Not connected yet/ : /isn't switched on yet/).test(t)) errs.push(`Case Workspace (${admin ? 'trainer' : 'trainee'} view) didn't render its not-connected state`);
+                const ws = window.MD_WS && MD_WS.data;   // the status call must answer (open mode: not connected, with the five days)
+                if (!ws || ws.unreachable || Object.keys(ws.days || {}).length !== 5) errs.push(`Case Workspace (${admin ? 'trainer' : 'trainee'} view): /api/workspace/status didn't answer properly (${MD_WS.err || 'no days'})`);
             }
             state.isAdmin = true;
             for (const t of (typeof PRACTICE_TOOLS !== 'undefined' ? PRACTICE_TOOLS : [])) {

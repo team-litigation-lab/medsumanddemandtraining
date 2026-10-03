@@ -59,7 +59,8 @@
       if(!p) return "";
       // load the next page ahead, so Next is instant
       const nx = deck.pages[slide.page+1]; if(nx){ const im = new Image(); im.decoding = "async"; im.src = nx.img; }
-      const alt = (p.title + ". " + String(p.text||"").replace(/\s+/g," ")).slice(0, 900);
+      const body = String(p.text||"").replace(/\s+/g," ").trim();
+      const alt = (body.toLowerCase().startsWith(String(p.title||"").toLowerCase()) ? body : `${p.title}. ${body}`).slice(0, 900);
       return `<div class="canva-slide"><img src="${E(p.img)}" alt="${E(alt)}" width="1600" height="900" decoding="async" draggable="false"><span class="cv-tag">${slide.page+1} / ${deck.pages.length}</span></div>`;
     }
     if(slide && slide.type==="applyCase"){
@@ -70,6 +71,24 @@
     }
     return baseContent(d, slide, idx);
   };
+
+  // What the trainer says on the "Apply it" slide (Presenter view and the Speaker Notes PDF).
+  const APPLY_SCRIPT = {
+    say: `That's the deck. Now let's take the same skills and use them on a real file: Dana Whitfield's, the case you'll work in today's Skill Builder. We'll go topic by topic, and every example comes straight from her records.`,
+    ask: `Before we start, which idea from the deck do you think will be hardest to apply to a real file?`};
+
+  /* ---------- ▶ Listen / 🎧 Audio mode: a Canva page is an image, so read its script, not the page counter ---------- */
+  if(typeof Narrator !== "undefined" && typeof Narrator.slideText === "function"){
+    const baseText = Narrator.slideText;
+    Narrator.slideText = function(){
+      if(state.view === "day" && document.querySelector("#lessonSlideWrap .canva-slide")){
+        const d = DAYS.find(x=>x.id===state.dayId), sl = d && buildDaySlides(d)[state.lessonSlide||0];
+        const p = sl && sl.type === "canva" && (deckFor(d.id)||{pages:[]}).pages[sl.page];
+        if(p){ const sc = scriptFor(d.id, sl.page+1); return [p.title, (sc && sc.say) || String(p.text||"").replace(/\s+/g," ")].filter(Boolean).join(". "); }
+      }
+      return baseText.apply(this, arguments);
+    };
+  }
 
   /* ---------- Presenter view: the page's spoken script ---------- */
   const scriptBlock = (where, s, fallbackText)=>{
@@ -87,9 +106,7 @@
         scriptBlock(` · Canva slide ${slide.page+1} of ${deck.pages.length}`, scriptFor(d.id, slide.page+1), p.text);
     }
     if(slide && slide.type==="applyCase"){
-      return `<h3>Apply it to Dana Whitfield's file</h3>` + scriptBlock("", {
-        say: `That's the deck. Now let's take the same skills and use them on a real file: Dana Whitfield's, the case you'll work in today's Skill Builder. We'll go topic by topic, and every example comes straight from her records.`,
-        ask: `Before we start, which idea from the deck do you think will be hardest to apply to a real file?`}, "");
+      return `<h3>Apply it to Dana Whitfield's file</h3>` + scriptBlock("", APPLY_SCRIPT, "");
     }
     return baseCues(d, slide);
   };
@@ -107,7 +124,7 @@
       if(s && s.ask) add.push(`ASK: ${s.ask}`);
       add.push("---");
     });
-    add.push(`## Apply it to Dana Whitfield's file`);
+    add.push(`## Apply it to Dana Whitfield's file`, APPLY_SCRIPT.say, `ASK: ${APPLY_SCRIPT.ask}`, "---");
     return [lines[0], ...add, ...lines.slice(1)];
   };
 

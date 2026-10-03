@@ -100,7 +100,7 @@ def harbor_2026():
     v, neck, lbp = md.VISITS, md.NECK, md.LBP
 
     def note(i, long=True):
-        t = "CMT 98941, therapeutic exercise 97110" + (", soft tissue 97140" if i < 6 else "")
+        t = "CMT 98941, therapeutic exercise 97110, soft tissue 97140"
         s = f"<p><b>S:</b> neck {neck[i]}/10, low back {lbp[i]}/10. " + ("Still stiff in the mornings; headaches less frequent." if i < 10 else "Better overall; tingling in the R arm after long computer days.") + "</p>"
         o = "<p><b>O:</b> " + ("TTP C5–C7 paraspinals, R upper trapezius; cervical ROM reduced." if i < 7 else "Mild TTP C5–C6; cervical ROM improving.") + "</p>"
         a = "<p><b>A:</b> cervical and lumbar sprain/strain, improving.</p>"
@@ -152,7 +152,7 @@ def summit():
         "<h2>Consent to Evaluate and Treat</h2><p>I consent to evaluation and treatment by Summit Orthopedic Associates.</p><div class=\"sigline\">Dana Whitfield · 04/20/2026</div>",
         "<h2>Notice of Privacy Practices — Acknowledgment</h2><p>I acknowledge receiving the Notice of Privacy Practices.</p><div class=\"sigline\">Dana Whitfield · 04/20/2026</div>",
         "<h2>Financial Policy</h2><p>Copays are due at the time of service. Your insurance plan is billed for covered services.</p><div class=\"sigline\">Dana Whitfield · 04/20/2026</div>",
-        "<h2>Insurance Card (copy)</h2><div class=\"box\"><b>BlueHarbor Health — PPO</b><br>Member: Dana Whitfield · ID BHH-448120937 · Group 40917<br>Office copay $50 · Specialist copay $50</div>",
+        "<h2>Insurance Card (copy)</h2><div class=\"box\"><b>BlueHarbor Health — PPO</b><br>Member: Dana Whitfield · ID BHH-448120937 · Group 40917</div>",
     ]
     visit = [
         "<h2>Consultation — 04/20/2026 · Anita Patel, MD</h2><p><b>HPI:</b> 42 y/o F rear-ended 03/14/2026. Neck pain 5/10 radiating to the R arm with tingling in the R thumb and index finger. Chiropractic care 3x/week since 03/17 with partial improvement.</p>",
@@ -215,18 +215,21 @@ OTHERS = [
     ("DW20", "bills/DW_20_Clearview_Imaging_Ledger.html", "Clearview acct ledger.pdf", FAX("09/05/2026 09:12", "Clearview Imaging Billing", "(555) 318-4102"), "05 Medical Bills"),
     ("DW21", "bills/DW_21_Summit_Orthopedic_Ledger.html", "SOA ledger.pdf", FAX("09/08/2026 15:55", "Summit Orthopedic Assoc.", "(555) 318-6651"), "05 Medical Bills"),
     ("DW22", "bills/DW_22_Bayside_Balance_Due_Statement.html", "Bayside stmt 08-28.pdf", None, "05 Medical Bills"),
-    ("DW23", "bills/DW_23_Bayside_Itemized_Bill.html", "Bayside itemized 10-07.pdf", FAX("10/07/2026 10:41", "Bayside Pain Management", "(555) 318-9902"), "05 Medical Bills"),
     ("DW24", "bills/DW_24_Northgate_Family_Practice_Statement.html", "Northgate FP stmt.pdf", None, "05 Medical Bills"),
     ("DW25", "damages/DW_25_Lakeside_USD_Wage_Verification.html", "LUSD wage verif.pdf", None, "06 Wages & Damages"),
     ("DW26", "damages/DW_26_Client_Impact_Statement.html", "Impact statement signed.pdf", None, "06 Wages & Damages"),
+]
+# Wednesday of the training week: the itemized bill requested on Day 1
+WEDNESDAY = [
+    ("DW23", "bills/DW_23_Bayside_Itemized_Bill.html", "Bayside itemized 10-07.pdf", FAX("10/07/2026 10:41", "Bayside Pain Management", "(555) 318-9902"), "05 Medical Bills"),
 ]
 AFTER_DEMAND = [
     ("DW29", "response/DW_29_Keystone_Response_and_Offer.html", "Keystone response 11-04-2026.pdf", None, "08 Correspondence"),
     ("DW30", "response/DW_30_Keystone_Prior_Records_Request.html", "Keystone records request 11-04-2026.pdf", None, "08 Correspondence"),
 ]
-INCOMING, LATER = "01 Incoming — unsorted", "04 Received after the demand — open on Day 5"
+INCOMING, WEDNESDAY_FOLDER, LATER = "01 Incoming — unsorted", "04 Received Wednesday — open on Day 3", "05 Received after the demand — open on Day 5"
 WHAT = {
-    "DW01": "Case handoff memo from Marcus Webb, 10/05/2026", "DW02": "Client intake summary, 03/18/2026 (gives the DOI as 03/15 and no prior injuries)",
+    "DW01": "Case handoff memo from Marcus Webb, 10/05/2026", "DW02": "Client intake summary, 03/18/2026 (gives the DOI as 03/15; prior injuries: “None really, maybe a strain a while back”)",
     "DW03": "Retainer and HIPAA authorization, signed 03/18/2026", "DW04": "Police report LPD-26-031477, 03/14/2026", "DW05": "Photo log, scene and vehicles",
     "DW06": "Keystone liability acceptance, 04/02/2026", "DW07": "Keystone policy limits letter, 07/15/2026", "DW08": "Summit Ridge PIP payment log",
     "DW09": "BlueHarbor Health reimbursement claim notice", "DW10": "Riverside Medical Center ED record, 03/14/2026",
@@ -242,16 +245,17 @@ WHAT = {
 
 
 RUBRIC = {
-    "1": ["Files sorted: intake/retainer/handoff memo → 01 Intake & Retainer; police report and photo log → 02 Police & Liability; Keystone letters, PIP log, BlueHarbor notice → 03 Insurance & Payers; the six record sets → 04 Medical Records; the ten bills, ledgers and statements → 05 Medical Bills; wage verification and impact statement → 06 Wages & Damages; the duplicate MRI fax → 09 Duplicates & not used. 01 Incoming is empty.",
+    "1": ["Files sorted: intake/retainer/handoff memo → 01 Intake & Retainer; police report and photo log → 02 Police & Liability; Keystone letters, PIP log, BlueHarbor notice → 03 Insurance & Payers; the six record sets → 04 Medical Records; the eight bills, ledgers and statements → 05 Medical Bills; wage verification and impact statement → 06 Wages & Damages; the duplicate MRI fax → 09 Duplicates & not used. 01 Incoming is empty; 04 and 05 stay closed until their day.",
           "Names follow YYYY-MM-DD Source – Document, using each document's own date.",
           "Medical records in Bates order with ranges at the front of each name: WHITFIELD 0001-0009 Riverside Medical Center ED (03/14/2026); 0010-0011 Harbor Spine 2025 prior records; 0012-0038 Harbor Spine 2026; 0039-0041 Clearview Imaging MRI; 0042-0059 Summit Orthopedic; 0060-0066 Bayside Pain Management. The duplicate MRI fax gets no Bates numbers.",
-          "Audit catches: the intake gives the DOI as 03/15/2026 but the police report and ED record say 03/14/2026; the intake says no prior injuries but Harbor Spine treated a low back strain 01/08–01/29/2025 (WHITFIELD 0010–0011); the MRI report was faxed twice (keep one); Bayside's 08/28 statement is balance-due only (the itemized bill with CPT codes is the one to use); Clearview's ledger lists the same MRI twice; Harbor Spine's ledger includes 2025 charges; the Northgate 05/02/2026 wellness exam is unrelated; the 43-day gap 05/14 → 06/26/2026 (reasons at WHITFIELD 0038 and 0060).",
+          "Audit catches: the intake gives the DOI as 03/15/2026 but the police report and ED record say 03/14/2026; the intake gives no detail on prior injuries (“None really, maybe a strain a while back”) but Harbor Spine treated a low back strain 01/08–01/29/2025 (WHITFIELD 0010–0011); the MRI report was faxed twice (keep one); Bayside's 08/28 statement is balance-due only, so the itemized bill with CPT codes must be requested; Clearview's ledger lists the same MRI twice; Harbor Spine's ledger includes 2025 charges; the Northgate 05/02/2026 wellness exam is unrelated; the 43-day gap 05/14 → 06/26/2026 (reasons at WHITFIELD 0038 and 0060).",
           "Actions go to the right person: corrections and legal questions to Attorney Bennett, treatment-phase questions to Marcus Webb; nothing is deleted."],
-    "2": ["Chronology: one row per encounter in date order, starting with the 2025 prior visits (WHITFIELD 0010–0011), then ED 03/14/2026 (0001–0009), Harbor Spine 03/17 initial exam (0012–0015), daily visits (0016–0025, 0027–0037), re-evaluation 03/31 with return to work 04/03 (0026), Clearview MRI 03/30 (0039–0041), Summit consult 04/20 (0052–0055) and referral (0059), Harbor Spine discharge 05/14 (0038), Bayside 06/26 (0060–0063), ESI 07/10 (0064–0066), Summit follow-up/MMI 08/21 (0056–0058). Daily visits may be grouped by date range with their page range.",
+    "2": ["Chronology: one row per encounter in date order, starting with the 2025 prior visits (WHITFIELD 0010–0011), then ED 03/14/2026 (0001–0009), Harbor Spine 03/17 initial exam (0012–0015), daily visits (0016–0025, 0027–0037), Clearview MRI 03/30 (0039–0041), re-evaluation 03/31 with return to work 04/03 (0026), Summit consult 04/20 (0052–0055) and referral (0059), Harbor Spine discharge 05/14 (0038), Bayside 06/26 (0060–0063), ESI 07/10 (0064–0066), Summit follow-up/MMI 08/21 (0056–0058). Daily visits may be grouped by date range with their page range.",
           "Provider's words: the MRI is a “3 mm central disc protrusion at C5-6” (0041), never a herniation; Dx C5-6 disc protrusion with right C6 radiculopathy (0055).",
           "Flags: prior injury (0010–0011); gap in treatment 05/14 → 06/26/2026, 43 days, with the reasons (childcare, 0038; continuing and worsening symptoms, 0060); objective findings (MRI 0041; Spurling, reflexes, sensation 0053); causation opinion (0055); procedure (ESI 07/10, 0064–0066); MMI and future care: up to 2 ESIs at $3,900.00 each = $7,800.00 (0057). The Northgate wellness exam is not in the injury chronology.",
           "Medical summary: the six sections (overview, initial treatment, diagnostics, treatment course, prior history and gaps, current status and future care), neutral and factual, a Bates cite for every statement, no opinions on value or causation beyond quoting Dr. Patel."],
-    "3": ["Related lines only, billed amounts: Riverside Medical Center $4,850.00; Riverside Emergency Physicians $1,120.00; Corner Pharmacy $86.40; Harbor Spine 24 visits × $240.00 = $5,760.00; Clearview MRI (CPT 72141) $2,400.00; Summit 04/20 $650.00; Bayside 06/26 $425.00; Bayside ESI 07/10 (CPT 62321) $3,900.00; Summit 08/21 $325.00.",
+    "3": ["Wednesday's Bayside itemized bill (10/07/2026, from 04 Received Wednesday) renamed and filed in 05 Medical Bills; its two lines are on the itemization.",
+          "Related lines only, billed amounts: Riverside Medical Center $4,850.00; Riverside Emergency Physicians $1,120.00; Corner Pharmacy $86.40; Harbor Spine 24 visits × $240.00 = $5,760.00; Clearview MRI (CPT 72141) $2,400.00; Summit 04/20 $650.00; Bayside 06/26 $425.00; Bayside ESI 07/10 (CPT 62321) $3,900.00; Summit 08/21 $325.00.",
           "Totals tie out: billed $19,516.40; adjustments $2,675.00; BlueHarbor paid $2,575.00; PIP paid $2,500.00 (Riverside Emergency Physicians $1,120.00 + Clearview $1,380.00); client paid $661.40; balance $11,105.00.",
           "Exclusions with reasons: Harbor Spine 2025 prior charges $285.00 (before the DOI); Clearview duplicate MRI line $2,400.00 (duplicate); Northgate 05/02/2026 wellness exam $275.00 (unrelated). The all-lines total would be $22,476.40.",
           "Balances & liens: Harbor Spine LOP $5,760.00; Bayside LOP $4,325.00; Clearview balance after PIP $1,020.00; BlueHarbor reimbursement claim $2,575.00 to date (final figure after settlement). PIP has no reimbursement claim under the training state's rule.",
@@ -283,11 +287,13 @@ def main():
         key.append({"id": rid, "name": name, "drive": INCOMING, "file": f"workspace/files/{rid}.pdf", "pages": len(pages),
                     "is": "Duplicate fax of the Clearview MRI report (same 3 pages): keep one copy, don't Bates it twice" if rid.endswith("DUP") else WHAT[rid],
                     "belongs": None if rid.endswith("DUP") else "04 Medical Records", "bates": f"WHITFIELD {bates[0]:04d}–{bates[1]:04d}" if bates else None})
-    for group, folder in ((OTHERS, INCOMING), (AFTER_DEMAND, LATER)):
+    for group, folder in ((OTHERS, INCOMING), (WEDNESDAY, WEDNESDAY_FOLDER), (AFTER_DEMAND, LATER)):
         for rid, src, name, fax, belongs in group:
             html = open(os.path.join(DOCS, src), encoding="utf8").read()
             html = html.replace("</head>", f"<style>{PRINT_CSS}</style></head>")
             html = re.sub(r'href="(\.\./)*doc\.css"', f'href="file://{DOCS}/doc.css"', html)
+            if rid == "DW01":   # the memo, as Marcus wrote it: the records arrive unstamped, so no Bates ranges yet
+                html = re.sub(r"Received — WHITFIELD \d{4}–\d{4}(?:; also \d{4}–\d{4} \(2025\))?", "Received", html)
             path = os.path.join(OUT_HTML, f"{rid}.html")
             open(path, "w", encoding="utf8").write(html)
             jobs.append({"html": path, "pdf": f"workspace/files/{rid}.pdf", "fax": fax})
@@ -302,7 +308,7 @@ def main():
                 "files": sorted(({"folder": k["drive"], "name": k["name"], "url": k["file"]} for k in key), key=lambda x: (x["folder"], x["name"].lower()))}
     os.makedirs(os.path.join(ROOT, "workspace"), exist_ok=True)
     json.dump(manifest, open(os.path.join(ROOT, "workspace", "manifest.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
-    json.dump({"incoming": INCOMING, "later": LATER, "files": key, "rubric": RUBRIC}, open(os.path.join(HERE, "answer_key.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
+    json.dump({"incoming": INCOMING, "wednesday": WEDNESDAY_FOLDER, "later": LATER, "files": key, "rubric": RUBRIC}, open(os.path.join(HERE, "answer_key.json"), "w", encoding="utf8"), ensure_ascii=False, indent=1)
     print(f"{len(jobs)} documents → build/workspace/html/ · answer key: build/workspace/answer_key.json")
 
 

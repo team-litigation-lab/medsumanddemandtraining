@@ -92,6 +92,14 @@ for (let n = 1; n <= 5; n++) {
 const WS_MAN = JSON.parse(fs.readFileSync(path.join(ROOT, 'workspace/manifest.json'), 'utf8'));
 const WS_KEY = JSON.parse(fs.readFileSync(path.join(ROOT, 'build/workspace/answer_key.json'), 'utf8'));
 const manByName = new Map(WS_MAN.files.map(f => [f.name, f]));
+if (manByName.size !== WS_MAN.files.length) problems.push('Case Workspace: two files in workspace/manifest.json have the same name');
+if (new Set(WS_MAN.files.map(f => f.url)).size !== WS_MAN.files.length) problems.push('Case Workspace: two files in workspace/manifest.json share a web address');
+if (WS_MAN.files.length !== WS_KEY.files.length) problems.push(`Case Workspace: the manifest lists ${WS_MAN.files.length} files and the answer key ${WS_KEY.files.length}`);
+// what arrives when: 26 files on Day 1, the itemized bill on Wednesday (Day 3), Keystone's two letters on Day 5
+const perFolder = {}; WS_MAN.files.forEach(f => { perFolder[f.folder] = (perFolder[f.folder] || 0) + 1; });
+for (const [folder, n] of [[WS_KEY.incoming, 26], [WS_KEY.wednesday, 1], [WS_KEY.later, 2]])
+    if (perFolder[folder] !== n) problems.push(`Case Workspace: "${folder}" should hold ${n} file(s), not ${perFolder[folder] || 0}`);
+if (Object.keys(perFolder).length !== 3) problems.push(`Case Workspace: files in unexpected folders: ${Object.keys(perFolder).join(', ')}`);
 for (const f of WS_MAN.files) {
     if (!/^workspace\/files\/f\d\d\.pdf$/.test(f.url)) problems.push(`Case Workspace: "${f.name}" should be served under a neutral name (workspace/files/fNN.pdf), not ${f.url}`);
     else if (!fs.existsSync(path.join(ROOT, f.url))) problems.push(`Case Workspace: ${f.url} ("${f.name}") is missing`);

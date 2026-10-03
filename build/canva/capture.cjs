@@ -1,6 +1,6 @@
 // Capture every page of a Canva "view" link as a 1920x1080 PNG (the viewer's own buttons hidden).
 // usage: node build/canva/capture.cjs <view url> <outDir> [maxPages] [startPage]
-//   then: node build/canva/to-webp.cjs <outDir> slides/dayN 0.82
+//   then: node build/canva/to-webp.cjs <outDir> slides/dayN 0.82 N   (N blurs that day's pages listed in redact.json)
 // Needs Playwright + Chromium that trusts your network's certificates.
 const { chromium } = require('playwright');
 const fs = require('fs');

@@ -1,8 +1,10 @@
 // Convert captured 1920x1080 PNGs to 1600x900 WebP with Chromium's own encoder (no image libraries needed).
-// usage: node build/canva/to-webp.cjs <pngDir> slides/dayN [quality] [day]   (day: apply build/canva/redact.json)
+// usage: node build/canva/to-webp.cjs <pngDir> slides/dayN [quality] [day]
+// The day picks the blur areas in build/canva/redact.json; it defaults to the N in slides/dayN, so the blur is never skipped.
 const { chromium } = require('playwright');
 const fs = require('fs'), path = require('path');
-const [src, out, q, day] = process.argv.slice(2);
+const [src, out, q, dayArg] = process.argv.slice(2);
+const day = dayArg || ((/day(\d)/.exec(out || '') || [])[1]);
 const redact = day ? ((JSON.parse(fs.readFileSync(path.join(__dirname, 'redact.json'), 'utf8')))[day] || {}) : {};
 fs.mkdirSync(out, { recursive: true });
 (async () => {

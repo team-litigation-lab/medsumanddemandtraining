@@ -7,7 +7,9 @@
  *   provision — copy the master case folder for a trainee and share it with their company account
  *   inspect   — list a trainee's folder tree (names, places, last changed)
  *   export    — return the text of a trainee's work product (for the AI pre-review)
- *   list      — every trainee workspace
+ *   reset     — move a trainee's folder to the trash, so they can start again with a fresh copy
+ * Each trainee's record (their folder, the files to review, the name each received file arrived with)
+ * is a small JSON file in "_records", a folder next to the master that only this account uses.
  *
  * One-time setup: see SETUP.md next to this file (paste, run setup(), deploy as a web app).
  */
@@ -35,6 +37,7 @@ const NAVY = '#262B45';
 function setup() {
   const props = PropertiesService.getScriptProperties();
   if (!props.getProperty('SECRET')) props.setProperty('SECRET', Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, ''));
+  recordsFolder_();                                              // made once here, so two first sign-ups can't make two
   const imported = importFiles_();
   const sheets = buildSheets_();
   Logger.log('Imported %s file(s); created %s sheet(s).', imported, sheets);
@@ -115,11 +118,11 @@ function doPost(e) {
     const secret = PropertiesService.getScriptProperties().getProperty('SECRET');
     if (!secret || req.secret !== secret) return out_({ error: 'Not allowed' });
     switch (req.action) {
-      case 'ping': return out_({ ok: true, account: Session.getEffectiveUser().getEmail(), master: DriveApp.getFolderById(CONFIG.MASTER_ID).getName() });
+      case 'ping': return out_({ ok: true, master: DriveApp.getFolderById(CONFIG.MASTER_ID).getName() });
       case 'provision': return out_(provision_(req));
       case 'inspect': return out_(inspect_(req.traineeId));
       case 'export': return out_(exportWork_(req.traineeId, req.roles || []));
-      case 'list': return out_(list_());
+      case 'reset': return out_(reset_(req.traineeId));
       default: return out_({ error: 'Unknown action' });
     }
   } catch (err) {
@@ -129,44 +132,101 @@ function doPost(e) {
 function doGet() { return out_({ ok: true, service: 'LSH Case Workspace bridge' }); }
 function out_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
 
+/* ---------------------------------------------------------------- records (one JSON file per trainee) */
+function recordsFolder_() {
+  const root = DriveApp.getFolderById(CONFIG.ROOT_ID), name = '_records (used by the portal — do not edit)';
+  const it = root.getFoldersByName(name);
+  return it.hasNext() ? it.next() : root.createFolder(name);
+}
+function recordFile_(traineeId) {
+  const it = recordsFolder_().getFilesByName(traineeId + '.json');
+  while (it.hasNext()) { const f = it.next(); if (!f.isTrashed()) return f; }
+  return null;
+}
 function record_(traineeId) {
-  const raw = PropertiesService.getScriptProperties().getProperty('ws_' + traineeId);
-  return raw ? JSON.parse(raw) : null;
+  const f = recordFile_(traineeId);
+  return f ? JSON.parse(f.getBlob().getDataAsString()) : null;
+}
+function saveRecord_(rec) {
+  const f = recordFile_(rec.traineeId), body = JSON.stringify(rec);
+  if (f) f.setContent(body); else recordsFolder_().createFile(rec.traineeId + '.json', body, MimeType.PLAIN_TEXT);
+}
+function dropRecord_(traineeId) { const f = recordFile_(traineeId); if (f) f.setTrashed(true); }
+function liveFolder_(id) {
+  try { const f = DriveApp.getFolderById(id); return f.isTrashed() ? null : f; } catch (err) { return null; }
 }
 
+/* ---------------------------------------------------------------- provision: the trainee's own copy */
+// The lock is held only to read and claim the record, so trainees signing up together don't wait on
+// each other's copies (about a minute each). A copy that fails is moved to the trash, never left behind.
 function provision_(req) {
   const id = String(req.traineeId || '').trim(), email = String(req.email || '').trim().toLowerCase();
   if (!/^[a-z0-9-]{1,80}$/.test(id)) return { error: 'Bad trainee id' };
   if (!new RegExp('^[^@\\s]+@' + CONFIG.DOMAIN.replace(/\./g, '\\.') + '$').test(email)) return { error: 'Use your @' + CONFIG.DOMAIN + ' Google account' };
-  const lock = LockService.getScriptLock(); lock.waitLock(30000);
+  const now = new Date().toISOString();
+  let rec, folder = null, fresh = false;
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
   try {
-    let rec = record_(id);
-    let folder = null;
-    if (rec) { try { folder = DriveApp.getFolderById(rec.folderId); if (folder.isTrashed()) folder = null; } catch (err) { folder = null; } }
-    if (!folder) {
-      const name = 'Whitfield Case — ' + String(req.name || id).slice(0, 60) + (req.batch ? ' (' + String(req.batch).slice(0, 30) + ')' : '');
-      folder = DriveApp.getFolderById(CONFIG.TRAINEES_ID).createFolder(name);
-      const files = {}, orig = {};
-      copyTree_(DriveApp.getFolderById(CONFIG.MASTER_ID), folder, files, orig);
-      rec = { traineeId: id, folderId: folder.getId(), files: files, orig: orig, emails: [], createdAt: new Date().toISOString() };
+    rec = record_(id);
+    if (rec) folder = liveFolder_(rec.folderId);
+    if (rec && folder && !rec.complete && Date.now() - Date.parse(rec.creating || now) < 8 * 60 * 1000)
+      return { error: 'Your case folder is still being created. Try again in a minute.' };
+    if (!rec || !folder || !rec.complete) {
+      if (folder) folder.setTrashed(true);                       // an earlier copy that never finished
+      const who = String(req.name || (rec && rec.name) || id).slice(0, 60), batch = String(req.batch || (rec && rec.batch) || '').slice(0, 30);
+      folder = DriveApp.getFolderById(CONFIG.TRAINEES_ID).createFolder('Whitfield Case — ' + who + (batch ? ' (' + batch + ')' : ''));
+      folder.setShareableByEditors(false);                       // trainees can't share client files onward
+      rec = { traineeId: id, folderId: folder.getId(), files: {}, orig: {}, emails: [], name: who, batch: batch,
+              createdAt: now, creating: now, complete: false };
+      saveRecord_(rec);
+      fresh = true;
     }
-    folder.setShareableByEditors(false);                         // trainees can't re-share client files
-    if (rec.emails.indexOf(email) < 0) { folder.addEditor(email); rec.emails.push(email); }
-    rec.email = email; rec.name = req.name || rec.name || ''; rec.batch = req.batch || rec.batch || '';
-    PropertiesService.getScriptProperties().setProperty('ws_' + id, JSON.stringify(rec));
-    return describe_(rec, folder);
   } finally { lock.releaseLock(); }
+  try {
+    share_(folder, rec, email);                                  // first, so a wrong address fails before the copy
+    if (fresh) copyTree_(DriveApp.getFolderById(CONFIG.MASTER_ID), folder, rec.files, rec.orig);
+  } catch (err) {
+    if (fresh) { folder.setTrashed(true); dropRecord_(id); }
+    throw err;
+  }
+  rec.complete = true; delete rec.creating;
+  rec.email = email; rec.name = req.name || rec.name || ''; rec.batch = req.batch || rec.batch || '';
+  saveRecord_(rec);
+  return describe_(rec, folder);
+}
+
+// One Google account per trainee: a new address replaces the old one.
+function share_(folder, rec, email) {
+  (rec.emails || []).forEach(function (old) { if (old !== email) { try { folder.removeEditor(old); } catch (err) {} } });
+  if ((rec.emails || []).indexOf(email) < 0) folder.addEditor(email);
+  rec.emails = [email];
 }
 
 function copyTree_(src, dest, files, orig) {
   const fit = src.getFiles();
   while (fit.hasNext()) {
-    const f = fit.next(), copy = f.makeCopy(f.getName(), dest);
+    const f = fit.next(); if (f.isTrashed()) continue;
+    const copy = f.makeCopy(f.getName(), dest);
     copy.setShareableByEditors(false);
     if (ROLES[f.getName()]) files[ROLES[f.getName()]] = copy.getId(); else orig[copy.getId()] = f.getName();   // the name it arrived with, for the review
   }
   const dit = src.getFolders();
-  while (dit.hasNext()) { const d = dit.next(), sub = dest.createFolder(d.getName()); sub.setShareableByEditors(false); copyTree_(d, sub, files, orig); }
+  while (dit.hasNext()) {
+    const d = dit.next(); if (d.isTrashed()) continue;
+    const sub = dest.createFolder(d.getName()); sub.setShareableByEditors(false); copyTree_(d, sub, files, orig);
+  }
+}
+
+// Start over: the trainee's folder goes to the trash (an admin can restore it from there) and the record is dropped.
+function reset_(traineeId) {
+  const id = String(traineeId || '');
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    const rec = record_(id); if (!rec) return { ok: true };
+    const folder = liveFolder_(rec.folderId); if (folder) folder.setTrashed(true);
+    dropRecord_(id);
+    return { ok: true };
+  } finally { lock.releaseLock(); }
 }
 
 function describe_(rec, folder) {
@@ -179,18 +239,20 @@ function describe_(rec, folder) {
 
 function inspect_(traineeId) {
   const rec = record_(traineeId); if (!rec) return { error: 'No workspace for this trainee yet' };
-  const root = DriveApp.getFolderById(rec.folderId), items = [];
+  const root = liveFolder_(rec.folderId), items = [];
+  if (!root) return { error: "This trainee's case folder is in the trash. Start over from the portal to give them a new copy." };
   (function walk(folder, path) {
     const fit = folder.getFiles();
     while (fit.hasNext()) {
-      const f = fit.next(), mime = f.getMimeType();
+      const f = fit.next(); if (f.isTrashed()) continue;
+      const mime = f.getMimeType();
       const isShortcut = mime === MimeType.SHORTCUT, orig = rec.orig || {};
       items.push({ path: path, name: f.getName(), type: isShortcut ? 'shortcut' : mime.replace('application/vnd.google-apps.', 'google-'),
                    updated: f.getLastUpdated().toISOString(), target: isShortcut ? safeTargetName_(f) : undefined,
                    orig: orig[isShortcut ? safeTargetId_(f) : f.getId()] });
     }
     const dit = folder.getFolders();
-    while (dit.hasNext()) { const d = dit.next(); walk(d, path ? path + ' / ' + d.getName() : d.getName()); }
+    while (dit.hasNext()) { const d = dit.next(); if (!d.isTrashed()) walk(d, path ? path + ' / ' + d.getName() : d.getName()); }
   })(root, '');
   items.sort(function (a, b) { return (a.path + '\u0000' + a.name).localeCompare(b.path + '\u0000' + b.name); });
   return { traineeId: traineeId, folderUrl: root.getUrl(), updated: root.getLastUpdated().toISOString(), items: items };
@@ -205,6 +267,7 @@ function exportWork_(traineeId, roles) {
     const id = rec.files[role]; if (!id) return;
     try {
       const f = DriveApp.getFileById(id), mime = f.getMimeType();
+      if (f.isTrashed()) { outDocs[role] = { name: f.getName(), error: 'in the trash' }; return; }
       let text = '';
       if (mime === MimeType.GOOGLE_DOCS) text = DocumentApp.openById(id).getBody().getText();
       else if (mime === MimeType.GOOGLE_SHEETS) {
@@ -217,16 +280,6 @@ function exportWork_(traineeId, roles) {
     } catch (err) { outDocs[role] = { error: String(err && err.message || err) }; }
   });
   return { traineeId: traineeId, docs: outDocs };
-}
-
-function list_() {
-  const all = PropertiesService.getScriptProperties().getProperties(), out = [];
-  Object.keys(all).forEach(function (k) {
-    if (k.indexOf('ws_') !== 0) return;
-    const r = JSON.parse(all[k]);
-    out.push({ traineeId: r.traineeId, name: r.name, batch: r.batch, email: r.email, folderUrl: 'https://drive.google.com/drive/folders/' + r.folderId, createdAt: r.createdAt });
-  });
-  return { workspaces: out };
 }
 
 function childFolder_(parent, name) {

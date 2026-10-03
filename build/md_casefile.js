@@ -1,6 +1,6 @@
 const CLIENT_PROFILE_DOC = [
   {section:"Case Snapshot", items:[
-    "Client: Dana Whitfield · DOB 01/09/1984 (age 42) · 2417 Maple Ridge Ct, Lakeside, ST 90318 · (555) 318-4420 · dana.whitfield@email.com · prefers email; calls after 3:30 PM",
+    "Client: Dana Whitfield · DOB 01/09/1984 (age 42) · 2417 Maple Ridge Ct, Lakeside, ST 90318 · (555) 318-4420 · dana.whitfield@example.com · prefers email; calls after 3:30 PM",
     "Occupation: Administrative Coordinator, Lakeside Unified School District · $28.00 per hour, 8 hours a day ($224.00 per workday)",
     "LSH File # MVA-DW-2026-031 · Handling Attorney: Laura Bennett, Esq. · Treatment-phase Case Manager: Marcus Webb · YOU are the Demand Specialist: medsum, bills itemization, demand, packet and responses",
     "Date of incident (DOI): Saturday, 03/14/2026, about 4:15 PM · Oak St & 5th Ave, Lakeside, ST · rear-end motor vehicle collision (MVC)",

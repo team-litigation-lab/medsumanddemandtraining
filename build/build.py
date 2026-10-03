@@ -148,16 +148,38 @@ rep_re(r'<script src="/js/cm-mindset\.js[^"]*"></script>\n?', '', min_count=0)
 rep_re(r'<script src="/js/cm-updates\.js\?v=[^"]*"></script>',
        "".join(f'<script src="js/slide-scripts/day{n}.js?v=2"></script>\n' for n in range(1, 6)) +
        "".join(f'<script src="js/slide-scripts/canva-day{n}.js?v=1"></script>\n' for n in range(1, 6)) +
-       '<script src="js/md-canva-decks.js?v=1"></script>\n<script src="js/md-updates.js?v=6"></script>')
+       '<script src="js/md-canva-decks.js?v=1"></script>\n<script src="js/md-updates.js?v=7"></script>')
 rep_re(r'<script src="/js/cm-documents\.js\?v=[^"]*"></script>', '<script src="js/md-documents.js?v=2"></script>')
-rep_re(r'<script src="/js/cm-skillbuilders\.js\?v=[^"]*"></script>', '<script src="js/md-skillbuilders.js?v=4"></script>')
+rep_re(r'<script src="/js/cm-skillbuilders\.js\?v=[^"]*"></script>', '<script src="js/md-skillbuilders.js?v=5"></script>')
 rep_re(r'<script src="/js/cm-practice\.js\?v=[^"]*"></script>', '<script src="js/md-practice.js?v=1"></script>')
-rep_re(r'<script src="/js/daily-activities\.js\?v=[^"]*"></script>', '<script src="js/daily-activities.js?v=1"></script>\n<script src="js/md-workspace.js?v=1"></script>\n<script src="js/md-canva.js?v=1"></script>')   # the Canva decks as the day's slides (last: it wraps other functions)
+rep_re(r'<script src="/js/daily-activities\.js\?v=[^"]*"></script>', '<script src="js/daily-activities.js?v=2"></script>\n<script src="js/md-workspace.js?v=2"></script>\n<script src="js/md-canva.js?v=2"></script>')   # the Canva decks as the day's slides (last: it wraps other functions)
 # 🗂 Case Workspace (js/md-workspace.js): each trainee's own Google Drive copy of the case file.
 rep('  else if(state.view==="activities") body = typeof renderActivitiesPage==="function" ? renderActivitiesPage() : "";',
     '  else if(state.view==="activities") body = typeof renderActivitiesPage==="function" ? renderActivitiesPage() : "";\n'
     '  else if(state.view==="workspace") body = typeof renderCaseWorkspace==="function" ? renderCaseWorkspace() : "";')
 s = re.sub(r'var APP_BUILD = "md-[^"]*";', f'var APP_BUILD = "md-{datetime.date.today().isoformat().replace("-", ".")}-a";', s, count=1)
+
+# Other sessions add shared scripts (portal-gate.js, portal-link.js, the blueprints, lsh-dashboard.js) straight into
+# index.html. Keep every script tag the committed page has and this build doesn't make, in the same place; and say
+# how many other lines differ, because those hand edits have to be carried over before the new page is committed.
+if os.path.exists(OUT):
+    old = open(OUT, encoding="utf8").read()
+    tag = re.compile(r'<script src="(/?js/[^"?]+)(?:\?v=[^"]*)?"></script>')
+    have = lambda: {m.group(1).lstrip("/") for m in tag.finditer(s)}
+    prev = None
+    for m in tag.finditer(old):
+        src = m.group(1).lstrip("/")
+        if src not in have():
+            at = prev and re.search(r'<script src="/?' + re.escape(prev) + r'(?:\?v=[^"]*)?"></script>', s)
+            if at: s = s[:at.end()] + "\n" + m.group(0) + s[at.end():]
+            elif m.start() < old.find("</head>"): s = s.replace("</head>", m.group(0) + "\n</head>", 1)
+            else: s = s.replace("</body>", m.group(0) + "\n</body>", 1)
+            print("kept from the committed index.html:", m.group(0))
+        prev = src
+    import difflib
+    strip = lambda t: [l for l in t.splitlines() if not tag.search(l) and "var APP_BUILD" not in l]
+    changed = sum(1 for l in difflib.unified_diff(strip(old), strip(s), lineterm="", n=0) if l[:1] in "+-" and l[:3] not in ("+++", "---"))
+    if changed: print(f"NOTE: {changed} other line(s) differ from the committed index.html. Check them with git diff before committing (hand edits made there are lost otherwise).")
 
 open(OUT, "w", encoding="utf8").write(s)
 visible = re.sub(r'data:[a-z/+-]+;base64,[A-Za-z0-9+/=]+', '', s)

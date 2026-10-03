@@ -1,6 +1,7 @@
 {
  "incoming": "01 Incoming — unsorted",
- "later": "04 Received after the demand — open on Day 5",
+ "wednesday": "04 Received Wednesday — open on Day 3",
+ "later": "05 Received after the demand — open on Day 5",
  "files": [
   {
    "id": "DW10",
@@ -88,7 +89,7 @@
    "file": "workspace/files/f29.pdf",
    "belongs": "01 Intake & Retainer",
    "bates": null,
-   "is": "Client intake summary, 03/18/2026 (gives the DOI as 03/15 and no prior injuries)"
+   "is": "Client intake summary, 03/18/2026 (gives the DOI as 03/15; prior injuries: “None really, maybe a strain a while back”)"
   },
   {
    "id": "DW03",
@@ -217,19 +218,10 @@
    "is": "Bayside balance-due statement, 08/28/2026 (not itemized)"
   },
   {
-   "id": "DW23",
-   "name": "Bayside itemized 10-07.pdf",
-   "drive": "01 Incoming — unsorted",
-   "file": "workspace/files/f19.pdf",
-   "belongs": "05 Medical Bills",
-   "bates": null,
-   "is": "Bayside itemized bill with CPT codes, 10/07/2026"
-  },
-  {
    "id": "DW24",
    "name": "Northgate FP stmt.pdf",
    "drive": "01 Incoming — unsorted",
-   "file": "workspace/files/f04.pdf",
+   "file": "workspace/files/f19.pdf",
    "belongs": "05 Medical Bills",
    "bates": null,
    "is": "Northgate Family Practice statement, 05/02/2026 wellness exam (unrelated)"
@@ -238,7 +230,7 @@
    "id": "DW25",
    "name": "LUSD wage verif.pdf",
    "drive": "01 Incoming — unsorted",
-   "file": "workspace/files/f06.pdf",
+   "file": "workspace/files/f04.pdf",
    "belongs": "06 Wages & Damages",
    "bates": null,
    "is": "Lakeside USD wage and time-loss verification"
@@ -247,15 +239,24 @@
    "id": "DW26",
    "name": "Impact statement signed.pdf",
    "drive": "01 Incoming — unsorted",
-   "file": "workspace/files/f18.pdf",
+   "file": "workspace/files/f06.pdf",
    "belongs": "06 Wages & Damages",
    "bates": null,
    "is": "Client impact statement, signed 09/30/2026"
   },
   {
+   "id": "DW23",
+   "name": "Bayside itemized 10-07.pdf",
+   "drive": "04 Received Wednesday — open on Day 3",
+   "file": "workspace/files/f18.pdf",
+   "belongs": "05 Medical Bills",
+   "bates": null,
+   "is": "Bayside itemized bill with CPT codes, 10/07/2026"
+  },
+  {
    "id": "DW29",
    "name": "Keystone response 11-04-2026.pdf",
-   "drive": "04 Received after the demand — open on Day 5",
+   "drive": "05 Received after the demand — open on Day 5",
    "file": "workspace/files/f23.pdf",
    "belongs": "08 Correspondence",
    "bates": null,
@@ -264,7 +265,7 @@
   {
    "id": "DW30",
    "name": "Keystone records request 11-04-2026.pdf",
-   "drive": "04 Received after the demand — open on Day 5",
+   "drive": "05 Received after the demand — open on Day 5",
    "file": "workspace/files/f01.pdf",
    "belongs": "08 Correspondence",
    "bates": null,
@@ -273,19 +274,20 @@
  ],
  "rubric": {
   "1": [
-   "Files sorted: intake/retainer/handoff memo → 01 Intake & Retainer; police report and photo log → 02 Police & Liability; Keystone letters, PIP log, BlueHarbor notice → 03 Insurance & Payers; the six record sets → 04 Medical Records; the ten bills, ledgers and statements → 05 Medical Bills; wage verification and impact statement → 06 Wages & Damages; the duplicate MRI fax → 09 Duplicates & not used. 01 Incoming is empty.",
+   "Files sorted: intake/retainer/handoff memo → 01 Intake & Retainer; police report and photo log → 02 Police & Liability; Keystone letters, PIP log, BlueHarbor notice → 03 Insurance & Payers; the six record sets → 04 Medical Records; the eight bills, ledgers and statements → 05 Medical Bills; wage verification and impact statement → 06 Wages & Damages; the duplicate MRI fax → 09 Duplicates & not used. 01 Incoming is empty; 04 and 05 stay closed until their day.",
    "Names follow YYYY-MM-DD Source – Document, using each document's own date.",
    "Medical records in Bates order with ranges at the front of each name: WHITFIELD 0001-0009 Riverside Medical Center ED (03/14/2026); 0010-0011 Harbor Spine 2025 prior records; 0012-0038 Harbor Spine 2026; 0039-0041 Clearview Imaging MRI; 0042-0059 Summit Orthopedic; 0060-0066 Bayside Pain Management. The duplicate MRI fax gets no Bates numbers.",
-   "Audit catches: the intake gives the DOI as 03/15/2026 but the police report and ED record say 03/14/2026; the intake says no prior injuries but Harbor Spine treated a low back strain 01/08–01/29/2025 (WHITFIELD 0010–0011); the MRI report was faxed twice (keep one); Bayside's 08/28 statement is balance-due only (the itemized bill with CPT codes is the one to use); Clearview's ledger lists the same MRI twice; Harbor Spine's ledger includes 2025 charges; the Northgate 05/02/2026 wellness exam is unrelated; the 43-day gap 05/14 → 06/26/2026 (reasons at WHITFIELD 0038 and 0060).",
+   "Audit catches: the intake gives the DOI as 03/15/2026 but the police report and ED record say 03/14/2026; the intake gives no detail on prior injuries (“None really, maybe a strain a while back”) but Harbor Spine treated a low back strain 01/08–01/29/2025 (WHITFIELD 0010–0011); the MRI report was faxed twice (keep one); Bayside's 08/28 statement is balance-due only, so the itemized bill with CPT codes must be requested; Clearview's ledger lists the same MRI twice; Harbor Spine's ledger includes 2025 charges; the Northgate 05/02/2026 wellness exam is unrelated; the 43-day gap 05/14 → 06/26/2026 (reasons at WHITFIELD 0038 and 0060).",
    "Actions go to the right person: corrections and legal questions to Attorney Bennett, treatment-phase questions to Marcus Webb; nothing is deleted."
   ],
   "2": [
-   "Chronology: one row per encounter in date order, starting with the 2025 prior visits (WHITFIELD 0010–0011), then ED 03/14/2026 (0001–0009), Harbor Spine 03/17 initial exam (0012–0015), daily visits (0016–0025, 0027–0037), re-evaluation 03/31 with return to work 04/03 (0026), Clearview MRI 03/30 (0039–0041), Summit consult 04/20 (0052–0055) and referral (0059), Harbor Spine discharge 05/14 (0038), Bayside 06/26 (0060–0063), ESI 07/10 (0064–0066), Summit follow-up/MMI 08/21 (0056–0058). Daily visits may be grouped by date range with their page range.",
+   "Chronology: one row per encounter in date order, starting with the 2025 prior visits (WHITFIELD 0010–0011), then ED 03/14/2026 (0001–0009), Harbor Spine 03/17 initial exam (0012–0015), daily visits (0016–0025, 0027–0037), Clearview MRI 03/30 (0039–0041), re-evaluation 03/31 with return to work 04/03 (0026), Summit consult 04/20 (0052–0055) and referral (0059), Harbor Spine discharge 05/14 (0038), Bayside 06/26 (0060–0063), ESI 07/10 (0064–0066), Summit follow-up/MMI 08/21 (0056–0058). Daily visits may be grouped by date range with their page range.",
    "Provider's words: the MRI is a “3 mm central disc protrusion at C5-6” (0041), never a herniation; Dx C5-6 disc protrusion with right C6 radiculopathy (0055).",
    "Flags: prior injury (0010–0011); gap in treatment 05/14 → 06/26/2026, 43 days, with the reasons (childcare, 0038; continuing and worsening symptoms, 0060); objective findings (MRI 0041; Spurling, reflexes, sensation 0053); causation opinion (0055); procedure (ESI 07/10, 0064–0066); MMI and future care: up to 2 ESIs at $3,900.00 each = $7,800.00 (0057). The Northgate wellness exam is not in the injury chronology.",
    "Medical summary: the six sections (overview, initial treatment, diagnostics, treatment course, prior history and gaps, current status and future care), neutral and factual, a Bates cite for every statement, no opinions on value or causation beyond quoting Dr. Patel."
   ],
   "3": [
+   "Wednesday's Bayside itemized bill (10/07/2026, from 04 Received Wednesday) renamed and filed in 05 Medical Bills; its two lines are on the itemization.",
    "Related lines only, billed amounts: Riverside Medical Center $4,850.00; Riverside Emergency Physicians $1,120.00; Corner Pharmacy $86.40; Harbor Spine 24 visits × $240.00 = $5,760.00; Clearview MRI (CPT 72141) $2,400.00; Summit 04/20 $650.00; Bayside 06/26 $425.00; Bayside ESI 07/10 (CPT 62321) $3,900.00; Summit 08/21 $325.00.",
    "Totals tie out: billed $19,516.40; adjustments $2,675.00; BlueHarbor paid $2,575.00; PIP paid $2,500.00 (Riverside Emergency Physicians $1,120.00 + Clearview $1,380.00); client paid $661.40; balance $11,105.00.",
    "Exclusions with reasons: Harbor Spine 2025 prior charges $285.00 (before the DOI); Clearview duplicate MRI line $2,400.00 (duplicate); Northgate 05/02/2026 wellness exam $275.00 (unrelated). The all-lines total would be $22,476.40.",

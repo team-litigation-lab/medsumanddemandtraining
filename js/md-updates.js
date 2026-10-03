@@ -1315,8 +1315,8 @@ if(document.querySelector(".topbar")) render();
     if(!box){
       box = document.createElement("div");
       box.className = "nav-tools nav-more"; box.id = "navMore";
-      box.innerHTML = `<button type="button" aria-haspopup="true" title="More pages">More ▾</button><div class="nav-tools-menu" role="menu"></div>`;
-      box.firstChild.addEventListener("click", (e)=>{ e.stopPropagation(); box.classList.toggle("open"); });
+      box.innerHTML = `<button type="button" aria-haspopup="true" aria-expanded="false" title="More pages">More ▾</button><div class="nav-tools-menu" role="menu"></div>`;
+      box.firstChild.addEventListener("click", (e)=>{ e.stopPropagation(); const open = !box.classList.contains("open"); closeMenus(); if(open){ box.classList.add("open"); box.firstChild.setAttribute("aria-expanded","true"); } });
       const at = [...nav.children].find(el=>el.matches(".nav-focus, .nav-viewswitch, .nav-portal, .nav-fs") || /^openAdmin\(/.test(el.getAttribute("onclick")||""));
       nav.insertBefore(box, at || null);
     }
@@ -1329,7 +1329,15 @@ if(document.querySelector(".topbar")) render();
     // a menu item mirrors its tab (the tab stays in the bar, hidden, so its own handlers still run)
     el.classList.add("tf-moved"); el.style.display = "none";
     box.querySelector(".nav-tools-menu").appendChild(item);
+    // the moved tabs' counts (open tasks, unread activities) show on More ▾, so nothing new goes unseen
+    const total = [...box.querySelectorAll(".nav-tools-menu .nav-badge")].reduce((t, b)=>t + (parseInt(b.textContent, 10) || 0), 0);
+    box.firstChild.innerHTML = `More ▾${total ? `<span class="nav-badge">${total}</span>` : ""}`;
   }
+  // One menu open at a time (More ▾, 🧰 Tools ▾); a click elsewhere or Esc closes them.
+  function closeMenus(){
+    document.querySelectorAll(".topbar .nav-tools.open").forEach(m=>{ m.classList.remove("open"); const b = m.querySelector("button"); if(b) b.setAttribute("aria-expanded","false"); });
+  }
+  window.mdCloseTopMenus = closeMenus;
   function reset(tb){
     tb.classList.remove("tf-tight","tf-logo","tf-measure");
     tb.querySelectorAll(".tf-moved").forEach(el=>{ el.classList.remove("tf-moved"); el.style.display = ""; });
@@ -1370,8 +1378,11 @@ if(document.querySelector(".topbar")) render();
   let queued = false;
   window.addEventListener("resize", ()=>{ if(queued) return; queued = true; requestAnimationFrame(()=>{ queued = false; fit(); }); });
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  document.addEventListener("click", (e)=>{   // capture phase: the menu buttons stop their clicks from bubbling
+    document.querySelectorAll(".topbar .nav-tools.open").forEach(m=>{ if(!m.contains(e.target)){ m.classList.remove("open"); const b = m.querySelector("button"); if(b) b.setAttribute("aria-expanded","false"); } });
+  }, true);
+  document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenus(); });
   document.addEventListener("click", (e)=>{
-    const box = document.getElementById("navMore"); if(box && !box.contains(e.target)) box.classList.remove("open");
     const s = e.target.closest && e.target.closest(".topbar.tf-tight .topbar-search");
     if(s){ const inp = s.querySelector("input"); if(inp && document.activeElement !== inp) inp.focus(); }
   });

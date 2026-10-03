@@ -851,11 +851,17 @@ window.mdToolsMenuHTML = function(){
   const tools = MD_TOOL_DEFAULTS.map(d=>mdTool(d.id)).filter(t=>t.live);
   const open = currentFrame && frameShell && !frameShell.hidden;
   return `<div class="nav-tools" id="navTools">
-    <button type="button" class="${open?"active":""}" aria-haspopup="true" onclick="mdToggleToolsMenu(event)">🧰 Tools ▾</button>
+    <button type="button" class="${open?"active":""}" aria-haspopup="true" aria-expanded="false" onclick="mdToggleToolsMenu(event)">🧰 Tools ▾</button>
     <div class="nav-tools-menu" role="menu">${tools.map(t=>`<button type="button" role="menuitem" class="${open && t.id===currentFrame?"on":""}" onclick="mdPickTool('${t.id}')">${t.icon} ${E(t.short)}</button>`).join("")}
       <button type="button" class="more" onclick="mdPickTool(null)">All tools, sign-in help &amp; my work log</button></div></div>`;
 };
-window.mdToggleToolsMenu = function(e){ if(e) e.stopPropagation(); const n = document.getElementById("navTools"); if(n) n.classList.toggle("open"); };
+window.mdToggleToolsMenu = function(e){
+  if(e) e.stopPropagation();
+  const n = document.getElementById("navTools"); if(!n) return;
+  const open = !n.classList.contains("open");
+  if(typeof mdCloseTopMenus === "function") mdCloseTopMenus();   // one menu at a time (More ▾ is in js/md-updates.js)
+  n.classList.toggle("open", open); n.firstElementChild.setAttribute("aria-expanded", open ? "true" : "false");
+};
 window.mdPickTool = function(id){
   const n = document.getElementById("navTools"); if(n) n.classList.remove("open");
   if(state.mobileNavOpen && typeof toggleMobileNav==="function") toggleMobileNav();

@@ -192,7 +192,7 @@ def build():
 
     page("intake/DW_02_Client_Intake_Summary.html", "Client Intake Summary — Dana Whitfield", hdr(FIRM, "Intake · 03/18/2026 · taken by J. Ortiz") +
          "<h1>New Client Intake Summary</h1>" +
-         kv([["Client", f"{CLIENT} · DOB {DOB} · 2417 Maple Ridge Ct, Lakeside, ST 90318 · (555) 318-4420 · dana.whitfield@email.com"],
+         kv([["Client", f"{CLIENT} · DOB {DOB} · 2417 Maple Ridge Ct, Lakeside, ST 90318 · (555) 318-4420 · dana.whitfield@example.com"],
              ["Date of incident", "03/15/2026, about 4:15 PM"], ["Location", "Oak St &amp; 5th Ave, Lakeside"],
              ["How it happened", "Stopped at a red light in her 2019 Honda CR-V; rear-ended by a pickup (Grant Mercer, F-150). Police came; the other driver was ticketed."],
              ["Injuries", "Neck pain (worse on the right, into the shoulder), low back pain, headaches"],
@@ -272,7 +272,7 @@ def build():
          hdr("Harbor Spine &amp; Chiropractic", "Kevin Ames, DC · 1180 Harbor Rd, Lakeside") + "<h1>Chiropractic Records — January 2025</h1>" + prior, kind="Medical record")
 
     rows_a = [[f"{VISITS[i]}/2026", str(i + 1), f"{NECK[i]}/10", f"{LBP[i]}/10", "CMT 98941, therapeutic exercise 97110, soft tissue 97140"] for i in range(1, 6)]
-    rows_b = [[f"{VISITS[i]}/2026", str(i + 1), f"{NECK[i]}/10", f"{LBP[i]}/10", "CMT 98941, therapeutic exercise 97110"] for i in range(7, 23)]
+    rows_b = [[f"{VISITS[i]}/2026", str(i + 1), f"{NECK[i]}/10", f"{LBP[i]}/10", "CMT 98941, therapeutic exercise 97110, soft tissue 97140"] for i in range(7, 23)]
     chiro = (bates(12) + "<h3>Initial examination — 03/17/2026 (visit 1)</h3><p><b>History:</b> Rear-ended while stopped on 03/14/2026; seen at Riverside ED. c/o neck pain 7/10 radiating to the R shoulder, low back pain 5/10, headaches. Prior: lumbar strain 01/2025 treated here, resolved.</p>" +
              bates(13) + "<p><b>Exam:</b> Cervical ROM reduced ~40% (flexion, extension, R rotation). TTP C5–C7 paraspinals and R upper trapezius. Lumbar paraspinal TTP. Foraminal compression mildly positive R.</p>" +
              bates(14) + "<p><b>Assessment:</b> cervical sprain/strain; lumbar sprain/strain; post-traumatic headache. MRI cervical spine ordered.</p>" +

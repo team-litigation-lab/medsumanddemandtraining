@@ -54,7 +54,8 @@ Case Workspace page in the training portal.</p>
 <li><b>01 Incoming — unsorted</b>: everything that has come in so far. Empty it on Day 1.</li>
 <li><b>02 Case File</b>: where every document belongs, one subfolder per category.</li>
 <li><b>03 Work Product</b>: the documents you write (templates are already there).</li>
-<li><b>04 Received after the demand</b>: don't open it until Day 5.</li>
+<li><b>04 Received Wednesday</b>: mail that comes in during the week. Don't open it until Day 3.</li>
+<li><b>05 Received after the demand</b>: don't open it until Day 5.</li>
 </ul>
 <h2 style="color:#262B45">Naming convention (LSH)</h2>
 <ul>
@@ -69,13 +70,15 @@ Case Workspace page in the training portal.</p>
     "Put the medical records in Bates order: by provider, in the order Dana first saw each one after the crash, each provider's pages in order. "
     "Number them <b>WHITFIELD 0001</b> onward and put each file's range at the front of its name.",
     "Check every core fact against the documents (date of incident, names, claim number) and record every problem you find in "
-    "<b>Whitfield — Day 1 File Audit</b>: the issue, where it is (file and page) and what you'll do or who you'll tell."],
+    "<b>Whitfield — Day 1 File Audit</b>: the issue, where it is (file and page) and what you'll do or who you'll tell.",
+    "A bill that only shows a balance can't be itemized: note which itemized bills to request, and from whom."],
     "the organized folder and the Day 1 File Audit.")}
 {day(2, "Medical chronology and medical summary", [
     "Build <b>Whitfield — Medical Chronology</b>: one row per encounter, in date order, in the provider's words, with the Bates page for every row and a flag where one applies.",
     "Write <b>Whitfield — Medical Summary</b> from the chronology: neutral, factual, a Bates cite for every statement."],
     "the chronology and the medical summary.")}
 {day(3, "Bills itemization", [
+    "Open <b>04 Received Wednesday</b>: rename the bill that came in and file it in <b>02 Case File / 05 Medical Bills</b>.",
     "Build <b>Whitfield — Bills Itemization</b> from the bills and ledgers: one line per charge, billed, adjustments, every payment by payer, balance and source.",
     "List what you left out (and why) on the <b>Exclusions</b> tab, and every balance or lien on the <b>Balances &amp; Liens</b> tab."],
     "the itemization (the totals must tie out).")}
@@ -89,7 +92,7 @@ Case Workspace page in the training portal.</p>
 {day(5, "The packet and the response", [
     "Build <b>Whitfield — Exhibit Index</b> in the LSH standard order, with Bates ranges and page counts.",
     "In <b>02 Case File / 07 Demand Packet</b>, add a shortcut to each exhibit in packet order (right-click → Organize → Add shortcut), named <b>Ex. A – …</b>, <b>Ex. B – …</b>.",
-    "Now open <b>04 Received after the demand</b>. File each letter in <b>08 Correspondence</b> with the naming convention.",
+    "Now open <b>05 Received after the demand</b>. File each letter in <b>08 Correspondence</b> with the naming convention.",
     "Draft <b>Whitfield — Reply to Keystone (draft)</b>: answer each point of Keystone's 11/04/2026 letter with the record that answers it. "
     "The attorney decides any counteroffer and the scope of the records request: flag those for her, don't decide them."],
     "the exhibit index, the packet folder and the reply draft.")}
