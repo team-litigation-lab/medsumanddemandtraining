@@ -119,11 +119,6 @@ function slideScriptSections(d, l, part){
   }
   return out;
 }
-function slideScriptText(d, l, part, secs){
-  const all = slideScriptSections(d, l, part);
-  const keys = Object.keys(all).map(Number).filter(k=>!secs || secs.includes(k)).sort();
-  return keys.map(k=>all[k]).join("\n\n");
-}
 // Section scripts: PRESENTER_NOTES["day::title"].s1 … s4 = {on, say, ask} for ① Core Principles,
 // ② Step-by-Step, ③ Best Practices & Pitfalls, ④ Go Deeper (used for the "On this page" summary when
 // a slide is split over pages).
@@ -162,10 +157,6 @@ function slideScript(d, l, part){
   const talk = [secs[1], secs[3], secs[4]].filter(Boolean).join("\n\n");
   const ask = key==="p1" ? (n.ask || (l.singleSlide ? n.wrap : "")) : (n.wrap || n.ask || "");
   return {why: n.say || "", talk, walk, ask, hand: false};
-}
-function slideScriptText(d, l, part){
-  const s = slideScript(d, l, part);
-  return [s.why, s.talk, s.walk.join("\n"), s.ask].filter(Boolean).join("\n\n");
 }
 /* When a long slide is split over pages, each page gets its own part of the slide's script:
    page 1 opens with the why and the explanation, the pages that show the steps (slide 1) or the
