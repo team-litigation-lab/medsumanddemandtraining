@@ -2,9 +2,9 @@
 
 ## 🔐 Sign in on the Main Portal only
 
-Trainees and admins sign in once, on the LSH Training Portal, and open this program from there. The Portal sends them here with a signed, short-lived ticket (`?ticket=…`); `js/portal-gate.js` posts it to `/api/auth/portal`, and the Worker signs a trainee in (same `trainee:<id>` records, so every current registration, progress and approval is kept) or an administrator in (their ticket is `{r: "a", exp}`: no passphrase again). Someone who opens this site's link directly sees a note with a **Go to the LSH Training Portal** button instead of the form, and the Worker refuses a name + batch typed here (403 `portal-required`), except to renew the session of a trainee already signed in on that device. The admin passphrase stays under *Sign in with your passphrase* for the direct link.
+Trainees sign in once, on the LSH Training Portal, and open this program from there. Admins always type the admin password on this site (`MASTER_ADMIN_PASSWORD`). The Portal sends them here with a signed, short-lived ticket (`?ticket=…`); `js/portal-gate.js` posts it to `/api/auth/portal`, and the Worker signs a trainee in (same `trainee:<id>` records, so every current registration, progress and approval is kept) (an administrator's ticket `{r: "a", exp}` never signs anyone in: the Worker answers 403 `admin-password`). Someone who opens this site's link directly sees a note with a **Go to the LSH Training Portal** button instead of the form, and the Worker refuses a name + batch typed here (403 `portal-required`), except to renew the session of a trainee already signed in on that device. Someone who opens the link directly gets the *Admin Portal* tab, where an admin types the admin password.
 
-- **Turning it on:** set `PORTAL_SSO_SECRET` (same value as the Portal) as a Worker secret. The admin password (`ADMIN_PASSPHRASE`, or `MASTER_ADMIN_PASSWORD`, the Portal's master admin password) must be set too. Until both are set, `/api/auth/status` reports `portalOnly: false` and the old name + batch form stays. A space or line break around the secret is ignored.
+- **Turning it on:** set `PORTAL_SSO_SECRET` (same value as the Portal) as a Worker secret. The admin password (`MASTER_ADMIN_PASSWORD`, the Portal's master admin password) must be set too. Until both are set, `/api/auth/status` reports `portalOnly: false` and the old name + batch form stays. A space or line break around the secret is ignored.
 - **If a Portal launch fails:** the message says why: `bad-signature` means the Portal's and this Worker's `PORTAL_SSO_SECRET` differ; "expired" means the link is old (open the program again from the Portal).
 - **Ticket format and engine hooks:** see EA-PA-TRAINING's README (*Sign in on the Main Portal only*). `js/portal-gate.js` is the same file in every LSH course repo; the page is built from the EA-PA-TRAINING engine, which carries the hooks.
 
@@ -252,7 +252,7 @@ The smoke and requests tests need Playwright.
 1. **Worker:** the Worker is `medsumanddemandtraining` (the `name` in `wrangler.json` must match the Worker's name in Cloudflare). It deploys from `main` with `npx wrangler deploy`.
 2. **KV:** the Worker binds the same `LSH_KV` namespace as EA/PA, CM and PD. **All keys for this course are stored under an `md:` prefix**, so its trainees, progress and settings never mix with EA/PA (no prefix), CM (`cm:`) or PD (`pd:`). To use a separate namespace, change the `id` in `wrangler.json`.
 3. **Secrets** (the same as the other courses):
-   - `ADMIN_PASSPHRASE`: admin sign-in; turns on secure mode.
+   - `MASTER_ADMIN_PASSWORD`: admin sign-in (the LSH Training Portal's master admin password: one password on every platform); setting it switches on secure mode. Set it as a Secret.
    - `GEMINI_API_KEY`: AI grading and roleplays. The name must be exactly this.
    - `SESSION_SECRET`: optional.
    - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). The trainees' Google domain is `WS_DOMAIN` in `worker.js` and `CONFIG.DOMAIN` in `Code.gs`; change both together.
