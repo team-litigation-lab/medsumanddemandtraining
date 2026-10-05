@@ -253,6 +253,7 @@ The smoke and requests tests need Playwright.
 2. **KV:** the Worker binds the same `LSH_KV` namespace as EA/PA, CM and PD. **All keys for this course are stored under an `md:` prefix**, so its trainees, progress and settings never mix with EA/PA (no prefix), CM (`cm:`) or PD (`pd:`). To use a separate namespace, change the `id` in `wrangler.json`.
 3. **Secrets** (the same as the other courses):
    - `MASTER_ADMIN_PASSWORD`: admin sign-in (the LSH Training Portal's master admin password: one password on every platform); setting it switches on secure mode. Set it as a Secret.
+  - `AI_GATEWAY_SECRET`: optional (a Secret; the same value as on the Portal). When set, every AI call goes to the Main Portal's shared AI gateway (`/api/ai-gateway`): one master key pool and one shared budget for every call flow, counted per program. Without it this Worker uses its own `GEMINI_API_KEY` pool.
    - `GEMINI_API_KEY`: AI grading and roleplays. The name must be exactly this.
    - `SESSION_SECRET`: optional.
    - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). The trainees' Google domain is `WS_DOMAIN` in `worker.js` and `CONFIG.DOMAIN` in `Code.gs`; change both together.
