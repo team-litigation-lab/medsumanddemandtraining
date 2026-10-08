@@ -1260,7 +1260,7 @@ if(document.querySelector(".topbar")) render();
    after every render and resize, and steps down only as far as it has to:
      1. smaller tabs, and the search box shrinks to its 🔍 (it opens when clicked);
      2. the course name hides (the logo stays);
-     3. the 📁 📚 ⛶ menus show their icon alone (js/lsh-topbar.js; hovering names them);
+     3. the 📚 ⛶ menus show their icon alone (js/lsh-topbar.js; hovering names them);
      4. the tabs wrap onto a second row, as in the other LSH courses on a small laptop screen.
    No tab moves into a "More" menu: the bar is grouped by purpose instead, the same as every LSH
    course (js/lsh-topbar.js: 📚 Guides ▾, ⛶ View ▾).
