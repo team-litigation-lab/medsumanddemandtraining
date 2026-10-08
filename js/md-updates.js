@@ -1259,10 +1259,11 @@ if(document.querySelector(".topbar")) render();
    (js/portal-link.js adds ← Training Directory). So instead of fixed breakpoints, it is measured
    after every render and resize, and steps down only as far as it has to:
      1. smaller tabs, and the search box shrinks to its 🔍 (it opens when clicked);
-     2. the two least-used tabs move into a "More ▾" menu, so the course name can stay;
-     3. the course name hides (the logo stays);
-     4. more tabs move into More, least-used first.
-   The current page's tab, Dashboard, Tools, ← Training Directory and the ⧉ ⛶ buttons never move.
+     2. the course name hides (the logo stays);
+     3. the 📚 ⛶ menus show their icon alone (js/lsh-topbar.js; hovering names them);
+     4. the tabs wrap onto a second row, as in the other LSH courses on a small laptop screen.
+   No tab moves into a "More" menu: the bar is grouped by purpose instead, the same as every LSH
+   course (js/lsh-topbar.js: 📚 Guides ▾, ⛶ View ▾).
    Below 1181px the bar keeps its own layouts (two rows, or the ☰ menu on phones). */
 (function(){
   const s = document.createElement("style"); s.textContent = `
@@ -1284,20 +1285,14 @@ if(document.querySelector(".topbar")) render();
 /* tablets and phones: the course name has its own row (or sits by ☰ Menu), so no fixed cap on it */
 @media(max-width:1180px){ .topbar .brand-text b,.topbar .brand-text span{max-width:none !important;} }
 @media(max-width:420px){ .topbar .brand-text b{font-size:13px;} }
-.nav-more .nav-tools-menu{left:auto;right:0;}
-.nav-more .nav-tools-menu .nav-badge{margin-left:6px;}
+@media(min-width:1181px){
+  .topbar.tf-icons .lsh-grp-word{display:none;}
+  .topbar.tf-wrap .topbar-right{flex:1 1 auto;min-width:0;}
+  .topbar.tf-wrap .nav{flex:1 1 auto !important;min-width:0;flex-wrap:wrap;row-gap:4px;justify-content:flex-end;}
+}
 `; document.head.appendChild(s);
 
-  const MOVABLE = ["handouts","notes","facilitatorguide","orientation","clientprofile","activities","tasks","casedocs","workspace","practice"];
-  const viewOf = (el)=>{ const m = /goto\('([a-z]+)'/.exec(el.getAttribute("onclick")||""); return m ? m[1] : ""; };
   let fitting = false;
-  // Least-used first; the current page's tab never moves.
-  function candidates(nav){
-    const kids = [...nav.children].filter(el=>el.tagName==="BUTTON" && !el.classList.contains("active"));
-    const byView = MOVABLE.map(v=>kids.find(el=>viewOf(el)===v)).filter(Boolean);
-    const rest = kids.filter(el=>el.classList.contains("nav-focus") || /^openAdmin\(/.test(el.getAttribute("onclick")||""));
-    return byView.concat(rest);
-  }
   const shown = (el)=> !!el && el.getClientRects().length > 0;
   function fits(tb){
     const right = tb.querySelector(".topbar-right"), brand = tb.querySelector(".brand");
@@ -1310,38 +1305,13 @@ if(document.querySelector(".topbar")) render();
     const cut = shown(title) && title.scrollWidth > title.clientWidth + 1;
     return left >= r.left - 1 && rightEdge <= r.right + 1 && b.right <= left + 1 && !cut;
   }
-  function moreBox(nav){
-    let box = nav.querySelector("#navMore");
-    if(!box){
-      box = document.createElement("div");
-      box.className = "nav-tools nav-more"; box.id = "navMore";
-      box.innerHTML = `<button type="button" aria-haspopup="true" aria-expanded="false" title="More pages">More ▾</button><div class="nav-tools-menu" role="menu"></div>`;
-      box.firstChild.addEventListener("click", (e)=>{ e.stopPropagation(); const open = !box.classList.contains("open"); closeMenus(); if(open){ box.classList.add("open"); box.firstChild.setAttribute("aria-expanded","true"); } });
-      const at = [...nav.children].find(el=>el.matches(".nav-focus, .nav-viewswitch, .nav-portal, .nav-fs") || /^openAdmin\(/.test(el.getAttribute("onclick")||""));
-      nav.insertBefore(box, at || null);
-    }
-    return box;
-  }
-  function moveToMore(nav, el){
-    const box = moreBox(nav), item = el.cloneNode(true);
-    item.removeAttribute("onclick"); item.removeAttribute("id"); item.className = ""; item.type = "button"; item.setAttribute("role","menuitem");
-    item.addEventListener("click", ()=>{ box.classList.remove("open"); el.click(); });
-    // a menu item mirrors its tab (the tab stays in the bar, hidden, so its own handlers still run)
-    el.classList.add("tf-moved"); el.style.display = "none";
-    box.querySelector(".nav-tools-menu").appendChild(item);
-    // the moved tabs' counts (open tasks, unread activities) show on More ▾, so nothing new goes unseen
-    const total = [...box.querySelectorAll(".nav-tools-menu .nav-badge")].reduce((t, b)=>t + (parseInt(b.textContent, 10) || 0), 0);
-    box.firstChild.innerHTML = `More ▾${total ? `<span class="nav-badge">${total}</span>` : ""}`;
-  }
-  // One menu open at a time (More ▾, 🧰 Tools ▾); a click elsewhere or Esc closes them.
+  // One menu open at a time (🧰 Tools ▾, and js/lsh-topbar.js's menus); a click elsewhere or Esc closes them.
   function closeMenus(){
     document.querySelectorAll(".topbar .nav-tools.open").forEach(m=>{ m.classList.remove("open"); const b = m.querySelector("button"); if(b) b.setAttribute("aria-expanded","false"); });
   }
   window.mdCloseTopMenus = closeMenus;
   function reset(tb){
-    tb.classList.remove("tf-tight","tf-logo","tf-measure");
-    tb.querySelectorAll(".tf-moved").forEach(el=>{ el.classList.remove("tf-moved"); el.style.display = ""; });
-    const box = tb.querySelector("#navMore"); if(box) box.remove();
+    tb.classList.remove("tf-tight","tf-logo","tf-icons","tf-wrap","tf-measure");
   }
   function fit(){
     const tb = document.querySelector(".topbar"), nav = tb && tb.querySelector(".nav");
@@ -1352,11 +1322,7 @@ if(document.querySelector(".topbar")) render();
       tb.dataset.fit = "0";
       if(!window.matchMedia("(min-width:1181px)").matches) return;
       tb.classList.add("tf-measure");
-      const steps = [()=>tb.classList.add("tf-tight")];
-      const list = candidates(nav);
-      list.slice(0, 2).forEach(el=>steps.push(()=>moveToMore(nav, el)));
-      steps.push(()=>tb.classList.add("tf-logo"));
-      list.slice(2).forEach(el=>steps.push(()=>moveToMore(nav, el)));
+      const steps = [()=>tb.classList.add("tf-tight"), ()=>tb.classList.add("tf-logo"), ()=>tb.classList.add("tf-icons"), ()=>tb.classList.add("tf-wrap")];
       let i = 0;
       while(!fits(tb) && i < steps.length){ steps[i++](); }
       tb.dataset.fit = String(i);

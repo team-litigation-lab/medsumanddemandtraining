@@ -51,6 +51,7 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 | **🎙 Presenter view scripts** (the trainer's spoken script for every slide, in the EA/PA format) | `js/slide-scripts/day1.js` – `day5.js`; see below |
 | **🗂 Case Workspace** (each trainee works the file in their own Google Drive folder) | `js/md-workspace.js`, `/api/workspace/*` in `worker.js`, `build/workspace/`; see below |
 | Portal features (Presenter view, SOP, top bar) | `js/md-updates.js`, a copy of the PD course's `js/pd-updates.js` |
+| 🧭 The top bar, organized | `js/lsh-topbar.js`, the same file in every LSH course repo: buttons that do the same kind of thing share one menu. **📁 Case File** is one tab for the Case File (or Claim File), 📁 Documents and 🗂 Workspace, which share a row of tabs at the top of their pages; **📚 Guides ▾** holds Notes, Handouts, 🧭 Orientation, Facilitator Guide and the Platform Blueprint; **⛶ View ▾** holds ⧉ Open in a new tab and ⛶ Full screen. A menu is made only when two or more of its buttons are on the bar. Change it in all the course repos. |
 
 ### The days
 

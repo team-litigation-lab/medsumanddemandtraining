@@ -859,7 +859,7 @@ window.mdToggleToolsMenu = function(e){
   if(e) e.stopPropagation();
   const n = document.getElementById("navTools"); if(!n) return;
   const open = !n.classList.contains("open");
-  if(typeof mdCloseTopMenus === "function") mdCloseTopMenus();   // one menu at a time (More ▾ is in js/md-updates.js)
+  if(typeof mdCloseTopMenus === "function") mdCloseTopMenus();   // one menu at a time (js/md-updates.js)
   n.classList.toggle("open", open); n.firstElementChild.setAttribute("aria-expanded", open ? "true" : "false");
 };
 window.mdPickTool = function(id){
