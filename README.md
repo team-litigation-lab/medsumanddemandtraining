@@ -204,7 +204,7 @@ Carry new features by hand:
 
 ## Staying under Cloudflare's monthly request limit
 
-Every request to this course's Worker (everything under `/api/`, and `/version`) counts toward Cloudflare's request limit for the whole account. The account is on Workers Paid: **10 million requests a month**, shared by every LSH site (the courses, the CMS, the Training Portal and the rest). Past the limit, Cloudflare charges for every extra million, so one page that asks too often costs money for every site. Static files (the page, `js/`, `slides/`, `documents/`) don't count.
+Every request to this course's Worker (everything under `/api/`, and `/version`) counts toward Cloudflare's request limit for the whole account. The account is on Workers Paid: **10 million requests a month**, shared by every LSH site (the courses, the CMS, the Training Portal and the rest). Past the limit, Cloudflare charges for every extra million, so one page that asks too often costs money for every site. Static files (the page, `js/`) don't count. `slides/`, `documents/` and `workspace/files/` now come from R2 through the Worker, so each of those files a browser loads (or re-checks) counts too: see *Documents in R2*.
 
 So an open page asks the server sparingly (`POLL` in `index.html`), and not at all while its tab is in the background. When the tab is back, whatever came due runs then; a quick look at another tab (Google Meet) asks nothing:
 
@@ -224,6 +224,15 @@ Lists of records are read with `/api/storage/get-many` (up to 100 keys; for each
 
 These changes are made in `index.html` and `js/daily-activities.js` here. If `index.html` is rebuilt from a CM page that doesn't have them yet, carry them over again: `requests.cjs` fails until you do.
 
+
+## 🗄 Documents in R2
+
+The document-heavy folders (`slides/`, `documents/`, `workspace/files/`) are kept in **Cloudflare R2**, the `DOCUMENTS` binding (bucket `lshtraining`, the same bucket the EA/PA course and the CMS use), under `courses/md/` (e.g. `courses/md/slides/...`). `wrangler.json`'s `assets.run_worker_first` sends those paths to `worker.js`, and `docFromR2` answers from R2, with byte ranges (PDF viewers) and 304s for a file the browser already has.
+
+- **Uploading:** `.github/workflows/r2-docs.yml` runs on every push to `main` that changes those folders: it uploads the files that changed and removes deleted ones (`.github/scripts/r2-sync.mjs`). **Actions → R2 documents → Run workflow** uploads every file (do this once, after setting the secret). It needs the repository secret `CLOUDFLARE_API_TOKEN` (a Cloudflare API token with *Workers R2 Storage: Edit*); until it's set, the run only prints a notice.
+- **Fallback:** a file that isn't in R2 yet (the upload still running, or the token not set) comes from the Worker's static assets as before, and so does everything if the binding is missing or R2 fails. The files stay in the repository and in the deploy, so nothing breaks while R2 fills; once R2 has them all, the folders can be added to `.assetsignore` to leave them out of the deploy.
+- **Requests:** these files now go through the Worker, so each one a browser loads or re-checks counts toward the account's 10 million Worker requests a month (and is one R2 read; 10 million a month are free). A class of 30 opening a few hundred slide images a day is roughly 100–200 thousand a month.
+- **Checks:** `.github/scripts/r2-docs.mjs` (in *Checks*) serves a document from an in-memory R2: from R2 when it's there, byte ranges, 304s, HEAD, the static assets when it's missing or R2 fails, nothing else read from R2, and the `run_worker_first` list matching the folders.
 
 ## Checks
 
