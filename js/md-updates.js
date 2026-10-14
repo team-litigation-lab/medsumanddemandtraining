@@ -219,15 +219,10 @@ function renderTopbar(){
     <div class="topbar-inner">
       <div class="brand" onclick="goto('dashboard')">
         ${brandMark()}
-        <div class="brand-text"><b>LSH Medsum &amp; Demand Training</b><span>5-Day Interactive Training</span></div>
+        <div class="brand-text"><b>MEDSUM &amp; DEMAND TRAINING</b></div>
       </div>
       <button type="button" class="mobile-menu-btn" aria-label="Menu" aria-expanded="${state.mobileNavOpen?'true':'false'}" onclick="toggleMobileNav()">${state.mobileNavOpen?'✕':'☰'}<span>Menu</span></button>
       <div class="topbar-right">
-        <div class="topbar-search">
-          <span class="sicon">🔍</span>
-          <input type="text" id="topSearchInput" name="topSearchInput" autocomplete="off" placeholder="Search days, topics, tools…" value="${esc(state.searchQuery||'')}" oninput="setTopSearch(this.value)" onkeydown="if(event.key==='Escape') clearTopSearch();">
-          ${state.searchQuery ? `<div class="search-results" id="searchResultsWrap">${renderSearchResults(state.searchQuery)}</div>` : ""}
-        </div>
         <div class="nav">
           ${views.map(([id,label])=>`<button class="${(state.view===id || (id==="practice" && PRACTICE_SUBVIEWS.includes(state.view)))?'active':''}" onclick="goto('${id}')">${label}${id==="tasks" && openTasksCount() ? `<span class="nav-badge">${openTasksCount()}</span>` : ""}${id==="activities" && typeof daUnreadCount==="function" && daUnreadCount() ? `<span class="nav-badge nav-badge-act">${daUnreadCount()}</span>` : ""}</button>${id==="practice" && window.mdToolsMenuHTML ? mdToolsMenuHTML() : ""}`).join("")}
           ${(state.traineeId && !state.isAdmin) ? `<button type="button" class="nav-focus" onclick="openFocusPanel()" title="My Focus — trainer feedback and what to work on next">🎯 Focus${focusNewCount()?`<span class="nav-badge">${focusNewCount()}</span>`:""}</button>` : ""}
@@ -235,11 +230,6 @@ function renderTopbar(){
             ? `<button type="button" class="nav-viewswitch" onclick="setAdminViewMode('admin')" title="Return to the admin (trainer) view">🛡 Back to Admin view</button>`
             : ((state.portalOnly && !state.isAdmin) ? "" : `<button class="${state.view==='admin'?'active':''}" onclick="openAdmin()">🛡 Admin</button>`)}
           ${state.isAdmin ? `<button type="button" class="nav-viewswitch" onclick="setAdminViewMode('trainee')" title="See the portal exactly as a trainee does — no trainer tools or admin pages">👁 Trainee view</button>` : ""}
-          <button type="button" class="nav-fs" onclick="openInNewTab()" title="Open this page in a new tab (e.g. to review a lesson while you work)">⧉</button>
-          <button type="button" class="nav-fs" onclick="togglePageFullscreen()" title="Full screen (Esc to exit)">⛶</button>
-        </div>
-        <div class="trainee-chip" onclick="promptName()">
-          <span class="dot"></span> ${state.traineeName ? esc(state.traineeName) : "Set your name"}
         </div>
       </div>
     </div>
@@ -1258,12 +1248,12 @@ if(document.querySelector(".topbar")) render();
    The bar holds more than most laptop screens have room for, and other files add to it
    (js/portal-link.js adds ← Training Directory). So instead of fixed breakpoints, it is measured
    after every render and resize, and steps down only as far as it has to:
-     1. smaller tabs, and the search box shrinks to its 🔍 (it opens when clicked);
+     1. smaller tabs;
      2. the course name hides (the logo stays);
-     3. the 📚 ⛶ menus show their icon alone (js/lsh-topbar.js; hovering names them);
+     3. the 📚 menu shows its icon alone (js/lsh-topbar.js; hovering names it);
      4. the tabs wrap onto a second row, as in the other LSH courses on a small laptop screen.
    No tab moves into a "More" menu: the bar is grouped by purpose instead, the same as every LSH
-   course (js/lsh-topbar.js: 📚 Guides ▾, ⛶ View ▾).
+   course (js/lsh-topbar.js: 📚 Guides ▾).
    Below 1181px the bar keeps its own layouts (two rows, or the ☰ menu on phones). */
 (function(){
   const s = document.createElement("style"); s.textContent = `
@@ -1273,14 +1263,6 @@ if(document.querySelector(".topbar")) render();
   .topbar .brand-text b,.topbar .brand-text span{max-width:none !important;}
   .topbar .nav > button,.topbar .nav > .nav-tools > button{padding:8px 9px;font-size:13px;}
   .topbar.tf-tight .nav > button,.topbar.tf-tight .nav > .nav-tools > button{padding:7px 7px;font-size:12.5px;}
-  .topbar.tf-tight .topbar-search{flex:0 0 38px !important;min-width:38px !important;max-width:38px !important;padding:8px 11px;overflow:hidden;cursor:pointer;justify-content:center;}
-  .topbar.tf-tight .topbar-search .sicon{cursor:pointer;}
-  .topbar.tf-tight .topbar-search:not(:focus-within):not(:has(#searchResultsWrap)) input{flex:0 0 0;width:0;padding:0;opacity:0;}
-  /* opened, the box keeps its place and the field opens to the right, over the first tabs, while you type */
-  .topbar.tf-tight .topbar-search:focus-within,.topbar.tf-tight .topbar-search:has(#searchResultsWrap){overflow:visible;z-index:5;}
-  .topbar.tf-tight .topbar-search .sicon{position:relative;z-index:1;}
-  .topbar.tf-tight .topbar-search:focus-within input,.topbar.tf-tight .topbar-search:has(#searchResultsWrap) input{position:absolute;left:-1px;top:-1px;bottom:-1px;width:320px !important;max-width:none !important;flex:none;opacity:1;padding:0 14px 0 36px;background:#3A3F5C;border:1px solid rgba(255,255,255,.35);border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.25);}
-  .topbar.tf-tight .topbar-search #searchResultsWrap{right:auto;width:380px;}
 }
 /* tablets and phones: the course name has its own row (or sits by ☰ Menu), so no fixed cap on it */
 @media(max-width:1180px){ .topbar .brand-text b,.topbar .brand-text span{max-width:none !important;} }
@@ -1348,9 +1330,5 @@ if(document.querySelector(".topbar")) render();
     document.querySelectorAll(".topbar .nav-tools.open").forEach(m=>{ if(!m.contains(e.target)){ m.classList.remove("open"); const b = m.querySelector("button"); if(b) b.setAttribute("aria-expanded","false"); } });
   }, true);
   document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeMenus(); });
-  document.addEventListener("click", (e)=>{
-    const s = e.target.closest && e.target.closest(".topbar.tf-tight .topbar-search");
-    if(s){ const inp = s.querySelector("input"); if(inp && document.activeElement !== inp) inp.focus(); }
-  });
   fit();
 })();
