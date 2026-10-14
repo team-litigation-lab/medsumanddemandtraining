@@ -75,7 +75,7 @@ window.LSH_BLUEPRINT = {
           '📋 Activities: publish each day\'s activities and review the submissions.',
           '🗣 Feedback Style learns how you write feedback, from your own reviews; AI drafts use that voice.',
           '👁 Trainee view shows the portal exactly as trainees see it.',
-          '🧭 Orientation is the Trainee blueprint to share on day one; it\'s also /blueprint.pdf, in trainees\' Handouts.'],
+          '🧭 Orientation is the deck to share with trainees on day one. The blueprints themselves live on the Main Portal\'s 🧭 Blueprint page, never inside the program.'],
         where: 'Admin → 📋 Activities · 🗣 Feedback Style · 👁 Trainee view · 🧭 Orientation.',
         tip: 'The Trainee blueprint PDF republishes itself after every update; nothing to do by hand.' }
     ]
