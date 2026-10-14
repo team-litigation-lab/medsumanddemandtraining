@@ -104,8 +104,11 @@ async function workerChecks() {
     t0 = Date.now(); await page.waitForTimeout(6000);
     const hidden = since(t0);
     if (hidden.length) fail(`${hidden.length} requests while the tab was in the background: ${JSON.stringify(hidden.map(x => x.path + ' ' + x.key.slice(0, 40)))}`);
+    // the clock starts before the tab comes back: its catch-up request goes out on the event itself,
+    // which on a slow runner is before page.evaluate() returns
+    t0 = Date.now();
     await page.evaluate(() => { Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' }); document.dispatchEvent(new Event('visibilitychange')); });
-    t0 = Date.now(); await page.waitForTimeout(800);
+    await page.waitForTimeout(800);
     if (!since(t0, x => x.key === me).length) fail(`coming back to the tab didn't check the trainee's record: ${JSON.stringify(since(t0 - 1000).map(x => x.path + ' ' + x.key.slice(0, 40)))}`);
     // a quick look at another tab (Meet) and back asks nothing: a second tab with the real timings,
     // between its scheduled checks (the first round runs as it opens; the next is a minute away)
