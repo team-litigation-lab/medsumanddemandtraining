@@ -171,7 +171,7 @@ file and how they build the demand, not only their quiz scores.
 ## 🧭 Orientation and the Blueprints
 
 Admins have **🧭 Orientation** in the top bar, with two tabs:
-- **🧭 Trainee blueprint:** the Orientation deck, to share on day one. It's also `/blueprint.pdf`, in trainees' Handouts.
+- **🧭 Trainee blueprint:** the Orientation deck, to share on day one, on the same engine, cover and slide layout as the Trainer blueprint — one deck in two tabs. Its slides are `trainee` in `js/blueprint-content.js` (`js/md-orientation.js` opens them from 🧭 Orientation), and `/blueprint.pdf` (in trainees' Handouts) is built from the same deck as real text.
   - **It republishes itself after every deploy.** The published copy is matched against `APP_BUILD` and the Worker's deployment id (`/version`, from `version_metadata` in `wrangler.json`). The first admin page open after a deploy rebuilds it.
   - Its opening, roadmap and dashboard slides say 5 days and describe this course. `js/blueprint-content.js` rewrites the shared engine's EA/PA wording when the slides are drawn, so a rebuild of `index.html` keeps it.
 - **🛠 Trainer blueprint** (admins only, never at a public address): a cover and 11 slides on running the course. It covers signing in, the Trainee Audit, day feedback, surprise tasks and roleplays, the Case File and the documents' 🔑 audit keys, the Case Workspace in Google Drive, Practice and the Skill Builders, Presenter view and the decks, SOP Reference and Trainer Cues, Batch Folders, Rankings and Content Studio, Activities, the feedback style and Trainee view.
