@@ -1192,7 +1192,7 @@ function sopProgramFlow(){
         <tr><td>See the portal as a trainee does</td><td>Top bar → <b>👁 Trainee view</b></td></tr>
         <tr><td>See the planted errors in each case document</td><td><b>📁 Documents</b> signed in as admin (red 🔑 trainer key under each file)</td></tr>
         <tr><td>Check a trainee's file work in the CMS</td><td><b>🧰 Tools</b> → LSH Case Management System (trainees log their Case ID in each Skill Builder)</td></tr>
-        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Simulator's Medsum &amp; Demand pack is coming soon)</td></tr>
+        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Simulator's Medsum &amp; Demand calls are coming soon on ☎ LSH Ring Channel)</td></tr>
       </tbody></table></section>
     <section class="card sopf-card" style="margin-top:14px;"><h3>The ${DAYS.length} days</h3>
       <table class="log-table sopx-table sopf-map"><thead><tr><th>Day</th><th>Title</th><th>Canva deck + topics</th><th>Skill Builders</th><th></th></tr></thead><tbody>${days}</tbody></table></section>`;

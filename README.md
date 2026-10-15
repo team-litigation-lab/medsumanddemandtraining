@@ -269,4 +269,4 @@ The smoke and requests tests need Playwright.
    - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). The trainees' Google domain is `WS_DOMAIN` in `worker.js` and `CONFIG.DOMAIN` in `Code.gs`; change both together.
 4. **Training Portal (optional):**
    - To have the Training Portal's **Progress & Feedback** page list this course's trainees, add the program to `PROGRAMS` in the portal's `functions/api/program-progress.js` with key prefix `md:`, 5 days and the course address.
-   - The shared Call Simulator has no Medsum & Demand call pack yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once a pack exists.
+   - The shared Call Simulator is ☎ **LSH Ring Channel's** (the training phone, opened through the Portal) and has no Medsum & Demand calls yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once they exist (a trainer writes them in Ring Channel's 📚 Scenarios).

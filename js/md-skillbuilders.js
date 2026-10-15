@@ -116,11 +116,12 @@ const MD_TOOL_DEFAULTS = [
    evidence:"CMS Case ID", idHint:"CMS Case ID (e.g. LSH-2026-PI-000123)"},
   // Shared simulators on the LSH Training Portal (used by every program). The course
   // opens them with ?program=MD and the trainee's name and batch, so results carry them.
-  // The Call Simulator has no Medsum & Demand call pack yet: it stays "coming soon" until an
-  // admin switches it to Live in 🧰 Tools once the pack is on the Training Portal.
-  {id:"calls", icon:"📞", name:"Call Simulator (LSH Training Portal)", short:"Call Simulator", status:"coming",
+  // The Call Simulator is ☎ LSH Ring Channel's (the training phone; this Portal address opens it signed in). It has no
+  // Medsum & Demand calls yet: it stays "coming soon" until an admin switches it to Live in 🧰 Tools once they exist
+  // (a trainer writes them in Ring Channel's 📚 Scenarios, or they are added to its src/scenarios.js).
+  {id:"calls", icon:"📞", name:"Call Simulator (☎ LSH Ring Channel)", short:"Call Simulator", status:"coming",
    url:"https://cm-training-activity.pages.dev/simulators/call.html", portalSim:true,
-   desc:"Live practice calls, spoken aloud, on the LSH Training Portal. A Medsum & Demand call pack (records and billing offices, the client, the adjuster) is planned; until it's live, practise these calls in 🔥 Live Roleplay and in each Skill Builder's live call.",
+   desc:"Live practice calls on the training phone, spoken aloud: the phone rings, you answer with a headset and the call is graded on its line's Mock Calls Metrics. Medsum & Demand calls (records and billing offices, the client, the adjuster) are planned; until they're live, practise these calls in 🔥 Live Roleplay and in each Skill Builder's live call.",
    evidence:"Score", idHint:"Score (e.g. 82%)"},
   {id:"email", icon:"✉️", name:"Email Workspace (LSH Training Portal)", short:"Email Workspace", status:"live",
    url:"https://cm-training-activity.pages.dev/simulators/email.html", portalSim:true,
@@ -784,7 +785,7 @@ window.renderCallSimulator = function(){
     </div>`;
   return `<p class="eyebrow">Simulators</p>
     <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">🛠 Simulators</h1>
-    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Phone and email practice live on the <b>LSH Training Portal</b>, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Simulator's Medsum &amp; Demand call pack isn't live yet — until it is, practise the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
+    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Email practice lives on the <b>LSH Training Portal</b> and the calls on <b>☎ LSH Ring Channel</b>, the training phone, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Simulator's Medsum &amp; Demand calls aren't live yet — until it is, practise the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
     <div class="md-tools">${card(calls)}${card(mail)}</div>
     <div class="card" style="padding:14px 18px;font-size:12.8px;color:var(--ink-soft)">Want more? Live Roleplay (🔥) has the client, adjuster and provider-office calls from the lessons, and every Skill Builder has a live call built in.${state.isAdmin?` <b>Admin:</b> results appear on the Training Portal's Simulators page when you're signed in there as admin. Addresses are set in 🧰 Tools.`:""}</div>`;
 };
