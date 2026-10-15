@@ -1,11 +1,116 @@
 /* 🛠 The Medsum & Demand course's Trainer blueprint (lsh-blueprint.js draws it; lsh-blueprint-course.js adds it
-   to 🧭 Orientation). The Trainee blueprint is the Orientation deck itself (orientSlides), at /blueprint.pdf.
+   wires them in). Both decks live here: the Trainee blueprint is the 🧭 Orientation deck
+   (js/md-orientation.js opens it), drawn on the same cover and the same slide layout as the
+   Trainer blueprint, and published at /blueprint.pdf.
    A slide is { icon, title, points: [...], where, tip }. Change the wording here; the page and the PDF are made
    from it each time, stamped with the deployed build. README → Blueprints. */
 window.LSH_BLUEPRINT = {
   product: 'Medsum & Demand Training',
   site: 'LSH Medsum & Demand Training (5-Day)',
   file: 'LSH_MD',
+  trainee: {
+    sub: 'Your guide to the portal: the 5-day Medsum & Demand Training, day by day',
+    slides: [
+      { icon: '👋', title: 'Welcome to the program', points: [
+          "Five days to work like a confident Demand Specialist — built around one realistic case, Dana Whitfield's, from the file handoff to the settlement.",
+          'Learn: short topics across the five days.',
+          'Practice: hands-on Skill Builders and live calls.',
+          'Prove: a Knowledge Check each day — and a certificate at the end.',
+          "You'll need Chrome or Edge on a computer, a headset with a microphone for the live calls, and a stable connection."],
+        where: 'The portal opens from the LSH Training Portal; your dashboard is where you land.',
+        tip: 'Your progress saves to your account automatically, so you can pick up on any computer.' },
+      { icon: '🗺', title: 'Your 5-day roadmap', points: [
+          'Five days, each with its topics and its Skill Builders, listed on your dashboard.',
+          'Days open one at a time — each builds on the one before.',
+          "Finishing a day's Skill Builders unlocks tomorrow.",
+          'Every day you have finished stays open: press Review to go back to it any time.'],
+        where: 'Your dashboard — the day cards, in order.',
+        tip: 'Read the Case File before Day 1: every lesson and exercise works that one case.' },
+      { icon: '🖥', title: 'How every day works', points: [
+          '1. Lesson slides: one topic at a time, every slide the same size. Longer topics continue on a second page — watch for the PAGE 1 / 2 badge. Your place is saved.',
+          '2. Quick Checks: short questions between topics. Pick, change your mind, then Check Answer.',
+          '3. Skill Builders: do the real task. Graded with written feedback, and it auto-saves as you type.',
+          '4. Knowledge Check: pass at 70% to mark the day complete ✓.',
+          '5. The next day opens when you finish the Skill Builders.'],
+        where: 'Your dashboard → Start (or Review) on a day.',
+        tip: 'Didn\'t pass the Knowledge Check? That is a "not yet", not a "no" — you can still move on, and retake it any time. Your best score counts.' },
+      { icon: '📷', title: 'Live sessions with your trainer', points: [
+          "Your trainer presents the day's slides in Google Meet. They are the same slides you have in the portal — nothing extra to install.",
+          'At each checkpoint your trainer pauses for discussion. Answer out loud — a first answer is never wrong, it is where the learning starts.',
+          'Longer topics have a second page (PAGE 1 / 2). On your own, use Next or the ← → keys, 🔊 Listen, or ⛶ Full screen.',
+          'Missed something live? Every slide stays in your portal — reopen the day any time and pick up exactly where you left off.'],
+        where: 'Google Meet for the session; the same day in your portal afterwards.',
+        tip: 'Keep the portal open on the day your trainer is presenting, so you can follow and re-read at your own pace.' },
+      { icon: '📚', title: 'Your dashboard at a glance', points: [
+          'Progress track: Days 1–5, ✓ = passed, 🔒 = not open yet.',
+          'Day cards: Start or Review a day, with 💬 trainer feedback appearing on the card.',
+          'Under the lessons, your scores band: completion, quiz average, days done, 💬 your feedback and your ranking.',
+          'Resume takes you back to where you left off, and the certificate downloads from here when it is earned.',
+          'The competency profile: eight skills that grow as your work is graded.'],
+        where: 'Your dashboard — every sign-in lands on it.',
+        tip: 'Check the day cards for 💬 at the end of each day: that is your trainer\'s feedback waiting.' },
+      { icon: '🧭', title: 'Getting around', points: [
+          '🎲 Tasks: surprise tasks from your trainer — acknowledge, plan and resolve before the timer ends. Graded.',
+          'Case File: Dana Whitfield, the working case. Read it first. 📁 Documents holds every record (WHITFIELD 0001–0066), bill, insurer letter, draft demand and response, with its CMS upload category.',
+          '🧪 Practice: every practice tool, the same way for each day — 🧠 Skill Builders on the case documents, 🗣 Communication (live roleplay calls with the client, providers and the adjuster) and 🗂 Systems (the CMS).',
+          'My Notes and Handouts: your private notes, downloadable as a PDF, and printable checklists and Excel templates for each day.',
+          '🎯 Focus and 💬 Feedback: your trainer\'s priorities for you, and your say on what is working.'],
+        where: 'The top bar. On a phone, everything is under ☰ Menu; Search finds any topic or tool.',
+        tip: "Each day's tools open with that day, so you never have to hunt for the right one." },
+      { icon: '📂', title: 'The case: Dana Whitfield', points: [
+          'Stopped at a red light, rear-ended by a driver looking at his phone. Same-day ER, then five months of treatment — chiropractic care, an MRI, an orthopedic surgeon, pain management and an injection.',
+          'Maximum medical improvement on 08/21/2026. Now her file comes to you for the medsum and the demand.',
+          'Every lesson, Skill Builder, call and CMS exercise works this one case.',
+          'Read the Case File before Day 1, then open the records and bills in 📁 Documents.',
+          'The documents contain real-world errors — a wrong date of incident, a prior injury the intake missed, a duplicate charge. Catching them is the job.',
+          'Medical records are protected health information: treat everything as confidential, like a real client file.'],
+        where: 'Case File and 📁 Documents in the top bar.',
+        tip: 'Keep 📁 Documents open in a second tab while you work a Skill Builder.' },
+      { icon: '🧪', title: 'Skill Builders: how grading works', points: [
+          'First try is free: your first submission of each exercise never uses an attempt.',
+          'Repeat attempts are shared across the whole program — use them wisely. Your trainer can reset them.',
+          'Auto-saves: close the tab or switch devices — your work is still there.',
+          'Feedback, not just a score: every graded submission shows strengths, what to change ("not this way — here\'s the better way") and next steps.',
+          "Nonsense or copy-paste answers aren't graded."],
+        where: '🧪 Practice in the top bar; each day\'s tools open with that day.',
+        tip: 'Use the free first try to see what the grader is looking for, then do it properly.' },
+      { icon: '📞', title: 'Live calls and roleplays', points: [
+          '🎧 Use a headset. The caller speaks; you answer out loud (Chrome or Edge) or type.',
+          "🔊 Can't hear the caller? Check your volume and press ↻ Replay.",
+          '🙋 Hands-free mode listens automatically after the caller finishes.',
+          '📞 Hang Up ends the call and gives you your evaluation.'],
+        where: '🧪 Practice → 🗣 Communication, inside the day.',
+        tip: 'Take the call somewhere quiet: background noise is what costs most people their score.' },
+      { icon: '💬', title: 'Feedback, focus and your growth', points: [
+          "Trainer feedback: your trainer writes feedback on each day's work — it lights up on the day card and in 🎯 Focus.",
+          "🎯 Focus: your trainer's priorities for you, plus suggestions from your own work. Tick items off as you go.",
+          'Competency profile: eight skills — accuracy, judgment, risk, efficiency, communication, composure, knowledge and real-time task handling.',
+          'The profile grows as your work is graded, so it shows where you are strongest and what to build.'],
+        where: '🎯 Focus in the top bar · the competency profile on your dashboard.',
+        tip: 'Read the feedback on the day it arrives: it is far easier to act on while the task is fresh.' },
+      { icon: '🏅', title: 'Earning your certificate', points: [
+          'Pass all 5 Knowledge Checks (70% or better) and your Certificate of Completion unlocks — download it as a PDF from your dashboard.',
+          'It shows your name exactly as you registered it, so check your spelling.',
+          'Signed by your trainer, the Training Head and the General Manager.',
+          '"With Distinction" for a 90% or better average.'],
+        where: 'Your dashboard — the certificate sits beside Resume.',
+        tip: 'Name spelt wrong? Tell your trainer before the end of the program, not after the certificate is issued.' },
+      { icon: '🔒', title: 'Ground rules', points: [
+          'Confidentiality first — never paste real client or firm information into any tool. Medical records are protected health information.',
+          "AI is a tool, not the answer — its use depends on each attorney's preferences; always review its output.",
+          'Your own work — the feedback only helps if it is your thinking.',
+          'Stuck? Ask your trainer, or use 💬 Feedback to tell us what is unclear.'],
+        where: 'Everywhere in the program.',
+        tip: 'When a record and the bill disagree, raise it rather than picking one — that is the judgment being graded.' },
+      { icon: '🚀', title: "Let's begin", points: [
+          '1. Sign in: last name, first name and your batch code.',
+          "2. Read the Case File: Dana Whitfield's.",
+          '3. Open Day 1 from your dashboard and press Start.',
+          'Questions before we start?'],
+        where: 'The LSH Training Portal → this program → your dashboard.',
+        tip: 'Stuck on anything? Message your trainer with your name, your batch and a screenshot — that is everything they need.' }
+    ]
+  },
   trainer: {
     sub: 'Running the 5-day Medsum & Demand course: the trainer side of the portal',
     slides: [
@@ -82,7 +187,7 @@ window.LSH_BLUEPRINT = {
   }
 };
 
-/* The Trainee blueprint (Orientation, /blueprint.pdf) and the Handouts card describe this course: the shared engine
+/* The Handouts card describes this course: the shared engine
    still carries the EA/PA course's opening ("Ten days … Executive & Personal Assistant", a 10-day roadmap). Done here,
    not in index.html, so a rebuild of the page keeps it. */
 (function () {
@@ -102,7 +207,6 @@ window.LSH_BLUEPRINT = {
     window[name].__lbpFix = true;
   };
   function apply() {
-    wrap('orientSlides', (slides) => Array.isArray(slides) ? slides.map(sl => Object.assign({}, sl, { h: fix(sl.h), body: fix(sl.body) })) : slides);
     wrap('renderHandouts', fix);
   }
   apply();
