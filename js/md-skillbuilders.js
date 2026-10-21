@@ -126,7 +126,14 @@ const MD_TOOL_DEFAULTS = [
   {id:"email", icon:"✉️", name:"Email Workspace (LSH Training Portal)", short:"Email Workspace", status:"live",
    url:"https://cm-training-activity.pages.dev/simulators/email.html", portalSim:true,
    desc:"A Gmail-style practice inbox (generate one for your program): create labels, clear the inbox with one decision per email, reply, forward and report phishing. Graded on filing, security, triage and writing.",
-   evidence:"Score", idHint:"Score"}
+   evidence:"Score", idHint:"Score"},
+  // A medical summary and a demand are only as good as the records and itemized bills behind them, and chasing
+  // the ones that are missing is this course's work too. The simulator produces each record and bill it collects
+  // as a real file named the firm's way: download it and add it on your case (Medical Records, Bills).
+  {id:"records", icon:"🗂", name:"Medical Records Requests (LSH Training Portal)", short:"Records", status:"live",
+   url:"https://cm-training-activity.pages.dev/simulators/records.html", portalSim:true,
+   desc:"A medical records request platform: fix the HIPAA authorization before anything goes out, request complete records and itemized bills from the right department for the right dates, handle rejections, fees, silence and partial ledgers, then review what comes back, flag the problems, and file each record and bill into your case file.",
+   evidence:"Request number", idHint:"Request number (e.g. MRR-2026-00012)"}
 ];
 function mdTool(id){
   const d = MD_TOOL_DEFAULTS.find(t=>t.id===id); if(!d) return null;
