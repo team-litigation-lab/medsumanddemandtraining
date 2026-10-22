@@ -46,5 +46,26 @@
         "GeminiRelay"
       ]
     }
-  ]
+  ],
+  "previews": {
+    "kv_namespaces": [
+      {
+        "binding": "LSH_KV",
+        "id": "7a9c8ea49ba54fe58a9e7360407860e5"
+      }
+    ],
+    "r2_buckets": [
+      {
+        "binding": "DOCUMENTS",
+        "bucket_name": "lshtraining-preview"
+      }
+    ],
+    "version_metadata": {
+      "binding": "CF_VERSION_METADATA"
+    },
+    "placement": {
+      "mode": "targeted",
+      "region": "gcp:us-central1"
+    }
+  }
 }
