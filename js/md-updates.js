@@ -199,7 +199,7 @@ function narratorAfterRender(pageOnly){
   const key = state.dayId+":"+(state.lessonSlide||0)+":"+(state.slidePage||0)+":"+state.dayViewMode;
   if(key!==__lastNarrKey){ __lastNarrKey = key; Narrator.afterSlideChange(); } else Narrator.paint();
 }
-// Skill Builders, Simulators, Tools and Roleplay all live under 🧪 Practice (js/md-practice.js).
+// Skill Builders, LSH Sims, Tools and Roleplay all live under 🧪 Practice (js/md-practice.js).
 const PRACTICE_SUBVIEWS = ["tool","calls","tools","crisisroleplay"];
 window.EXTRA_ROUTE_VIEWS = ["casedocs","workspace"];   // course-only pages get their own address (#/casedocs, #/workspace)
 // Page names for the "← Back to …" button, matching this top bar.
@@ -1020,11 +1020,11 @@ window.afterRender = function(){
    so it always matches what trainees see. Clock times follow a start time the
    trainer picks. Never shown in Present mode. */
 const SOP_LAB_ACTIVITIES = {
-  mdIntake1:["File Handoff Audit","Today's Plan","Itemized Bill Request","Call & the CMS"],
+  mdIntake1:["File Handoff Audit","Today's Plan","Itemized Bill Request","Call & LSH CaseWorks"],
   mdChron2:["Date Order","Flag the Entries","Key Facts","Medical Summary"],
   mdBills3:["Related or Not?","Total It","Balances & Liens","Specials Summary"],
   mdDemand4:["Ready to Send?","Audit the Draft","Sections","Non-Economic Damages"],
-  mdPacket5:["Order the Packet","Keystone Responds","Rebuttal Draft","The Call & the CMS"]
+  mdPacket5:["Order the Packet","Keystone Responds","Rebuttal Draft","The Call & LSH CaseWorks"]
 };
 (function(){ const s = document.createElement("style"); s.id = "eapa-sop-flow"; s.textContent = `
 .sopf{padding:22px 26px;margin-bottom:16px;border-top:6px solid var(--orange);}
@@ -1109,7 +1109,7 @@ function sopRunOfShow(dRaw){
       parts.length ? `Parts (≈10 min each): ${parts.map((a,k)=>`<b>${k+1}. ${esc(a)}</b>`).join(" · ")}.` : "",
       ti>0 ? `If time is short, trainees finish this one after the session; debrief it at the start of tomorrow.` : "",
       /Roleplay|The Call|Transportation Wall|Break the Adjuster|Deposition Prep/i.test(parts.join(" ")) ? `The live roleplay part can be run by you, or trainees rehearse solo first.` : "",
-      `Steps marked <b>Do this in the CMS</b> are done in the LSH Case Management System (🧰 Tools); trainees log the Case ID.`,
+      `Steps marked <b>Do this in LSH CaseWorks</b> are done in 🗂 LSH CaseWorks (🧰 Tools); trainees log the Case ID.`,
       `First submission of each exercise is free; repeats use one of 3 program-wide attempts (reset in Trainee Audit if someone is blocked by a technical issue).`].filter(Boolean),
       watch:"Anyone stuck on the same part for more than 10 minutes — nudge them to submit and move on; the debrief is where the learning lands."});
   });
@@ -1191,8 +1191,8 @@ function sopProgramFlow(){
         <tr><td>Read what trainees think of the program</td><td>Admin → <b>Trainee Feedback</b></td></tr>
         <tr><td>See the portal as a trainee does</td><td>Top bar → <b>👁 Trainee view</b></td></tr>
         <tr><td>See the planted errors in each case document</td><td><b>📁 Documents</b> signed in as admin (red 🔑 trainer key under each file)</td></tr>
-        <tr><td>Check a trainee's file work in the CMS</td><td><b>🧰 Tools</b> → LSH Case Management System (trainees log their Case ID in each Skill Builder)</td></tr>
-        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Simulator's Medsum &amp; Demand calls are coming soon on ☎ LSH Ring Channel)</td></tr>
+        <tr><td>Check a trainee's file work in LSH CaseWorks</td><td><b>🧰 Tools</b> → 🗂 LSH CaseWorks (trainees log their Case ID in each Skill Builder)</td></tr>
+        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Sim's Medsum &amp; Demand calls are coming soon on ☎ LSH Voice)</td></tr>
       </tbody></table></section>
     <section class="card sopf-card" style="margin-top:14px;"><h3>The ${DAYS.length} days</h3>
       <table class="log-table sopx-table sopf-map"><thead><tr><th>Day</th><th>Title</th><th>Canva deck + topics</th><th>Skill Builders</th><th></th></tr></thead><tbody>${days}</tbody></table></section>`;
@@ -1246,7 +1246,7 @@ if(document.querySelector(".topbar")) render();
 
 /* ---------- the top bar fits on one row ----------
    The bar holds more than most laptop screens have room for, and other files add to it
-   (js/portal-link.js adds ← Training Directory). So instead of fixed breakpoints, it is measured
+   (js/portal-link.js adds ← 🎓 LSH Academy Index). So instead of fixed breakpoints, it is measured
    after every render and resize, and steps down only as far as it has to:
      1. smaller tabs;
      2. the course name hides (the logo stays);
