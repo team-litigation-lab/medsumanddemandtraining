@@ -1,4 +1,4 @@
-# LSH Medsum & Demand Training (5-Day)
+# LSH Medsum & Demand Track (5-Day)
 
 **🖥 One screen fits all, no scrolling.** The window never scrolls: the top bar and the footer line keep their place, the page's body takes the height left between them, and a page with more in it than fits scrolls inside that body. A lesson is capped to the room the page has left, so the slide and its Previous / Next bar stay on the screen. Phones and tiny windows (under 1001 x 480) keep the ordinary page scroll. It's `js/lsh-one-screen.js`, loaded last after `js/lsh-topbar.js`, the same file in every LSH course repo; change it in all of them.
 

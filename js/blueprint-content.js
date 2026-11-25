@@ -5,11 +5,11 @@
    A slide is { icon, title, points: [...], where, tip }. Change the wording here; the page and the PDF are made
    from it each time, stamped with the deployed build. README → Blueprints. */
 window.LSH_BLUEPRINT = {
-  product: 'Medsum & Demand Training',
-  site: 'LSH Medsum & Demand Training (5-Day)',
+  product: 'Medsum & Demand Track',
+  site: 'LSH Medsum & Demand Track (5-Day)',
   file: 'LSH_MD',
   trainee: {
-    sub: 'Your guide to the portal: the 5-day Medsum & Demand Training, day by day',
+    sub: 'Your guide to the portal: the 5-day Medsum & Demand Track, day by day',
     slides: [
       { icon: '👋', title: 'Welcome to the program', points: [
           "Five days to work like a confident Demand Specialist — built around one realistic case, Dana Whitfield's, from the file handoff to the settlement.",

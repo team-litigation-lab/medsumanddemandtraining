@@ -1,5 +1,5 @@
 /**
- * LSH Medsum & Demand Training — Cloudflare Worker (secured)
+ * LSH Medsum & Demand Track — Cloudflare Worker (secured)
  *
  * Same engine as the EA/PA portal worker. All storage lives in the shared
  * LSH_KV namespace under an "md:" key prefix, so the Medsum & Demand, PD, CM and EA/PA portals can

@@ -1,5 +1,5 @@
 /* ============================================================
-   LSH Medsum & Demand Training — 🧪 PRACTICE
+   LSH Medsum & Demand Track — 🧪 PRACTICE
    One page for every practice tool, organized the same way for
    every day into three categories:
      🧠 Skill Builders  — think it through on the case documents
