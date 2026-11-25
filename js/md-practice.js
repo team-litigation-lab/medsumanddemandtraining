@@ -1,11 +1,11 @@
 /* ============================================================
-   LSH Medsum & Demand Training — 🧪 PRACTICE
+   LSH Medsum & Demand Track — 🧪 PRACTICE
    One page for every practice tool, organized the same way for
    every day into three categories:
      🧠 Skill Builders  — think it through on the case documents
      🗣 Communication   — say it: live roleplay calls with the
                           client, providers and the adjuster
-     🗂 Systems         — do it in the platform: the CMS
+     🗂 Systems         — do it in the platform: LSH CaseWorks
    Loaded after md-skillbuilders.js (uses window.__mdKit).
    ============================================================ */
 (function(){
@@ -72,7 +72,7 @@ PRACTICE_TOOLS.forEach(t=>{ if(!t.cat) t.cat = "think"; });
 const CATS = {
   think:{icon:"🧠", label:"Skill Builders", short:"Skill Builder", blurb:"Think it through on the case documents: audit, order, flag, calculate and write."},
   talk:{icon:"🗣", label:"Communication", short:"Communication", blurb:"Say it: live calls with the client, records and billing offices, the attorney and the adjuster."},
-  do:{icon:"🗂", label:"Systems", short:"Systems", blurb:"Do it in the platform: keep the case, the medsum, the itemization and the demand in the CMS."}
+  do:{icon:"🗂", label:"Systems", short:"Systems", blurb:"Do it in the platform: keep the case, the medsum, the itemization and the demand in LSH CaseWorks."}
 };
 window.mdToolCategory = (id)=> { const t = PRACTICE_TOOLS.find(x=>x.id===id); return CATS[(t && t.cat) || "think"]; };
 
@@ -84,19 +84,19 @@ const RP = (categoryId, topicId)=> ({kind:"rp", categoryId, topicId});
 const PLAN = {
   1:{think:["mdIntake1"],
      talk:[RP("providers","itemized"), RP("providers","recordsfee"), RP("client","worth")],
-     do:[SIM("cms",{title:"Set up the demand work in Dana's CMS case", note:"Correct the DOI, the provider list, records under Medical, bills under Bills, the week's tasks"})]},
+     do:[SIM("cms",{title:"Set up the demand work in Dana's LSH CaseWorks case", note:"Correct the DOI, the provider list, records under Medical, bills under Bills, the week's tasks"})]},
   2:{think:["mdChron2"],
      talk:[RP("client","gapcall"), RP("providers","wrongpatient")],
-     do:[SIM("cms",{title:"Save the chronology and medical summary in the CMS", note:"Upload both under Medical and add the attorney's flag note"})]},
+     do:[SIM("cms",{title:"Save the chronology and medical summary in LSH CaseWorks", note:"Upload both under Medical and add the attorney's flag note"})]},
   3:{think:["mdBills3"],
      talk:[RP("providers","lopcall"), RP("adjuster","paidbilled")],
-     do:[SIM("cms",{title:"Save the bills itemization in the CMS", note:"Billed and paid columns, the exclusions note, the lien list task for the Case Manager"})]},
+     do:[SIM("cms",{title:"Save the bills itemization in LSH CaseWorks", note:"Billed and paid columns, the exclusions note, the lien list task for the Case Manager"})]},
   4:{think:["mdDemand4"],
      talk:[RP("client","impact"), RP("client","worth")],
-     do:[SIM("cms",{title:"Save the corrected draft demand in the CMS", note:"Corrections note and the attorney review task"}), SIM("email",{note:"Generate a practice inbox and clear it — records, bills and adjuster emails"})]},
+     do:[SIM("cms",{title:"Save the corrected draft demand in LSH CaseWorks", note:"Corrections note and the attorney review task"}), SIM("email",{note:"Generate a practice inbox and clear it — records, bills and adjuster emails"})]},
   5:{think:["mdPacket5"],
      talk:[RP("adjuster","takeit"), RP("adjuster","priorrecords"), RP("adjuster","deadline"), RP("client","lowoffer")],
-     do:[SIM("cms",{title:"Log Keystone's responses in the CMS", note:"The offer note, deadlines, the rebuttal review and the prior-records task"})]}
+     do:[SIM("cms",{title:"Log Keystone's responses in LSH CaseWorks", note:"The offer note, deadlines, the rebuttal review and the prior-records task"})]}
 };
 
 function rpLabel(it){
@@ -119,7 +119,7 @@ function itemView(it){
     const t = mdTool(it.id); if(!t) return null;
     const logged = Object.values(state.cmsLog||{}).some(v=>(v.platform||"cms")===it.id);
     const name = it.title || t.name.replace(/ \(LSH Training Portal\)$/,"");
-    return {icon:t.icon, title:name, desc:it.note || t.desc, where: it.id==="cms" ? "LSH CMS" : "LSH Training Portal",
+    return {icon:t.icon, title:name, desc:it.note || t.desc, where: it.id==="cms" ? "🗂 LSH CaseWorks" : "LSH Training Portal",
       done: logged && it.id!=="cms", doneLabel:"✓ Work logged", live:t.live,
       act: it.go ? `goto('${it.go}')` : `openTool('${it.id}')`};
   }
@@ -154,7 +154,7 @@ window.renderPracticeHub = function(){
   }).join("");
   return `<p class="eyebrow">Practice</p>
     <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">🧪 Practice</h1>
-    <p style="color:var(--ink-soft);font-size:14px;max-width:84ch;margin:0 0 14px">Every practice tool in one place, organized the same way for every day. Each day has all three kinds of practice: <b>think</b> it through on the case documents, <b>say</b> it on a call, and <b>do</b> it in the CMS. Each day's tools open when you reach that day${state.isAdmin ? " (as an admin you can open all of them)" : ""}.</p>
+    <p style="color:var(--ink-soft);font-size:14px;max-width:84ch;margin:0 0 14px">Every practice tool in one place, organized the same way for every day. Each day has all three kinds of practice: <b>think</b> it through on the case documents, <b>say</b> it on a call, and <b>do</b> it in LSH CaseWorks. Each day's tools open when you reach that day${state.isAdmin ? " (as an admin you can open all of them)" : ""}.</p>
     <div class="px-cats">${["think","talk","do"].map(c=>`<div class="px-cat ${c}"><span class="ic">${CATS[c].icon}</span><b>${CATS[c].label}</b><p>${CATS[c].blurb}</p></div>`).join("")}</div>
     <div class="px-bar">${chip("day","all","All days")}${[1,2,3,4,5].map(n=>chip("day",n,"Day "+n)).join("")}<span class="sep"></span>${chip("cat","all","All")}${["think","talk","do"].map(c=>chip("cat",c,CATS[c].icon+" "+CATS[c].label)).join("")}</div>
     ${blocks}
@@ -162,7 +162,7 @@ window.renderPracticeHub = function(){
       <div class="px-grid" style="margin-top:10px">
         <div class="px-col think"><h3>${CATS.think.icon} Review</h3>${itemHTML({icon:"📁", title:"Case Documents", desc:"Every Dana Whitfield document the tools use — records, bills, insurer letters, the draft demand and the responses.", where:"In this portal", act:"goto('casedocs')"})}${itemHTML({icon:"📂", title:"Case File", desc:"The one-page summary of Dana's case, the bills key and the timeline.", where:"In this portal", act:"goto('clientprofile')"})}</div>
         <div class="px-col talk"><h3>${CATS.talk.icon} Open practice</h3>${itemHTML({icon:"🎲", title:"Quick roleplay call", desc:"A random live call from this course, no setup.", where:"Live roleplay", act:"rpLaunchQuickPractice()"})}${itemHTML({icon:"🔥", title:"All roleplay situations", desc:"Pick any category, situation, difficulty and persona.", where:"Live roleplay", act:"state.rpHub={step:'category'};goto('crisisroleplay')"})}</div>
-        <div class="px-col do"><h3>${CATS.do.icon} Platforms</h3>${itemHTML({icon:"🗂", title:"LSH Case Management System", desc:"Keep Dana's case, medsum, itemization and demand.", where:"LSH CMS", act:"openTool('cms')"})}${itemHTML({icon:"🧰", title:"All tools, sign-in help & my work log", desc:"Every platform's address, how sign-in works inside the portal, and the IDs and scores you've logged.", where:"In this portal", act:"goto('tools')"})}</div>
+        <div class="px-col do"><h3>${CATS.do.icon} Platforms</h3>${itemHTML({icon:"🗂", title:"LSH CaseWorks", desc:"Keep Dana's case, medsum, itemization and demand.", where:"🗂 LSH CaseWorks", act:"openTool('cms')"})}${itemHTML({icon:"🧰", title:"All tools, sign-in help & my work log", desc:"Every platform's address, how sign-in works inside the portal, and the IDs and scores you've logged.", where:"In this portal", act:"goto('tools')"})}</div>
       </div></div>`;
 };
 window.pxSetFilter = function(group, val){

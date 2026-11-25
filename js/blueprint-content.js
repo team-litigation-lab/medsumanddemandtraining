@@ -5,11 +5,11 @@
    A slide is { icon, title, points: [...], where, tip }. Change the wording here; the page and the PDF are made
    from it each time, stamped with the deployed build. README → Blueprints. */
 window.LSH_BLUEPRINT = {
-  product: 'Medsum & Demand Training',
-  site: 'LSH Medsum & Demand Training (5-Day)',
+  product: 'Medsum & Demand Track',
+  site: 'LSH Medsum & Demand Track (5-Day)',
   file: 'LSH_MD',
   trainee: {
-    sub: 'Your guide to the portal: the 5-day Medsum & Demand Training, day by day',
+    sub: 'Your guide to the portal: the 5-day Medsum & Demand Track, day by day',
     slides: [
       { icon: '👋', title: 'Welcome to the program', points: [
           "Five days to work like a confident Demand Specialist — built around one realistic case, Dana Whitfield's, from the file handoff to the settlement.",
@@ -51,8 +51,8 @@ window.LSH_BLUEPRINT = {
         tip: 'Check the day cards for 💬 at the end of each day: that is your trainer\'s feedback waiting.' },
       { icon: '🧭', title: 'Getting around', points: [
           '🎲 Tasks: surprise tasks from your trainer — acknowledge, plan and resolve before the timer ends. Graded.',
-          'Case File: Dana Whitfield, the working case. Read it first. 📁 Documents holds every record (WHITFIELD 0001–0066), bill, insurer letter, draft demand and response, with its CMS upload category.',
-          '🧪 Practice: every practice tool, the same way for each day — 🧠 Skill Builders on the case documents, 🗣 Communication (live roleplay calls with the client, providers and the adjuster) and 🗂 Systems (the CMS).',
+          'Case File: Dana Whitfield, the working case. Read it first. 📁 Documents holds every record (WHITFIELD 0001–0066), bill, insurer letter, draft demand and response, with its LSH CaseWorks upload category.',
+          '🧪 Practice: every practice tool, the same way for each day — 🧠 Skill Builders on the case documents, 🗣 Communication (live roleplay calls with the client, providers and the adjuster) and 🗂 Systems (LSH CaseWorks).',
           'My Notes and Handouts: your private notes, downloadable as a PDF, and printable checklists and Excel templates for each day.',
           '🎯 Focus and 💬 Feedback: your trainer\'s priorities for you, and your say on what is working.'],
         where: 'The top bar. On a phone, everything is under ☰ Menu; Search finds any topic or tool.',
@@ -60,7 +60,7 @@ window.LSH_BLUEPRINT = {
       { icon: '📂', title: 'The case: Dana Whitfield', points: [
           'Stopped at a red light, rear-ended by a driver looking at his phone. Same-day ER, then five months of treatment — chiropractic care, an MRI, an orthopedic surgeon, pain management and an injection.',
           'Maximum medical improvement on 08/21/2026. Now her file comes to you for the medsum and the demand.',
-          'Every lesson, Skill Builder, call and CMS exercise works this one case.',
+          'Every lesson, Skill Builder, call and LSH CaseWorks exercise works this one case.',
           'Read the Case File before Day 1, then open the records and bills in 📁 Documents.',
           'The documents contain real-world errors — a wrong date of incident, a prior injury the intake missed, a duplicate charge. Catching them is the job.',
           'Medical records are protected health information: treat everything as confidential, like a real client file.'],
@@ -153,7 +153,7 @@ window.LSH_BLUEPRINT = {
         where: 'Top bar → 🗂 Workspace.',
         tip: 'Until the Worker has its workspace settings, the page says the workspace isn\'t switched on yet.' },
       { icon: '🧪', title: 'Practice and the Skill Builders', points: [
-          '🧪 Practice: every day has a 🧠 Skill Builder, 🗣 Communication (a live roleplay) and 🗂 Systems (the CMS).',
+          '🧪 Practice: every day has a 🧠 Skill Builder, 🗣 Communication (a live roleplay) and 🗂 Systems (LSH CaseWorks).',
           'One Skill Builder a day, 4 parts each: the file audit, the chronology and summary, the itemized bills, the demand, then Keystone\'s replies.',
           'Written parts are graded by the AI rubric, in the facilitator\'s voice.'],
         where: 'Top bar → 🧪 Practice.',

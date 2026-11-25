@@ -1,5 +1,5 @@
 /* ============================================================
-   LSH Medsum & Demand Training — portal features from the EA/PA update
+   LSH Medsum & Demand Track — portal features from the EA/PA update
    pack "z", as adapted for the CM course (js/cm-updates.js in Case-Management-
    Training) and reworded for Medsum & Demand (sections 6–8 are EA/PA-only labs
    and are left out; Medsum & Demand overrides at the end).
@@ -199,7 +199,7 @@ function narratorAfterRender(pageOnly){
   const key = state.dayId+":"+(state.lessonSlide||0)+":"+(state.slidePage||0)+":"+state.dayViewMode;
   if(key!==__lastNarrKey){ __lastNarrKey = key; Narrator.afterSlideChange(); } else Narrator.paint();
 }
-// Skill Builders, Simulators, Tools and Roleplay all live under 🧪 Practice (js/md-practice.js).
+// Skill Builders, LSH Sims, Tools and Roleplay all live under 🧪 Practice (js/md-practice.js).
 const PRACTICE_SUBVIEWS = ["tool","calls","tools","crisisroleplay"];
 window.EXTRA_ROUTE_VIEWS = ["casedocs","workspace"];   // course-only pages get their own address (#/casedocs, #/workspace)
 // Page names for the "← Back to …" button, matching this top bar.
@@ -219,7 +219,7 @@ function renderTopbar(){
     <div class="topbar-inner">
       <div class="brand" onclick="goto('dashboard')">
         ${brandMark()}
-        <div class="brand-text"><b>MEDSUM &amp; DEMAND TRAINING</b></div>
+        <div class="brand-text"><b>MEDSUM &amp; DEMAND TRACK</b></div>
       </div>
       <button type="button" class="mobile-menu-btn" aria-label="Menu" aria-expanded="${state.mobileNavOpen?'true':'false'}" onclick="toggleMobileNav()">${state.mobileNavOpen?'✕':'☰'}<span>Menu</span></button>
       <div class="topbar-right">
@@ -806,7 +806,7 @@ if(PV_IS_AUDIENCE){
   window.autoPublishBlueprint = async function(){};       // leave background jobs to the trainer's own tab
   const app = document.getElementById("app"); if(app) app.innerHTML = "";
   const root = document.createElement("div"); root.id = "audienceRoot";
-  root.innerHTML = `<div class="aud-wait"><b>LSH Medsum &amp; Demand Training</b>Waiting for the presenter…</div>`;
+  root.innerHTML = `<div class="aud-wait"><b>LSH Medsum &amp; Demand Track</b>Waiting for the presenter…</div>`;
   document.body.appendChild(root);
   // arrow keys pressed in the slides window (or while the live copy holds focus) drive the presentation
   document.addEventListener("keydown", (e)=>{
@@ -1020,11 +1020,11 @@ window.afterRender = function(){
    so it always matches what trainees see. Clock times follow a start time the
    trainer picks. Never shown in Present mode. */
 const SOP_LAB_ACTIVITIES = {
-  mdIntake1:["File Handoff Audit","Today's Plan","Itemized Bill Request","Call & the CMS"],
+  mdIntake1:["File Handoff Audit","Today's Plan","Itemized Bill Request","Call & LSH CaseWorks"],
   mdChron2:["Date Order","Flag the Entries","Key Facts","Medical Summary"],
   mdBills3:["Related or Not?","Total It","Balances & Liens","Specials Summary"],
   mdDemand4:["Ready to Send?","Audit the Draft","Sections","Non-Economic Damages"],
-  mdPacket5:["Order the Packet","Keystone Responds","Rebuttal Draft","The Call & the CMS"]
+  mdPacket5:["Order the Packet","Keystone Responds","Rebuttal Draft","The Call & LSH CaseWorks"]
 };
 (function(){ const s = document.createElement("style"); s.id = "eapa-sop-flow"; s.textContent = `
 .sopf{padding:22px 26px;margin-bottom:16px;border-top:6px solid var(--orange);}
@@ -1109,7 +1109,7 @@ function sopRunOfShow(dRaw){
       parts.length ? `Parts (≈10 min each): ${parts.map((a,k)=>`<b>${k+1}. ${esc(a)}</b>`).join(" · ")}.` : "",
       ti>0 ? `If time is short, trainees finish this one after the session; debrief it at the start of tomorrow.` : "",
       /Roleplay|The Call|Transportation Wall|Break the Adjuster|Deposition Prep/i.test(parts.join(" ")) ? `The live roleplay part can be run by you, or trainees rehearse solo first.` : "",
-      `Steps marked <b>Do this in the CMS</b> are done in the LSH Case Management System (🧰 Tools); trainees log the Case ID.`,
+      `Steps marked <b>Do this in LSH CaseWorks</b> are done in 🗂 LSH CaseWorks (🧰 Tools); trainees log the Case ID.`,
       `First submission of each exercise is free; repeats use one of 3 program-wide attempts (reset in Trainee Audit if someone is blocked by a technical issue).`].filter(Boolean),
       watch:"Anyone stuck on the same part for more than 10 minutes — nudge them to submit and move on; the debrief is where the learning lands."});
   });
@@ -1146,7 +1146,7 @@ function sopRunOfShow(dRaw){
 function sopProgramFlow(){
   const days = DAYS.map(d=>{ const tl = relatedTools(d.id); return `<tr><td><b>Day ${d.id}</b></td><td>${esc(d.title)}</td><td>${(typeof mdCanvaDeck==="function" && mdCanvaDeck(d.id)) ? `${mdCanvaDeck(d.id).pages.length}-slide deck + ` : ""}${d.lessons.length}</td><td>${tl.length?tl.map(t=>esc(t.title)).join("<br>"):"—"}</td><td><button class="btn btn-ghost btn-sm" onclick="setSopDay(${d.id})">Run of show →</button></td></tr>`; }).join("");
   return `
-    <section class="card sopf"><div class="sopx-kicker">Trainer reference · The whole program</div><h2 style="font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:26px;margin:4px 0 8px;">How to facilitate the LSH Medsum &amp; Demand Training</h2>
+    <section class="card sopf"><div class="sopx-kicker">Trainer reference · The whole program</div><h2 style="font-family:'Fraunces',Georgia,serif;color:var(--navy);font-size:26px;margin:4px 0 8px;">How to facilitate the LSH Medsum &amp; Demand Track</h2>
       <p style="font-size:14.5px;line-height:1.6;margin:0;max-width:85ch;">Five live sessions, one realistic personal-injury case (Dana Whitfield, rear-end collision 03/14/2026, from the file handoff to the settlement), one rhythm every day: <b>teach → check → practise → debrief → assess → follow up</b>. This page is the big picture; open any day for its minute-by-minute run of show.</p></section>
     <div class="sopf-grid">
       <section class="card sopf-card"><h3>1 · Before the program</h3><ol>
@@ -1191,8 +1191,8 @@ function sopProgramFlow(){
         <tr><td>Read what trainees think of the program</td><td>Admin → <b>Trainee Feedback</b></td></tr>
         <tr><td>See the portal as a trainee does</td><td>Top bar → <b>👁 Trainee view</b></td></tr>
         <tr><td>See the planted errors in each case document</td><td><b>📁 Documents</b> signed in as admin (red 🔑 trainer key under each file)</td></tr>
-        <tr><td>Check a trainee's file work in the CMS</td><td><b>🧰 Tools</b> → LSH Case Management System (trainees log their Case ID in each Skill Builder)</td></tr>
-        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Simulator's Medsum &amp; Demand calls are coming soon on ☎ LSH Ring Channel)</td></tr>
+        <tr><td>Check a trainee's file work in LSH CaseWorks</td><td><b>🧰 Tools</b> → 🗂 LSH CaseWorks (trainees log their Case ID in each Skill Builder)</td></tr>
+        <tr><td>Run extra call or email practice</td><td><b>🧪 Practice</b> → Live Roleplay calls and the Email Workspace (the Call Sim's Medsum &amp; Demand calls are coming soon on ☎ LSH Voice)</td></tr>
       </tbody></table></section>
     <section class="card sopf-card" style="margin-top:14px;"><h3>The ${DAYS.length} days</h3>
       <table class="log-table sopx-table sopf-map"><thead><tr><th>Day</th><th>Title</th><th>Canva deck + topics</th><th>Skill Builders</th><th></th></tr></thead><tbody>${days}</tbody></table></section>`;
@@ -1246,7 +1246,7 @@ if(document.querySelector(".topbar")) render();
 
 /* ---------- the top bar fits on one row ----------
    The bar holds more than most laptop screens have room for, and other files add to it
-   (js/portal-link.js adds ← Training Directory). So instead of fixed breakpoints, it is measured
+   (js/portal-link.js adds ← 🎓 LSH Academy Index). So instead of fixed breakpoints, it is measured
    after every render and resize, and steps down only as far as it has to:
      1. smaller tabs;
      2. the course name hides (the logo stays);

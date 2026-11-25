@@ -1,4 +1,4 @@
-# LSH Medsum & Demand Training (5-Day)
+# LSH Medsum & Demand Track (5-Day)
 
 **🖥 One screen fits all, no scrolling.** The window never scrolls: the top bar and the footer line keep their place, the page's body takes the height left between them, and a page with more in it than fits scrolls inside that body. A lesson is capped to the room the page has left, so the slide and its Previous / Next bar stay on the screen. Phones and tiny windows (under 1001 x 480) keep the ordinary page scroll. It's `js/lsh-one-screen.js`, loaded last after `js/lsh-topbar.js`, the same file in every LSH course repo; change it in all of them.
 
@@ -51,7 +51,7 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 | **Skill Builders** (one per day, 4 parts each) | registry in `build/md_practice_tools.js`; the exercises are in `js/md-skillbuilders.js` |
 | **📁 Documents** (32 case documents with records Bates-numbered WHITFIELD 0001–0066, 5 templates, 5 handouts) | generated into `documents/` by `build/make_documents.py`; metadata and trainer audit keys in `js/md-documents.js` |
 | **🎨 Canva decks** | one deck per day, linked on the Handouts page and named in each day's SOP (`MD_DECKS` in `js/md-skillbuilders.js`) |
-| **🧪 Practice** | `js/md-practice.js`: every day has three columns — 🧠 Skill Builder, 🗣 Communication (live roleplay), 🗂 Systems (the CMS) |
+| **🧪 Practice** | `js/md-practice.js`: every day has three columns — 🧠 Skill Builder, 🗣 Communication (live roleplay), 🗂 Systems (LSH CaseWorks) |
 | **🔥 Live Roleplay** | `build/md_roleplay.js`: 12 situations with the client, records and billing offices and the adjuster, plus a live call inside each Skill Builder |
 | **🎙 Presenter view scripts** (the trainer's spoken script for every slide, in the EA/PA format) | `js/slide-scripts/day1.js` – `day5.js`; see below |
 | **🗂 Case Workspace** (each trainee works the file in their own Google Drive folder) | `js/md-workspace.js`, `/api/workspace/*` in `worker.js`, `build/workspace/`; see below |
@@ -62,11 +62,11 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 
 | Day | Topic | Canva deck | Skill Builder |
 |---|---|---|---|
-| 1 | Medsum & Demand foundations: the file, the records and the bills | Medsum and Demand Training | **File Intake & Records Audit** (4 parts): audit the handed-off file against the documents (wrong date of incident, a prior injury the intake missed, Bayside's balance-only bill); choose today's actions; write the itemized-bill request; make a live call; set up the work in the CMS |
+| 1 | Medsum & Demand foundations: the file, the records and the bills | Medsum and Demand Training | **File Intake & Records Audit** (4 parts): audit the handed-off file against the documents (wrong date of incident, a prior injury the intake missed, Bayside's balance-only bill); choose today's actions; write the itemized-bill request; make a live call; set up the work in LSH CaseWorks |
 | 2 | Medical chronology & medical summary | Medical Chronology // Medical Summary | **Chronology & Summary Builder** (4 parts): put the records in date order; flag each entry (prior injury, the gap, causation, imaging, the injection, MMI and future care); pull the key facts; write the medical summary |
 | 3 | Bills itemization & medical specials | Bills Itemization | **Bills Itemization Workbench** (4 parts): decide which lines are related (a pre-accident charge, a duplicate MRI and an unrelated exam are not); total billed, adjusted, paid and owed; list the balances and liens; build the specials summary |
 | 4 | The demand letter | Demand Overview | **Demand Draft Audit** (4 parts): decide what must be true before sending; audit the draft line by line (claim number, date, "herniated" vs protrusion, a false "no prior problems", a missing cite, a wrong total, an unrelated charge, the unaddressed gap); sort sentences into sections; write the non-economic damages section |
-| 5 | The demand packet & responses | Demand Packet and Responses | **Packet & Response Desk** (4 parts): order the packet (LSH standard order, Exhibits A–G); choose the next step for each of Keystone's responses; draft the rebuttal; take the adjuster's call and log it in the CMS |
+| 5 | The demand packet & responses | Demand Packet and Responses | **Packet & Response Desk** (4 parts): order the packet (LSH standard order, Exhibits A–G); choose the next step for each of Keystone's responses; draft the rebuttal; take the adjuster's call and log it in LSH CaseWorks |
 
 **Grading:**
 
@@ -209,7 +209,7 @@ Carry new features by hand:
 
 ## Staying under Cloudflare's monthly request limit
 
-Every request to this course's Worker (everything under `/api/`, and `/version`) counts toward Cloudflare's request limit for the whole account. The account is on Workers Paid: **10 million requests a month**, shared by every LSH site (the courses, the CMS, the Training Portal and the rest). Past the limit, Cloudflare charges for every extra million, so one page that asks too often costs money for every site. Static files (the page, `js/`) don't count. `slides/`, `documents/` and `workspace/files/` now come from R2 through the Worker, so each of those files a browser loads (or re-checks) counts too: see *Documents in R2*.
+Every request to this course's Worker (everything under `/api/`, and `/version`) counts toward Cloudflare's request limit for the whole account. The account is on Workers Paid: **10 million requests a month**, shared by every LSH site (the courses, LSH CaseWorks, the Training Portal and the rest). Past the limit, Cloudflare charges for every extra million, so one page that asks too often costs money for every site. Static files (the page, `js/`) don't count. `slides/`, `documents/` and `workspace/files/` now come from R2 through the Worker, so each of those files a browser loads (or re-checks) counts too: see *Documents in R2*.
 
 So an open page asks the server sparingly (`POLL` in `index.html`), and not at all while its tab is in the background. When the tab is back, whatever came due runs then; a quick look at another tab (Google Meet) asks nothing:
 
@@ -232,7 +232,7 @@ These changes are made in `index.html` and `js/daily-activities.js` here. If `in
 
 ## 🗄 Documents in R2
 
-The document-heavy folders (`slides/`, `documents/`, `workspace/files/`) are kept in **Cloudflare R2**, the `DOCUMENTS` binding (bucket `lshtraining`, the same bucket the EA/PA course and the CMS use), under `courses/md/` (e.g. `courses/md/slides/...`). `wrangler.json`'s `assets.run_worker_first` sends those paths to `worker.js`, and `docFromR2` answers from R2, with byte ranges (PDF viewers) and 304s for a file the browser already has.
+The document-heavy folders (`slides/`, `documents/`, `workspace/files/`) are kept in **Cloudflare R2**, the `DOCUMENTS` binding (bucket `lshtraining`, the same bucket the EA/PA course and LSH CaseWorks use), under `courses/md/` (e.g. `courses/md/slides/...`). `wrangler.json`'s `assets.run_worker_first` sends those paths to `worker.js`, and `docFromR2` answers from R2, with byte ranges (PDF viewers) and 304s for a file the browser already has.
 
 - **Uploading:** `.github/workflows/r2-docs.yml` runs on every push to `main` that changes those folders: it uploads the files that changed and removes deleted ones (`.github/scripts/r2-sync.mjs`). **Actions → R2 documents → Run workflow** uploads every file (do this once, after setting the secret). It needs the repository secret `CLOUDFLARE_API_TOKEN` (a Cloudflare API token with *Workers R2 Storage: Edit*); until it's set, the run only prints a notice.
 - **Fallback:** a file that isn't in R2 yet (the upload still running, or the token not set) comes from the Worker's static assets as before, and so does everything if the binding is missing or R2 fails. The files stay in the repository and in the deploy, so nothing breaks while R2 fills; once R2 has them all, the folders can be added to `.assetsignore` to leave them out of the deploy.
@@ -274,7 +274,7 @@ The smoke and requests tests need Playwright.
    - `WORKSPACE_URL` and `WORKSPACE_SECRET`: the 🗂 Case Workspace (see `build/workspace/apps-script/SETUP.md`). The trainees' Google domain is `WS_DOMAIN` in `worker.js` and `CONFIG.DOMAIN` in `Code.gs`; change both together.
 4. **Training Portal (optional):**
    - To have the Training Portal's **Progress & Feedback** page list this course's trainees, add the program to `PROGRAMS` in the portal's `functions/api/program-progress.js` with key prefix `md:`, 5 days and the course address.
-   - The shared Call Simulator is ☎ **LSH Ring Channel's** (the training phone, opened through the Portal) and has no Medsum & Demand calls yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once they exist (a trainer writes them in Ring Channel's 📚 Scenarios).
+   - The shared Call Sim is ☎ **LSH Voice's** (the training phone, opened through the Portal) and has no Medsum & Demand calls yet, so it shows as "coming soon" in 🧰 Tools. Admins can switch it to Live there once they exist (a trainer writes them in LSH Voice's 📚 Scenarios).
 
 ## 🎨 The standard page style
 

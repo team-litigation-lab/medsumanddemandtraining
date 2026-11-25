@@ -1,6 +1,6 @@
 /* ============================================================
-   LSH Medsum & Demand Training — Skill Builders, the Case Document
-   Library, the Training Tools hub (CMS, Call Simulator, Email),
+   LSH Medsum & Demand Track — Skill Builders, the Case Document
+   Library, the Training Tools hub (CMS, Call Sim, Email),
    Handouts and the Case File. Built on the PD / CM courses' Skill Builder kit.
    Loaded after the main portal script: anything assigned to window
    here replaces the portal function of the same name.
@@ -110,16 +110,16 @@ const scenario = (html)=> `<div class="md-scn">${html}</div>`;
    (shared key settings:tools).
    ================================================================ */
 const MD_TOOL_DEFAULTS = [
-  {id:"cms", icon:"🗂", name:"LSH Case Management System", short:"CMS", status:"live",
+  {id:"cms", icon:"🗂", name:"LSH CaseWorks", short:"LSH CaseWorks", status:"live",
    url:"https://lshcasemanagementtraining-trainingcrm.pages.dev",
    desc:"Where the case work actually happens: open the client's case, keep the provider list, upload records under Medical and bills under Bills, save the chronology, summary, itemization and demand, and log Tasks and Notes for every follow-up.",
-   evidence:"CMS Case ID", idHint:"CMS Case ID (e.g. LSH-2026-PI-000123)"},
+   evidence:"LSH CaseWorks Case ID", idHint:"LSH CaseWorks Case ID (e.g. LSH-2026-PI-000123)"},
   // Shared simulators on the LSH Training Portal (used by every program). The course
   // opens them with ?program=MD and the trainee's name and batch, so results carry them.
-  // The Call Simulator is ☎ LSH Ring Channel's (the training phone; this Portal address opens it signed in). It has no
+  // The Call Sim is ☎ LSH Voice's (the training phone; this Portal address opens it signed in). It has no
   // Medsum & Demand calls yet: it stays "coming soon" until an admin switches it to Live in 🧰 Tools once they exist
-  // (a trainer writes them in Ring Channel's 📚 Scenarios, or they are added to its src/scenarios.js).
-  {id:"calls", icon:"📞", name:"Call Simulator (☎ LSH Ring Channel)", short:"Call Simulator", status:"coming",
+  // (a trainer writes them in LSH Voice's 📚 Scenarios, or they are added to its src/scenarios.js).
+  {id:"calls", icon:"📞", name:"Call Sim (☎ LSH Voice)", short:"Call Sim", status:"coming",
    url:"https://cm-training-activity.pages.dev/simulators/call.html", portalSim:true,
    desc:"Live practice calls on the training phone, spoken aloud: the phone rings, you answer with a headset and the call is graded on its line's Mock Calls Metrics. Medsum & Demand calls (records and billing offices, the client, the adjuster) are planned; until they're live, practise these calls in 🔥 Live Roleplay and in each Skill Builder's live call.",
    evidence:"Score", idHint:"Score (e.g. 82%)"},
@@ -198,7 +198,7 @@ window.openTool = function(id, mode, extra){
   id = id || currentFrame || "cms";
   const t = mdTool(id);
   if(!t){ return; }
-  if(!t.live){ toast(`${t.icon} ${t.name} is coming soon. For now, log this step as a Task in the CMS.`); return; }
+  if(!t.live){ toast(`${t.icon} ${t.name} is coming soon. For now, log this step as a Task in LSH CaseWorks.`); return; }
   let href = toolHref(t);
   if(extra) href += (href.includes("?") ? "&" : "?") + extra;
   if(mode==="tab"){ window.open(href, "_blank", "noopener"); return; }
@@ -207,7 +207,7 @@ window.openTool = function(id, mode, extra){
     if(frames[id]) frames[id].remove();
     const f = document.createElement("iframe");
     f.src = href; f.dataset.src = href; f.title = t.name;
-    // microphone: the Call Simulator listens when trainees answer by voice
+    // microphone: the Call Sim listens when trainees answer by voice
     f.setAttribute("allow", "microphone; autoplay; clipboard-read; clipboard-write; fullscreen");
     f.setAttribute("referrerpolicy", "no-referrer-when-downgrade");
     frameShell.querySelector(".md-tf-body").appendChild(f);
@@ -233,12 +233,12 @@ window.openCms = function(mode){ openTool("cms", mode); };
 function toolStep(toolId, key, what){
   const t = mdTool(toolId), saved = ((state.cmsLog||{})[key]||{}), k = key.replace(/\W/g,"_");
   const fallback = !t.live && toolId!=="cms";
-  return `<div class="md-cms"><b>${t.icon} Do this in the ${E(t.name)}</b>${t.live?"":` <span class="md-soon">coming soon</span>`}
+  return `<div class="md-cms"><b>${t.icon} Do this in ${E(t.name)}</b>${t.live?"":` <span class="md-soon">coming soon</span>`}
     <p style="font-size:12.8px;margin:6px 0 0;color:#37394A">${what}</p>
-    ${fallback?`<p style="font-size:12.3px;margin:6px 0 0;color:var(--ink-soft)">Until the ${E(t.short)} platform is live, add this as a <b>Task</b> in the CMS case and log your CMS Case ID below.</p>`:""}
+    ${fallback?`<p style="font-size:12.3px;margin:6px 0 0;color:var(--ink-soft)">Until the ${E(t.short)} platform is live, add this as a <b>Task</b> in the LSH CaseWorks case and log your LSH CaseWorks Case ID below.</p>`:""}
     <div class="row">
-      ${t.live?`<button class="btn btn-navy btn-sm" onclick="openTool('${toolId}')">Open ${E(t.short)}</button><button class="btn btn-ghost btn-sm" onclick="openTool('${toolId}','tab')" title="Open in a new tab">↗</button>`
-              :`<button class="btn btn-navy btn-sm" onclick="openTool('cms')">Open CMS</button>`}
+      ${t.live?`<button class="btn btn-navy btn-sm" onclick="openTool('${toolId}')">Open ${t.icon} ${E(t.short)}</button><button class="btn btn-ghost btn-sm" onclick="openTool('${toolId}','tab')" title="Open in a new tab">↗</button>`
+              :`<button class="btn btn-navy btn-sm" onclick="openTool('cms')">Open 🗂 LSH CaseWorks</button>`}
       <input id="cmsId_${k}" placeholder="${E(fallback?mdTool("cms").idHint:t.idHint)}" value="${E(saved.caseId||"")}">
       <button class="btn btn-ghost btn-sm" onclick="mdLogCms('${key}','${fallback?"cms":toolId}')">Log my work</button>
       <span id="cmsLogged_${k}" style="font-size:12px;color:var(--success)">${saved.at?`✓ Logged ${fmtDate(saved.at)}`:""}</span>
@@ -250,12 +250,12 @@ window.mdLogCms = async function(key, platform){
   const el = document.getElementById("cmsId_"+key.replace(/\W/g,"_"));
   const v = (el && el.value || "").trim();
   const t = mdTool(platform||"cms");
-  if(v.length < 3){ toast(`Enter the ${t.evidence} the ${t.short} gave you when you saved.`); return; }
+  if(v.length < 3){ toast(`Enter the ${t.evidence} ${t.short} gave you when you saved.`); return; }
   state.cmsLog = state.cmsLog || {};
   state.cmsLog[key] = {caseId:v, at:new Date().toISOString(), tool:toolOfKey(key), platform:t.id};
   await storeSet("cms-log", state.cmsLog);
   const s = document.getElementById("cmsLogged_"+key.replace(/\W/g,"_")); if(s) s.textContent = "✓ Logged just now";
-  toast(`Logged. Your trainer can check it in the ${t.short}.`);
+  toast(`Logged. Your trainer can check it in ${t.short}.`);
 };
 
 /* A document packet: the exact files a Skill Builder part is built on. */
@@ -264,7 +264,7 @@ function docPacket(ids, title){
   if(!docs.length) return "";
   return `<div class="md-docs"><div class="md-docs-h">📁 ${E(title||"Source documents for this part")}</div>
     ${docs.map(d=>`<div class="md-doc-row"><div><span class="t">${E(d.title)}</span><div class="d">${E(d.desc)}</div>${state.isAdmin && d.key ? `<div class="md-key">🔑 Trainer key: ${E(d.key)}</div>` : ""}</div>
-      <div style="display:flex;gap:6px;align-items:center"><span class="cms" title="CMS upload category">CMS: ${E(d.cms)}</span><a class="btn btn-ghost btn-sm" href="${mdDocUrl(d)}" target="_blank" rel="noopener">Open</a></div></div>`).join("")}
+      <div style="display:flex;gap:6px;align-items:center"><span class="cms" title="LSH CaseWorks upload category">LSH CaseWorks: ${E(d.cms)}</span><a class="btn btn-ghost btn-sm" href="${mdDocUrl(d)}" target="_blank" rel="noopener">Open</a></div></div>`).join("")}
   </div>`;
 }
 window.mdDocPacket = docPacket;
@@ -445,10 +445,10 @@ TOOLS.mdIntake1 = ()=>[
       context:"Day 1 (Mon 10/05/2026). Dana Whitfield's file was handed to the trainee for the medsum and demand. Bayside Pain Management sent only a balance-due statement ($4,325.00, no dates of service, no CPT codes) on 08/28/2026. Dana's visits: 06/26/2026 new-patient evaluation ($425.00) and 07/10/2026 C5-6 interlaminar ESI ($3,900.00). HIPAA authorization signed 03/18/2026. Bayside treats on a letter of protection. Billing contact Carla Ruiz.",
       criteria:"A strong request: (1) identifies the patient (name, DOB, account if known) and the firm's representation; (2) asks for an ITEMIZED statement listing every date of service with CPT codes, descriptions, charges, adjustments, payments and the balance (UB-04/CMS-1500 or ledger) — not a balance-due statement; (3) references the HIPAA authorization on file (and offers to resend); (4) mentions a billing affidavit or custodian certification only as “if required by the attorney/our office”; (5) gives a clear, reasonable date to respond and how to send it (secure fax/portal/email); (6) professional, concise, no case value or settlement talk, no PHI beyond what's needed; (7) says the trainee will follow up. Penalize sharing demand or settlement amounts, asking for the whole medical chart when only the bill is needed, or no deadline."
     }))},
-  {label:"Call & the CMS", html: part("D. Live call — then set up the demand work in the CMS",
-    "Make the call (pick the scenario at the top: Bayside billing, or Dana to confirm her providers). Then put the demand work into the CMS so anyone on the team could see where it stands.",
+  {label:"Call & LSH CaseWorks", html: part("D. Live call — then set up the demand work in LSH CaseWorks",
+    "Make the call (pick the scenario at the top: Bayside billing, or Dana to confirm her providers). Then put the demand work into LSH CaseWorks so anyone on the team could see where it stands.",
     `<div style="margin-top:4px">${renderCrisisRoleplaySection("mdIntake1", "Live call — the AI plays Bayside's billing office or Dana (pick the scenario at the top)")}</div>`
-    + cmsStep("mdIntake1:cms", "Open Dana Whitfield's case in the CMS. Correct the <b>date of incident to 03/14/2026</b>. Add the <b>provider list</b> as a Note (each provider: records received? bills received? itemized?). Upload the records under <b>Medical</b> and the bills under <b>Bills</b>. Add Tasks: Bayside itemized bill (follow up 10/07), flag the 2025 low back records to the attorney, chronology (10/06), itemization (10/07), demand draft (10/08). Save and log the Case ID."))}
+    + cmsStep("mdIntake1:cms", "Open Dana Whitfield's case in LSH CaseWorks. Correct the <b>date of incident to 03/14/2026</b>. Add the <b>provider list</b> as a Note (each provider: records received? bills received? itemized?). Upload the records under <b>Medical</b> and the bills under <b>Bills</b>. Add Tasks: Bayside itemized bill (follow up 10/07), flag the 2025 low back records to the attorney, chronology (10/06), itemization (10/07), demand draft (10/08). Save and log the Case ID."))}
 ];
 
 /* ---------- DAY 2 · Chronology & Summary Builder ---------- */
@@ -493,7 +493,7 @@ TOOLS.mdChron2 = ()=>[
       {label:"Bates page of Dr. Patel's causation opinion", answer:55, unit:"(WHITFIELD page)", tol:0},
       {label:"Future care estimate — total", answer:7800, hint:"2 ESIs × $3,900.00 (p. 57)"}
     ]))},
-  {label:"Medical Summary", html: part("D. Write the medical summary — then save the medsum in the CMS",
+  {label:"Medical Summary", html: part("D. Write the medical summary — then save the medsum in LSH CaseWorks",
     "Write the medical summary the attorney will read first. Neutral, accurate and traceable: every statement should come from a record you can cite.",
     aiTask("mdChron2:summary", {
       label:"Your medical summary for Dana Whitfield",
@@ -502,7 +502,7 @@ TOOLS.mdChron2 = ()=>[
       context:"Day 2. The trainee built Dana Whitfield's chronology from WHITFIELD 0001–0066 and now writes the medical summary for Attorney Bennett.",
       criteria:"A strong summary (about 250–450 words): (1) overview — client, DOI 03/14/2026, rear-end MVC, treatment span 03/14–08/21/2026, providers; (2) initial treatment — same-day Riverside ED, neck 7/10 and low back 5/10, CT negative, cervical/lumbar strain; (3) diagnostics — MRI 03/30 “3 mm central disc protrusion at C5-6” in the radiologist's words (NOT “herniation”); (4) treatment course — 24 chiropractic visits 03/17–05/14 with improvement (7/10 → 4/10), ortho consult 04/20 (C6 radiculopathy, causation opinion p. 55), pain management 06/26 and the C5-6 ESI 07/10 (6/10 → 2/10); (5) gaps and prior history stated plainly — 2025 low back strain (pp. 10–11) and the 43-day gap 05/14 → 06/26 with the reasons in the records (childcare p. 38; continuing symptoms p. 60); (6) current status — MMI 08/21, neck 3/10, future care up to 2 ESIs est. $7,800.00 (p. 57); (7) page references throughout; neutral tone, no advocacy, no opinions of the writer. Penalize upgraded diagnoses, omitted prior injury or gap, invented facts, missing page cites, or persuasive/advocacy language."
     })
-    + cmsStep("mdChron2:cms", "In Dana Whitfield's CMS case, upload the <b>medical chronology</b> and the <b>medical summary</b> under <b>Medical</b>. Add a Note for the attorney listing the flags (prior 2025 low back strain, the 43-day gap and its reasons, causation p. 55, MMI and future care p. 57). Save and log the Case ID."))}
+    + cmsStep("mdChron2:cms", "In Dana Whitfield's LSH CaseWorks case, upload the <b>medical chronology</b> and the <b>medical summary</b> under <b>Medical</b>. Add a Note for the attorney listing the flags (prior 2025 low back strain, the 43-day gap and its reasons, causation p. 55, MMI and future care p. 57). Save and log the Case ID."))}
 ];
 
 /* ---------- DAY 3 · Bills Itemization Workbench ---------- */
@@ -548,7 +548,7 @@ TOOLS.mdBills3 = ()=>[
       {t:"Summit Orthopedic Associates — $975.00", ok:false, why:"Both visits are paid in full (balance $0.00)."},
       {t:"Northgate Family Practice — $275.00", ok:false, why:"Unrelated wellness exam — not part of this claim."}
     ], "Check my lien list"))},
-  {label:"Specials Summary", html: part("D. The specials summary — then save the itemization in the CMS",
+  {label:"Specials Summary", html: part("D. The specials summary — then save the itemization in LSH CaseWorks",
     "Build the economic damages summary the demand will use.",
     docPacket(["DW14","DW25"], "Future care and wage documents")
     + calc("mdBills3:specials", [
@@ -615,7 +615,7 @@ TOOLS.mdDemand4 = ()=>[
       context:"Day 4. From Dana Whitfield's signed impact statement (09/30/2026): for six weeks she couldn't lift her 3-year-old son or turn her head to check her blind spot; she stopped her Saturday 5K runs; she still wakes at night with neck pain once or twice a week. Records: neck pain 7/10 at the ED, 24 chiropractic visits, an ESI 07/10, MMI 08/21 with neck 3/10 and future injections recommended; off work 14 workdays.",
       criteria:"A strong section: (1) specific daily-life examples in concrete terms from the impact statement (lifting her son, driving/blind spot, the 5K runs, sleep); (2) duration and what continues (still wakes at night; future injections); (3) ties the story to the medical course (pain scores, the injection, MMI) with exhibit cites (Ex. G for the statement, Ex. E pages for records); (4) persuasive but truthful — no exaggeration, no invented facts, no claims she can't work at all; (5) professional tone suitable for an adjuster; (6) no dollar value for pain and suffering (the attorney sets the demand). Penalize adjectives without facts, invented limitations, or missing cites."
     })
-    + cmsStep("mdDemand4:cms", "Save the <b>corrected draft demand</b> in Dana's CMS case under <b>Case Files</b>. Add a Task for <b>Attorney Bennett</b>: review and sign by Friday 10/09. Add a Note listing the corrections you made. Save and log the Case ID."))}
+    + cmsStep("mdDemand4:cms", "Save the <b>corrected draft demand</b> in Dana's LSH CaseWorks case under <b>Case Files</b>. Add a Task for <b>Attorney Bennett</b>: review and sign by Friday 10/09. Add a Note listing the corrections you made. Save and log the Case ID."))}
 ];
 
 /* ---------- DAY 5 · Packet & Response Desk ---------- */
@@ -660,10 +660,10 @@ TOOLS.mdPacket5 = ()=>[
       context:"Keystone (Tom Reyes, claim KM-26-0418823) offered $18,500.00 on 11/04/2026 arguing: the 43-day gap (05/14 → 06/26) breaks causation; the 2025 low back treatment makes the injury pre-existing; future ESIs are speculative; 24 chiropractic visits were excessive; paid amounts only. Records: childcare reason at the last chiropractic visit (WHITFIELD 0038); pain-management intake “neck pain … since the MVC of 03/14/2026” (0060); Dr. Patel's causation opinion (0055); 2025 low back strain, 3 visits, released 01/29/2025 (0010–0011); MRI C5-6 protrusion (0041); future care up to 2 ESIs est. $3,900 each (0057); chiropractic plan 3x/week × 8 weeks (0012–0015) with improvement 7/10 → 4/10 (0038).",
       criteria:"A strong rebuttal: (1) answers the gap with the records — childcare (0038), continuing symptoms (0060), causation opinion (0055); (2) distinguishes the prior: a resolved 2025 LOW BACK strain vs a C5-6 NECK injury with radiculopathy, citing 0010–0011, 0041, 0055; (3) answers “speculative” with Dr. Patel's written recommendation and estimate (0057); optionally (4) supports the chiropractic course with the plan and improvement; (5) cites exhibits/pages throughout in the (Ex. E, WHITFIELD 00xx) style; (6) professional, factual, not insulting; (7) leaves the counteroffer amount and any statement about the client's position to the attorney (placeholder is fine). Penalize invented facts, a counter amount chosen by the trainee, conceding the arguments, or no cites."
     }))},
-  {label:"The Call & the CMS", html: part("D. Take the adjuster's call — then log it in the CMS",
-    "Tom Reyes calls about the offer (or presses for the prior records: pick the scenario at the top). Then log the response in the CMS.",
+  {label:"The Call & LSH CaseWorks", html: part("D. Take the adjuster's call — then log it in LSH CaseWorks",
+    "Tom Reyes calls about the offer (or presses for the prior records: pick the scenario at the top). Then log the response in LSH CaseWorks.",
     `<div style="margin-top:4px">${renderCrisisRoleplaySection("mdPacket5", "Live call — the AI plays Tom Reyes at Keystone (pick the scenario at the top)")}</div>`
-    + cmsStep("mdPacket5:cms", "In Dana's CMS case: upload Keystone's letters under <b>Case Files</b>, add a Note logging the <b>$18,500.00 offer</b> (date, terms, arguments) and that it went to Attorney Bennett today, add Tasks for the offer deadline (12/04/2026), the rebuttal review and the prior-records response (attorney), and confirm the statute of limitations (03/14/2028) is calendared. Save and log the Case ID."))}
+    + cmsStep("mdPacket5:cms", "In Dana's LSH CaseWorks case: upload Keystone's letters under <b>Case Files</b>, add a Note logging the <b>$18,500.00 offer</b> (date, terms, arguments) and that it went to Attorney Bennett today, add Tasks for the offer deadline (12/04/2026), the rebuttal review and the prior-records response (attorney), and confirm the statute of limitations (03/14/2028) is calendared. Save and log the Case ID."))}
 ];
 
 /* ---------- tool dispatch ---------- */
@@ -728,8 +728,8 @@ window.renderLessonCard = function(l, i, d, unused, part){
   let extra = l.layout ? `<div class="md-lesson-visual">${renderLessonVisual(l)}</div>` : "";
   if(l.skill){
     const t = PRACTICE_TOOLS.find(x=>x.id===l.skill.tool);
-    if(t) extra += `<div class="md-skill-cta"><div><b>🧪 Skill Builder: ${E(t.title)}</b><p>Practice this on Dana Whitfield's case file${l.skill.cms?" and log your work in the CMS":""}.</p></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-navy btn-sm" onclick="goto('tool','${t.id}')">Open Skill Builder</button>${l.skill.cms?`<button class="btn btn-ghost btn-sm" onclick="openCms()">Open CMS</button>`:""}</div></div>`;
+    if(t) extra += `<div class="md-skill-cta"><div><b>🧪 Skill Builder: ${E(t.title)}</b><p>Practice this on Dana Whitfield's case file${l.skill.cms?" and log your work in LSH CaseWorks":""}.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-navy btn-sm" onclick="goto('tool','${t.id}')">Open Skill Builder</button>${l.skill.cms?`<button class="btn btn-ghost btn-sm" onclick="openCms()">Open 🗂 LSH CaseWorks</button>`:""}</div></div>`;
   }
   return _origLessonCard(Object.assign({}, l, {svgDiagram: extra}), i, d, unused, part);
 };
@@ -745,13 +745,13 @@ window.renderCaseDocuments = function(){
   const byFolder = MD_DOC_FOLDERS.filter(fo=>fo.id!=="handouts").map(fo=>({fo, items:docs.filter(d=>d.folder===fo.id)})).filter(x=>x.items.length);
   return `<p class="eyebrow">Case Documents</p>
     <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">📁 Case Document Library</h1>
-    <p style="color:var(--ink-soft);font-size:14px;max-width:78ch;margin:0 0 14px">A demand is only as good as the paper behind it. These are the working files for <b>Dana Whitfield's case</b> (rear-end collision 03/14/2026): records Bates-numbered WHITFIELD 0001–0066, every bill, the insurer's letters, the draft demand and the responses. Every Skill Builder points to the exact documents it uses. Each file shows the <b>CMS upload category</b> to use when you add it to her case in the CMS. They are simulated training documents — and some contain deliberate errors you are expected to catch.</p>
+    <p style="color:var(--ink-soft);font-size:14px;max-width:78ch;margin:0 0 14px">A demand is only as good as the paper behind it. These are the working files for <b>Dana Whitfield's case</b> (rear-end collision 03/14/2026): records Bates-numbered WHITFIELD 0001–0066, every bill, the insurer's letters, the draft demand and the responses. Every Skill Builder points to the exact documents it uses. Each file shows the <b>LSH CaseWorks upload category</b> to use when you add it to her case in LSH CaseWorks. They are simulated training documents — and some contain deliberate errors you are expected to catch.</p>
     <div class="md-filter">${DOC_FILTERS.map(([k,lab])=>`<button class="btn btn-sm ${f===k?"btn-navy":"btn-ghost"}" onclick="state.docFilter='${k}';render()">${lab}</button>`).join("")}
-      <button class="btn btn-sm btn-ghost" onclick="openCms()">🗂 Open CMS</button></div>
+      <button class="btn btn-sm btn-ghost" onclick="openCms()">🗂 Open LSH CaseWorks</button></div>
     ${state.isAdmin ? `<div class="card" style="padding:12px 16px;margin-bottom:16px;border-left:4px solid var(--danger);font-size:12.8px">🔑 <b>Trainer view:</b> the red notes under each document are the audit key — planted errors and what a strong trainee should catch. Trainees don't see them.</div>` : ""}
     ${byFolder.map(({fo,items})=>`<div class="card md-lib-folder" style="padding:14px 18px"><h3>${fo.icon} ${E(fo.label)} <span style="font-weight:500;color:var(--ink-soft);font-size:12px">(${items.length})</span></h3>
       ${items.map(d=>`<div class="md-doc-row"><div><span class="t">${E(d.title)}</span> <span style="font-size:11px;color:var(--ink-soft)">· Day ${d.day}</span><div class="d">${E(d.desc)}</div>${state.isAdmin && d.key ? `<div class="md-key">🔑 ${E(d.key)}</div>` : ""}</div>
-        <div style="display:flex;gap:6px;align-items:center"><span class="cms">CMS: ${E(d.cms)}</span><a class="btn btn-ghost btn-sm" href="${mdDocUrl(d)}" target="_blank" rel="noopener">Open</a></div></div>`).join("")}</div>`).join("")}`;
+        <div style="display:flex;gap:6px;align-items:center"><span class="cms">LSH CaseWorks: ${E(d.cms)}</span><a class="btn btn-ghost btn-sm" href="${mdDocUrl(d)}" target="_blank" rel="noopener">Open</a></div></div>`).join("")}</div>`).join("")}`;
 };
 
 window.renderTrainingTools = function(){
@@ -766,13 +766,13 @@ window.renderTrainingTools = function(){
       <p>${E(t.desc)}</p>
       ${t.live?`<div class="md-tool-act"><button class="btn btn-primary btn-sm" onclick="openTool('${t.id}')">Open in portal</button><button class="btn btn-ghost btn-sm" onclick="openTool('${t.id}','tab')">New tab ↗</button></div>
         <div class="md-tool-url">${E(t.url.replace(/^https:\/\//,""))}</div>`
-      :`<p class="md-tool-note">Until it's live, Skill Builder steps for this tool are logged as <b>Tasks</b> in the CMS.</p>`}
+      :`<p class="md-tool-note">Until it's live, Skill Builder steps for this tool are logged as <b>Tasks</b> in LSH CaseWorks.</p>`}
     </div>`).join("")}</div>
     <div class="card" style="padding:16px 20px;margin-bottom:16px"><b style="color:var(--navy)">How the portal and the tools work together</b>
-      <ol style="font-size:13px;margin:8px 0 0;padding-left:20px"><li>Learn it in the day's lessons here.</li><li>Open the Skill Builder. It gives you the case documents and the exercise.</li><li>Do the file work in the tool. In the CMS: open (or <b>Start a New Case</b> for) the client's case, keep the provider list, upload each document under the <b>CMS category</b> shown in 📁 Documents (records under <b>Medical</b>, bills under <b>Bills</b>), save your chronology, summary, itemization and demand, and add Tasks and Notes for every follow-up. Then <b>Save Case</b> to get your permanent Case ID.</li><li>Practice the calls in 🔥 <b>Live Roleplay</b> and each Skill Builder's live call.</li><li>Come back and log the Case ID or score in the Skill Builder. Your trainer reviews your work.</li></ol>
+      <ol style="font-size:13px;margin:8px 0 0;padding-left:20px"><li>Learn it in the day's lessons here.</li><li>Open the Skill Builder. It gives you the case documents and the exercise.</li><li>Do the file work in the tool. In LSH CaseWorks: open (or <b>Start a New Case</b> for) the client's case, keep the provider list, upload each document under the <b>LSH CaseWorks category</b> shown in 📁 Documents (records under <b>Medical</b>, bills under <b>Bills</b>), save your chronology, summary, itemization and demand, and add Tasks and Notes for every follow-up. Then <b>Save Case</b> to get your permanent Case ID.</li><li>Practice the calls in 🔥 <b>Live Roleplay</b> and each Skill Builder's live call.</li><li>Come back and log the Case ID or score in the Skill Builder. Your trainer reviews your work.</li></ol>
       <p style="font-size:12.3px;color:var(--ink-soft);margin:10px 0 0">Signed in, but the tool asks you to sign in again inside the portal? Some browsers block sign-in inside an embedded page. Use <b>New tab ↗</b>. Your training portal stays open here.</p></div>
     <div class="card" style="padding:16px 20px;margin-bottom:16px"><b style="color:var(--navy)">My tool work log</b>
-      ${log.length ? `<table class="md-table"><thead><tr><th>Skill Builder</th><th>Tool</th><th>ID / score</th><th>Logged</th></tr></thead><tbody>${log.map(([k,v])=>`<tr><td>${E(toolTitle(v.tool||k.split(":")[0]))}</td><td>${E((mdTool(v.platform||"cms")||{}).short||"CMS")}</td><td><b>${E(v.caseId)}</b></td><td>${fmtDate(v.at)}</td></tr>`).join("")}</tbody></table>` : `<p style="font-size:13px;color:var(--ink-soft);margin:6px 0 0">Nothing logged yet. Skill Builders will ask for your Case ID or call score.</p>`}</div>
+      ${log.length ? `<table class="md-table"><thead><tr><th>Skill Builder</th><th>Tool</th><th>ID / score</th><th>Logged</th></tr></thead><tbody>${log.map(([k,v])=>`<tr><td>${E(toolTitle(v.tool||k.split(":")[0]))}</td><td>${E((mdTool(v.platform||"cms")||{}).short||"LSH CaseWorks")}</td><td><b>${E(v.caseId)}</b></td><td>${fmtDate(v.at)}</td></tr>`).join("")}</tbody></table>` : `<p style="font-size:13px;color:var(--ink-soft);margin:6px 0 0">Nothing logged yet. Skill Builders will ask for your Case ID or call score.</p>`}</div>
     ${state.isAdmin ? `<div class="card" style="padding:16px 20px;border-left:4px solid var(--orange)"><b style="color:var(--navy)">Admin: tool addresses</b>
       <p style="font-size:12.8px;color:var(--ink-soft);margin:4px 0 10px">Saved for every trainee. Switch a tool to <b>Live</b> once its address works. Each tool also stays reachable on its own at its address.</p>
       ${tools.map(t=>`<div class="md-tool-admin"><span>${t.icon} <b>${E(t.short)}</b></span>
@@ -782,7 +782,7 @@ window.renderTrainingTools = function(){
 };
 window.renderCmsSimulator = window.renderTrainingTools;
 
-/* 🛠 Simulators: the shared simulators on the LSH Training Portal, opened for Medsum & Demand. */
+/* 🛠 LSH Sims: the shared sims on the LSH Training Portal, opened for Medsum & Demand. */
 window.renderCallSimulator = function(){
   const calls = mdTool("calls"), mail = mdTool("email");
   const card = (t, extra)=> `<div class="card md-tool${t.live?"":" soon"}">
@@ -790,11 +790,11 @@ window.renderCallSimulator = function(){
       <p>${E(t.desc)}</p>${extra||""}
       ${t.live?`<div class="md-tool-act"><button class="btn btn-primary btn-sm" onclick="openTool('${t.id}')">Open here</button><button class="btn btn-ghost btn-sm" onclick="openTool('${t.id}','tab')">New tab ↗</button></div>`:""}
     </div>`;
-  return `<p class="eyebrow">Simulators</p>
-    <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">🛠 Simulators</h1>
-    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Email practice lives on the <b>LSH Training Portal</b> and the calls on <b>☎ LSH Ring Channel</b>, the training phone, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Simulator's Medsum &amp; Demand calls aren't live yet — until it is, practise the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
+  return `<p class="eyebrow">LSH Sims</p>
+    <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">🛠 LSH Sims</h1>
+    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Email practice lives on the <b>LSH Training Portal</b> and the calls on <b>☎ LSH Voice</b>, the training phone, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Sim's Medsum &amp; Demand calls aren't live yet — until it is, practise the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
     <div class="md-tools">${card(calls)}${card(mail)}</div>
-    <div class="card" style="padding:14px 18px;font-size:12.8px;color:var(--ink-soft)">Want more? Live Roleplay (🔥) has the client, adjuster and provider-office calls from the lessons, and every Skill Builder has a live call built in.${state.isAdmin?` <b>Admin:</b> results appear on the Training Portal's Simulators page when you're signed in there as admin. Addresses are set in 🧰 Tools.`:""}</div>`;
+    <div class="card" style="padding:14px 18px;font-size:12.8px;color:var(--ink-soft)">Want more? Live Roleplay (🔥) has the client, adjuster and provider-office calls from the lessons, and every Skill Builder has a live call built in.${state.isAdmin?` <b>Admin:</b> results appear on the Training Portal's LSH Sims page when you're signed in there as admin. Addresses are set in 🧰 Tools.`:""}</div>`;
 };
 window.saveToolSettings = async function(){
   const out = {};
@@ -840,7 +840,7 @@ window.renderClientProfile = function(){
     <p>The working case for all five days. Every fact below comes from the documents in 📁 Documents — when a Skill Builder asks you to verify something, verify it against the document, not this summary.</p>
     <div class="client-intro-banner"><div class="cib-tag">📌 Read This First</div><h2>One case, from the file handoff to the settlement</h2>
       <p>Treatment is finished and Dana is at maximum medical improvement. Your week: audit the file and request what's missing on Day 1, build the chronology and summary on Day 2, itemize the bills on Day 3, audit and finish the demand on Day 4, and send the packet and work Keystone's responses on Day 5. The errors you catch early — the wrong date of incident, the prior injury, the duplicate charge — are the ones that protect the demand later.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-navy btn-sm" onclick="goto('casedocs')">📁 Open the Case Documents</button><button class="btn btn-ghost btn-sm" onclick="openCms()">🗂 Open the CMS</button></div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn btn-navy btn-sm" onclick="goto('casedocs')">📁 Open the Case Documents</button><button class="btn btn-ghost btn-sm" onclick="openCms()">🗂 Open LSH CaseWorks</button></div></div>
     <div class="profile-grid">${CLIENT_PROFILE_DOC.map(sec=>`<div class="card profile-section"><h3>${E(sec.section)}</h3><ul>${sec.items.map(i=>`<li>${E(i)}</li>`).join("")}</ul></div>`).join("")}</div>`;
 };
 window.clientAvatarSvg = function(){ return `<div class="client-photo-img" style="display:flex;align-items:center;justify-content:center;font-size:42px;background:#EEF0F6">🩺</div>`; };
