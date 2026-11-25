@@ -55,11 +55,11 @@ DECKS = ["", "Medsum and Demand Training", "Medical Chronology // Medical Summar
          "Demand Overview", "Demand Packet and Responses"]
 
 # ---------- 1. wording: CM -> Medsum & Demand (before the course content goes in, so it isn't touched) ----------
-rep("<title>LSH Case Management Training</title>", "<title>LSH Medsum &amp; Demand Training</title>")
+rep("<title>LSH Case Management Training</title>", "<title>LSH Medsum &amp; Demand Track</title>")
 rep("LSH Case Management — Platform Orientation", "LSH Medsum & Demand — Platform Orientation")
 rep("5-Day Legal Case Management Professional Development Training", "5-Day Medsum & Demand Professional Development Training")
 rep("Case Management Professional Development Workshop", "Medsum & Demand Professional Development Workshop")
-rep("LEGAL CASE MANAGEMENT ACCELERATOR", "LEGAL MEDSUM & DEMAND ACCELERATOR")
+rep("LEGAL CASE MANAGEMENT ACCELERATOR", "MEDSUM & DEMAND TRACK")
 rep('const DAY_ICONS = {1:"🗂",2:"📅",3:"💬",4:"📨",5:"🛡",', 'const DAY_ICONS = {1:"📥",2:"🩺",3:"🧾",4:"✉",5:"📦",')
 rep("<p>Run a personal-injury file from intake to disbursement: verify every document, keep treatment on the map, audit before demand, negotiate the net, and stay trial-ready.</p>",
     "<p>Turn a finished personal-injury file into a demand: audit the records and bills, build the medical chronology and summary, itemize the specials, write and assemble the demand, and handle the insurer's response.</p>")
@@ -80,10 +80,10 @@ rep('"John Doe\'s wife Jane calls asking whether she needs her own claim for her
 rep('"The attorney needs the updated lien totals for the Doe file in the next 10 minutes.",', '"Attorney Bennett needs Dana Whitfield\'s specials, future medical and wage totals for a call in the next 10 minutes.",')
 rep('"A court clerk leaves a voicemail: the Answer in another matter was rejected for a missing signature page."', '"Keystone\'s adjuster leaves a voicemail: he needs five years of Dana\'s prior records before he\'ll re-evaluate the demand."')
 rep("Program: LSH (Legal Support Help) 5-day Case Management Training for personal-injury Case Managers (many are remote VAs supporting US law firms). Running case: John Doe v. Apex Delivery Services (commercial T-bone, facial scarring, L4-L5 microdiscectomy).",
-    "Program: LSH (Legal Support Help) 5-day Medsum & Demand Training for Demand Specialists at personal-injury law firms (many are remote VAs supporting US law firms): medical chronologies and summaries, bills itemization, demand letters, demand packets and insurer responses. Running case: Dana Whitfield, rear-end collision 03/14/2026 (Keystone Mutual, C5-6 disc protrusion, 24 chiropractic visits, an ESI, MMI 08/21/2026, demand $85,000).")
+    "Program: LSH (Legal Support Help) 5-day Medsum & Demand Track for Demand Specialists at personal-injury law firms (many are remote VAs supporting US law firms): medical chronologies and summaries, bills itemization, demand letters, demand packets and insurer responses. Running case: Dana Whitfield, rear-end collision 03/14/2026 (Keystone Mutual, C5-6 disc protrusion, 24 chiropractic visits, an ESI, MMI 08/21/2026, demand $85,000).")
 rep("Apply the Day ${id} concepts to the John Doe v. Apex case file.", "Apply the Day ${id} concepts to Dana Whitfield's case file.")
 rep("ppt:`Revised CM Training Day ${id}`, canvaLabel:`CM Day ${id}`",
-    "ppt:`Medsum & Demand Training Day ${id}`, canvaLabel:(" + repr(DECKS).replace("'", '"') + ")[id] || `Medsum & Demand Day ${id}`")
+    "ppt:`Medsum & Demand Track Day ${id}`, canvaLabel:(" + repr(DECKS).replace("'", '"') + ")[id] || `Medsum & Demand Day ${id}`")
 rep('"If this landed on your John Doe file today, what would your first move be?"', '"If this landed on Dana Whitfield\'s file today, what would your first move be?"')
 rep("from the John Doe v. Apex file", "from Dana Whitfield's case")
 rep("John Doe case scenarios are realistic.", "Dana Whitfield case scenarios are realistic.")
@@ -103,8 +103,8 @@ rep("for a personal-injury Case Manager trainee", "for a Demand Specialist train
 rep("in a personal-injury Case Management training program", "in a Medsum & Demand training program at a personal-injury law firm")
 rep("Six areas cover most of what a personal-injury Case Manager handles day to day.", "Six areas cover most of what a Demand Specialist handles day to day.")
 # everything else that names the course or the role
-rep("LSH Case Management Training", "LSH Medsum & Demand Training")
-rep("Case Management Training", "Medsum & Demand Training")
+rep("LSH Case Management Training", "LSH Medsum & Demand Track")
+rep("Case Management Training", "Medsum & Demand Track")
 rep("CASE MANAGER: ", "DEMAND SPECIALIST: ")
 rep("Case Manager", "Demand Specialist")
 rep('var APP_BUILD = "cm-', 'var APP_BUILD = "md-')

@@ -31,11 +31,11 @@ def page(path, title, body, kind="Case file"):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title} — LSH Medsum &amp; Demand Training</title>
+<title>{title} — LSH Medsum &amp; Demand Track</title>
 <link rel="stylesheet" href="{css}">
 </head>
 <body>
-<div class="sim">TRAINING — SIMULATED DOCUMENT · LSH Medsum &amp; Demand Training · {kind}</div>
+<div class="sim">TRAINING — SIMULATED DOCUMENT · LSH Medsum &amp; Demand Track · {kind}</div>
 <main class="doc">
 {body.strip()}
 </main>
@@ -479,7 +479,7 @@ def build():
          "<p>Never accept, reject or counter an offer; never share settlement amounts; protect the statute of limitations.</p>"),
     ]
     for path, title, body in H:
-        page(path, title, hdr(f"{FIRM} — Medsum &amp; Demand Training", "Handout") + body, kind="Handout")
+        page(path, title, hdr(f"{FIRM} — Medsum &amp; Demand Track", "Handout") + body, kind="Handout")
 
     print(f"related billed {m(BILLED)} · adj {m(ADJ)} · paid {m(INS + PIP + PT)} · balance {m(BAL)} · all lines {m(ALL_LINES)} · economic {m(ECON)}")
 

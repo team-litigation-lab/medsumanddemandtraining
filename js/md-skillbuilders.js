@@ -1,5 +1,5 @@
 /* ============================================================
-   LSH Medsum & Demand Training — Skill Builders, the Case Document
+   LSH Medsum & Demand Track — Skill Builders, the Case Document
    Library, the Training Tools hub (CMS, Call Sim, Email),
    Handouts and the Case File. Built on the PD / CM courses' Skill Builder kit.
    Loaded after the main portal script: anything assigned to window
