@@ -73,3 +73,7 @@ jobs:
         env:
           NODE_PATH: ${{ runner.temp }}/pw/node_modules
         run: node .github/scripts/compliance-monitor.cjs http://localhost:8787/ || { echo "--- server log ---"; cat "$RUNNER_TEMP/server.log"; exit 1; }
+      - name: 🧾 Score table in Day-by-Day Feedback (Activity · Score · Why this score · What you did great · What was wrong · What could have been done better)
+        env:
+          NODE_PATH: ${{ runner.temp }}/pw/node_modules
+        run: node .github/scripts/score-table.cjs http://localhost:8787/ || { echo "--- server log ---"; cat "$RUNNER_TEMP/server.log"; exit 1; }

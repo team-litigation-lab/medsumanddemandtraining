@@ -73,6 +73,8 @@ The facts are in `build/md_casefile.js` (the Case File page). The AI grader read
 - **Auto-graded parts** check against keys taken from the case file and the documents. Every key scores 100% when answered correctly; this was tested with `window.__mdUI`.
 - **Written parts** use the portal's 100-point AI rubric with criteria specific to this course.
 
+**🧾 Why this score (trainers):** in Admin → Trainee Audit → View Detail → Day-by-Day Feedback, each day's *Their work this day* is a table, the standard grading explanation of every LSH course (the same as EA/PA's scorecard): one row per scored activity (Knowledge Check, Quick Checks, each Skill Builder, each AI-reviewed answer, the random task, any roleplay) with the columns **Activity · Score · 🧾 Why this score · ⭐ What you did great · ❌ What was wrong · 💡 What could have been done better**. The scores come from what is already saved (`day-progress`, `practice-progress`, `quick-check-answers`, `work-log`); the last three columns are the grader's own notes (`strengths`, `gaps` from the rubric's blindspots, `growth` from its growth suggestions). A score saved without notes (auto-checked parts, older runs, random tasks) is explained from what was saved and says the details weren't recorded. Scores are tinted against the 70% pass mark. It's `scoreTableHTML()` in `index.html`, an edit made directly to the page: carry it over on a rebuild. The AI's evidence text for drafting feedback (`evidenceText()`) is unchanged. Test: `.github/scripts/score-table.cjs`.
+
 ### The Canva decks are the day's slides
 
 Each day opens with the trainer's own Canva deck, page by page, exactly as designed. The day then continues with **"Apply it to Dana Whitfield's file"**: the day's 13 topics take the same skills through the running case, followed by the Skill Builders and the Knowledge Check.
@@ -247,6 +249,7 @@ The document-heavy folders (`slides/`, `documents/`, `workspace/files/`) are kep
 - every case document and handout exists, every document packet points at a real document, every lesson has its Presenter view script, and the Case Workspace files match their answer key (`check-data.mjs`)
 - `wrangler deploy --dry-run`
 - a browser smoke test that signs in and renders every slide (and its Presenter view script), Knowledge Check, page and Skill Builder part at desktop and phone width, and checks that the top bar fits on one row from 1181px to 2560px wide (`smoke.cjs`)
+- a browser test of the 🧾 score table in View Detail → Day-by-Day Feedback: its six column headings and each row's score, reasons and grader's notes from seeded work (`score-table.cjs`)
 - a browser test of how often the page asks the server (`requests.cjs`): `get-many` gives a trainee only their own and public records and an Admin every one, reads this course's `md:` keys and refuses more than 100 keys. With the checks sped up, a trainee's page reads their record and today's task about once per check, checks for a new version rarely, and asks nothing while the tab is in the background (catching up when it's back) or on a quick switch to another tab and back. A server that doesn't answer doesn't sign the trainee out; a revoke does. The Trainee Audit reads every trainee in two requests.
 
 To run them locally:
@@ -258,6 +261,8 @@ node .github/scripts/server.mjs 8787 &
 node .github/scripts/smoke.cjs http://localhost:8787/
 node .github/scripts/blueprint.cjs http://localhost:8787/
 node .github/scripts/requests.cjs http://localhost:8787/
+node .github/scripts/compliance-monitor.cjs http://localhost:8787/
+node .github/scripts/score-table.cjs http://localhost:8787/
 ```
 
 The smoke and requests tests need Playwright.

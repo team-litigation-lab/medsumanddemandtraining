@@ -1740,7 +1740,26 @@ body.tap-moving [ondrop]{outline:2px dashed rgba(219,132,55,.55);outline-offset:
 .fb-day summary{cursor:pointer;font-size:13px;color:var(--navy);}
 .fb-chip{display:inline-block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;border-radius:20px;padding:2px 8px;margin-left:6px;font-weight:800;}
 .fb-chip.sent{background:var(--success-bg);color:var(--success);} .fb-chip.draft{background:#FFF1E2;color:var(--orange-deep);} .fb-chip.none{background:#EEF0F6;color:var(--ink-soft);}
-.fb-evidence{font-size:11.5px;color:var(--ink-soft);background:#F8F9FC;border-radius:8px;padding:8px 10px;margin:8px 0;max-height:160px;overflow:auto;}
+/* "Their work this day" in Day-by-Day Feedback: the standard score table (one row per scored activity) */
+.mdst{margin:8px 0 10px;}
+.mdst-h{margin:0 0 6px;font-size:12.5px;font-weight:800;color:var(--navy);}
+.mdst-h small{font-weight:600;color:#4A5070;margin-left:6px;}
+.mdst-sw{overflow-x:auto;border:1px solid #E1E5EE;border-radius:10px;background:#fff;margin-bottom:6px;}
+.mdst-t{width:100%;min-width:980px;border-collapse:collapse;font-size:13px;line-height:1.42;color:#262B45;}
+.mdst-t thead th{background:#262B45 !important;color:#fff !important;font:800 12.5px 'Inter',system-ui,sans-serif;text-align:left;padding:8px 10px;border-bottom:2px solid #DB8437;white-space:nowrap;text-transform:none;letter-spacing:0;}
+.mdst-t td,.mdst-t tbody th{padding:8px 10px;border-top:1px solid #E6E9F1;vertical-align:top;text-align:left;}
+.mdst-t tbody th{width:180px;font-weight:600;background:#fff !important;border-bottom:0 !important;box-shadow:none !important;color:#1B1E2E !important;text-transform:none !important;letter-spacing:0 !important;font-size:13px !important;}
+.mdst-t tbody th b{color:#0f2148;}
+.mdst-t tbody th small{display:block;font-size:12px;color:#4A5070 !important;font-weight:600;margin-top:2px;}
+.mdst-t td.mdst-sc{width:64px;text-align:center;}
+.mdst-t ul{margin:0;padding-left:16px;} .mdst-t li+li{margin-top:3px;}
+.mdst-t i{color:#5A6078;}
+.mdst-t td.mdst-w{background:#F7F8FC;} .mdst-t td.mdst-g{background:#F1F9F3;} .mdst-t td.mdst-b{background:#FDF3F0;} .mdst-t td.mdst-n{background:#F2F4FB;}
+.mdst-pill{display:inline-block;min-width:48px;text-align:center;font:800 13px 'Inter',system-ui,sans-serif;border-radius:999px;padding:3px 8px;}
+.mdst-hi{background:#DDF2E3;color:#0F4A28;} .mdst-ok{background:#EDF7EF;color:#14532D;} .mdst-lo{background:#FDE7E3;color:#8A1C10;} .mdst-none{background:#F5F6F9;color:#6A7088;}
+.mdst-sub{font-size:12px;color:#4A5070;margin:2px 0 0;}
+.mdst-ex summary{cursor:pointer;font-size:12.5px;font-weight:800;color:#3B4160;margin-top:6px;}
+.mdst-ex p{font-size:13px;color:#262B45;white-space:pre-wrap;margin:4px 0 0;font-weight:400;}
 .fb-form{display:grid;gap:8px;} .fb-form label{display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);}
 .fb-form textarea, .fb-form select{font:inherit;font-size:13px;text-transform:none;letter-spacing:0;font-weight:400;border:1px solid var(--line);border-radius:8px;padding:8px 10px;}
 .fb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
@@ -13680,6 +13699,129 @@ function evidenceText(ev){
   if(ev.drafts) L.push(`Skill Builders work in progress (their own words): ${ev.drafts.replace(/\s+/g," ").slice(0,900)}`);
   return L.join("\n");
 }
+/* ---------- "Their work this day" as the standard score table ----------
+   One row per scored activity of the day (Knowledge Check, Quick Checks, each Skill Builder and its
+   AI-reviewed answers, the random task, any roleplay): the score, why it scored that way, and the
+   grader's own notes (strengths / blindspots / growth suggestions) as What you did great / What was
+   wrong / What could have been done better. A score saved without notes (auto-checked parts, older
+   runs, random tasks) is explained from what was saved, and says so, rather than left blank.
+   It only reads what View Detail already loaded; the AI's evidence text (evidenceText) is unchanged. */
+const MDST_PASS = 70;
+const MDST_SUBS = {accuracy:"Accuracy", presence:"Executive presence", risk:"Risk & SOP", efficiency:"Efficiency",
+  bluf:"BLUF", composure:"Composure", act:"ACT protocol"};
+const mdstNum = v => typeof v === "number" && isFinite(v);
+const mdstTint = v => !mdstNum(v) ? "none" : v >= 85 ? "hi" : v >= MDST_PASS ? "ok" : "lo";
+const mdstPlural = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
+const mdstPass = v => v >= MDST_PASS ? `${MDST_PASS}% passes: this passes.` : `Below the ${MDST_PASS}% pass mark.`;
+const mdstTier = (e, v) => (e && e.tier && displayTier(e.tier)) || gradeTierFor(v);
+function mdstSubsLine(e){
+  const xs = Object.entries((e && e.subs) || {}).filter(([k, v]) => MDST_SUBS[k] && mdstNum(v)).map(([k, v]) => `${MDST_SUBS[k]} ${v}%`);
+  return xs.length ? `By area: ${xs.join(" · ")}.` : "";
+}
+// the run whose notes explain a score: the run that got it, else the best-scoring run
+function mdstRunFor(runs, score){
+  const hit = runs.filter(e => e.score === score);
+  if(hit.length) return hit[hit.length - 1];
+  return runs.slice().sort((x, y) => (y.score || 0) - (x.score || 0))[0] || null;
+}
+const mdstNoted = e => !!(e && ((e.strengths || []).length || (e.gaps || []).length || (e.growth || []).length));
+function mdstGraded(name, sub, runs, notCounted){
+  const best = Math.max(...runs.map(e => e.score)), e = mdstRunFor(runs, best), noted = mdstNoted(e);
+  const scores = runs.map(x => x.score + "%");
+  return {name, sub: `${sub} · best of ${mdstPlural(runs.length, "run")}`, score: best, run: e,
+    why: [`Best of ${mdstPlural(runs.length, "run")}${scores.length > 1 ? ` (${scores.join(", ")})` : ""}.`, `Graded ${mdstTier(e, best)}.`, mdstSubsLine(e),
+      notCounted ? "Not counted in the day's score." : mdstPass(best)],
+    great: noted ? (e.strengths || []) : best >= MDST_PASS ? [`Passed at ${best}%.`] : [],
+    wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost. Which items wasn't recorded for this run.`] : [],
+    better: noted ? ((e.growth || []).length ? e.growth : (e.gaps || []).length ? ["Work through the points under What was wrong, then run it again."] : [])
+      : best < 100 ? ["Run it again: a new AI review records what went well and what to do better."] : []};
+}
+function mdstRows(rec, work, ev){
+  const rows = [], D = `Day ${ev.d.id}`, all = ((work.snap || {})["work-log"] || []).filter(e => e && mdstNum(e.score));
+  const dp = ev.dp && mdstNum(ev.dp.score) ? ev.dp : null;
+  // Knowledge Check
+  if(dp){
+    const hist = (dp.history || []).filter(h => mdstNum(h.score)), tries = hist.length || 1;
+    const q = ev.log.filter(e => e.kind === "quiz").slice(-1)[0], hasN = q && mdstNum(q.correct) && mdstNum(q.total), missed = (q && q.missed) || [];
+    rows.push({name: "Knowledge Check", sub: `best of ${mdstPlural(tries, "attempt")}`, score: dp.score,
+      why: [`Best score of ${mdstPlural(tries, "attempt")}${hist.length > 1 ? ` (${hist.map(h => h.score + "%").join(", ")})` : ""}.`,
+        hasN ? `Latest try: ${q.correct} of ${q.total} questions right.` : "", mdstPass(dp.score)],
+      great: dp.score >= 90 ? ["Knew the day's key points cold."] : dp.score >= MDST_PASS ? ["Got most of the day's key points right."]
+        : hasN && q.correct ? [`${q.correct} of ${q.total} questions right.`] : [],
+      wrong: missed.length ? missed.map(m => `Missed: ${m}`) : dp.score < 100 ? [`${100 - dp.score}% of the questions answered wrong (which ones wasn't recorded for this attempt).`] : [],
+      better: dp.score >= 100 ? [] : [`Re-read ${D}'s slides on ${missed.length ? "the questions missed" : "the points missed"}, then retake the Knowledge Check${dp.score >= MDST_PASS ? " to lift the score" : ""}.`]});
+  } else rows.push({name: "Knowledge Check", sub: "not taken yet", score: null, why: ["Not taken yet, so the day has no score."], great: [], wrong: [],
+    better: [`Finish ${D}'s slides, then take its Knowledge Check (${MDST_PASS}% passes).`]});
+  // Quick Checks on the slides
+  if(ev.qc.length){
+    const right = ev.qc.filter(([k, v]) => v.correct).length, n = ev.qc.length, bad = n - right, sc = Math.round(right / n * 100);
+    rows.push({name: "Quick Checks", sub: "on the slides", score: sc,
+      why: [`${right} of ${n} Quick Checks on ${D}'s slides answered right.`, "Not counted in the day's score."],
+      great: right ? [`${mdstPlural(right, "Quick Check")} answered right.`] : [], wrong: bad ? [`${mdstPlural(bad, "Quick Check")} answered wrong.`] : [],
+      better: bad ? ["Pause on each Quick Check and re-read the slide it follows before answering."] : []});
+  }
+  // each Skill Builder: its best score, then each AI-reviewed answer with the grader's notes
+  const used = new Set();
+  ev.tools.forEach(t => {
+    const p = ev.pp[t.id] || null, name = t.title;
+    const graded = all.filter(e => e.kind === "lab" && e.toolId === t.id); graded.forEach(e => used.add(e));
+    const best = p && mdstNum(p.bestScore) && (p.runs || 0) > 0 ? p.bestScore : graded.length ? Math.max(...graded.map(e => e.score)) : null;
+    if(!mdstNum(best)){ rows.push({name, sub: "Skill Builders · not run yet", score: null, why: ["Not run yet."], great: [], wrong: [],
+      better: [`Open ${name} in Skill Builders and complete every part.`]}); return; }
+    const hist = ((p && p.history) || []).filter(h => mdstNum(h.score)).map(h => h.score + "%"), runs = (p && p.runs) || graded.length || 1;
+    const e = graded.filter(x => x.score === best).slice(-1)[0], noted = mdstNoted(e);
+    rows.push({name, sub: `Skill Builders · best of ${mdstPlural(runs, "scored run")}`, score: best, run: noted ? e : null,
+      why: [`Best of ${mdstPlural(runs, "scored run")}${hist.length > 1 ? ` (${hist.join(", ")})` : ""}.`, `Graded ${mdstTier(e, best)}.`, noted ? mdstSubsLine(e) : "", mdstPass(best)],
+      great: noted ? (e.strengths || []) : best >= MDST_PASS ? [`Passed at ${best}%.`] : [],
+      wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost on the best run. Which items wasn't recorded: it was an auto-checked part, or scored before the grader's notes were kept.`] : [],
+      better: noted ? ((e.growth || []).length ? e.growth : ["Work through the points under What was wrong, then run it again."])
+        : best < 100 ? [graded.length ? "See the grader's notes on the AI-reviewed answers below, then run it again." : "Run it again: an AI-reviewed answer records what went well and what to do better."] : [],
+      _e: noted ? e : null});
+    const byLabel = {};
+    graded.forEach(x => { (byLabel[x.label || name] = byLabel[x.label || name] || []).push(x); });
+    // the answer whose notes the row above already shows isn't repeated
+    Object.entries(byLabel).forEach(([label, rs]) => { if(!(noted && rs.includes(e))) rows.push(mdstGraded(label, `${name} · AI-reviewed answer`, rs)); });
+  });
+  // AI-reviewed work logged for this day that isn't tied to one of its Skill Builders
+  const other = {};
+  ev.log.filter(e => e.kind === "lab" && mdstNum(e.score) && !used.has(e)).forEach(e => { (other[e.label || "Graded work"] = other[e.label || "Graded work"] || []).push(e); });
+  Object.entries(other).forEach(([label, rs]) => rows.push(mdstGraded(label, "Graded work", rs)));
+  // the random task(s)
+  if(ev.dp && mdstNum(ev.dp.surpriseTaskScore)){
+    const runs = ev.log.filter(e => e.kind === "task" && mdstNum(e.score)), sc = ev.dp.surpriseTaskScore;
+    const each = (ev.dp.surpriseTaskScores || []).filter(mdstNum), missedN = runs.filter(e => /missed/i.test(e.label || "")).length;
+    const e = mdstRunFor(runs, Math.max(...runs.map(x => x.score), -1));
+    rows.push({name: "Random task", sub: "the interruption during the day", score: sc,
+      why: [each.length > 1 ? `Average of ${mdstPlural(each.length, "random task")} (${each.map(x => x + "%").join(", ")}).` : "One random task.",
+        missedN ? `${mdstPlural(missedN, "task")} missed, which scored 0%.` : "", `Graded ${mdstTier(each.length > 1 ? null : e, sc)}.`, mdstPass(sc)],
+      great: sc >= MDST_PASS ? ["Acknowledged the interruption, planned it and closed it out in time."] : [],
+      wrong: missedN ? [`${mdstPlural(missedN, "task")} not answered before it ran out of time.`]
+        : sc < 100 ? [`${100 - sc}% of the points were lost. The grader's item-by-item notes for random tasks aren't saved with the score.`] : [],
+      better: sc >= 100 ? [] : ["Acknowledge it fast, jot a three-step plan, then resolve it before going back to the lesson."]});
+  }
+  // a roleplay: graded, but not part of the day's score
+  const rp = {};
+  ev.log.filter(e => e.kind === "roleplay" && mdstNum(e.score)).forEach(e => { (rp[e.label || "Roleplay"] = rp[e.label || "Roleplay"] || []).push(e); });
+  Object.entries(rp).forEach(([label, rs]) => rows.push(mdstGraded(label, "Live Roleplay", rs, true)));
+  return rows;
+}
+const mdstList = (xs, none) => (xs = (xs || []).filter(Boolean)).length ? `<ul>${xs.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : `<i>${none}</i>`;
+function scoreTableHTML(rec, work, ev){
+  const rows = mdstRows(rec, work, ev);
+  return `<div class="mdst"><p class="mdst-h">Their work this day <small>The day's score is its Knowledge Check (${MDST_PASS}% passes); the other activities are graded on their own.</small></p>
+    <div class="mdst-sw"><table class="mdst-t"><thead><tr><th>Activity</th><th>Score</th><th>🧾 Why this score</th><th>⭐ What you did great</th><th>❌ What was wrong</th><th>💡 What could have been done better</th></tr></thead>
+    <tbody>${rows.map(x => { const r = x.run || x._e; return `<tr>
+      <th scope="row"><b>${esc(x.name)}</b><small>${esc(x.sub)}${r && r.at ? ` · ${esc(new Date(r.at).toLocaleDateString())}` : ""}</small>
+        ${r && r.excerpt ? `<details class="mdst-ex"><summary>Their answer</summary><p>${esc(r.excerpt)}</p></details>` : ""}</th>
+      <td class="mdst-sc"><span class="mdst-pill mdst-${mdstTint(x.score)}">${mdstNum(x.score) ? Math.round(x.score) + "%" : "—"}</span></td>
+      <td class="mdst-w">${mdstList(x.why, "—")}</td>
+      <td class="mdst-g">${mdstList(x.great, mdstNum(x.score) ? "Nothing noted." : "—")}</td>
+      <td class="mdst-b">${mdstList(x.wrong, mdstNum(x.score) ? (x.score >= 100 ? "Nothing — full marks." : "Nothing noted.") : "—")}</td>
+      <td class="mdst-n">${mdstList(x.better, mdstNum(x.score) ? "Keep the same approach." : "—")}</td></tr>`; }).join("")}
+    </tbody></table></div>
+    <p class="mdst-sub">Lesson progress: reached slide ${Math.min(ev.slides + 1, ev.totalSlides)} of ${ev.totalSlides}.</p>
+    ${ev.drafts ? `<details class="mdst-ex"><summary>Skill Builders work in progress (their own words)</summary><p>${esc(ev.drafts.replace(/\s+/g, " ").slice(0, 900))}</p></details>` : ""}</div>`;
+}
 async function draftDayFeedback(id, dayId, silent){
   const rec = (state.adminData||[]).find(r=>r.id===id);
   if(!rec) throw new Error("trainee record not loaded — click Refresh on the Trainee Audit and try again");
@@ -13890,7 +14032,7 @@ function renderFeedbackAdmin(rec){
     const ta = (k, v, rows)=>`<textarea id="fb_${sid}_${d.id}_${k}" rows="${rows}">${esc(v)}</textarea>`;
     return `<details class="fb-day" ${fb && st!=="sent" ? "open" : ""}>
       <summary><b>Day ${d.id}</b> — ${esc(d.title)} ${chip}${ev.active?"":` <span class="fb-chip none">no work yet</span>`}</summary>
-      ${ev.active ? `<div class="fb-evidence"><b>Their work this day:</b>${esc(evidenceText(ev)).split("\n").map(x=>`<div>• ${x}</div>`).join("")}</div>` : ""}
+      ${ev.active ? scoreTableHTML(rec, work, ev) : ""}
       ${fb ? `<div class="fb-form">
         <label>Overall<select id="fb_${sid}_${d.id}_rating">${["Strong","On Track","Needs Support"].map(o=>`<option ${f.rating===o?"selected":""}>${o}</option>`).join("")}</select></label>
         <label>Summary${ta("summary", f.summary||"", 3)}</label>
