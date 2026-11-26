@@ -13732,7 +13732,7 @@ function mdstGraded(name, sub, runs, notCounted){
     why: [`Best of ${mdstPlural(runs.length, "run")}${scores.length > 1 ? ` (${scores.join(", ")})` : ""}.`, `Graded ${mdstTier(e, best)}.`, mdstSubsLine(e),
       notCounted ? "Not counted in the day's score." : mdstPass(best)],
     great: noted ? (e.strengths || []) : best >= MDST_PASS ? [`Passed at ${best}%.`] : [],
-    wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost. Which items wasn't recorded for this run.`] : [],
+    wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost. Which items were missed wasn't recorded for this run.`] : [],
     better: noted ? ((e.growth || []).length ? e.growth : (e.gaps || []).length ? ["Work through the points under What was wrong, then run it again."] : [])
       : best < 100 ? ["Run it again: a new AI review records what went well and what to do better."] : []};
 }
@@ -13773,7 +13773,7 @@ function mdstRows(rec, work, ev){
     rows.push({name, sub: `Skill Builders · best of ${mdstPlural(runs, "scored run")}`, score: best, run: noted ? e : null,
       why: [`Best of ${mdstPlural(runs, "scored run")}${hist.length > 1 ? ` (${hist.join(", ")})` : ""}.`, `Graded ${mdstTier(e, best)}.`, noted ? mdstSubsLine(e) : "", mdstPass(best)],
       great: noted ? (e.strengths || []) : best >= MDST_PASS ? [`Passed at ${best}%.`] : [],
-      wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost on the best run. Which items wasn't recorded: it was an auto-checked part, or scored before the grader's notes were kept.`] : [],
+      wrong: noted ? (e.gaps || []) : best < 100 ? [`${100 - best}% of the points were lost on the best run. Which items were missed wasn't recorded: it was an auto-checked part, or scored before the grader's notes were kept.`] : [],
       better: noted ? ((e.growth || []).length ? e.growth : ["Work through the points under What was wrong, then run it again."])
         : best < 100 ? [graded.length ? "See the grader's notes on the AI-reviewed answers below, then run it again." : "Run it again: an AI-reviewed answer records what went well and what to do better."] : [],
       _e: noted ? e : null});
