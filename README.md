@@ -302,6 +302,12 @@ What it does:
   orange is never used as lettering on the photo, and why a label on an orange
   fill is dark rather than white.
 
+**The lesson deck** wears the Portal's look too (LSH Academy Index, LSH Elev8): `js/md-deck-style.js`, loaded after
+`js/md-canva.js`, restyles only the deck a trainee steps through — the stage in the LSH frame (navy at the top fading to
+gold at the bottom), a white slide card, IBM Plex Sans headings, mono pill tags, dark-navy Next with an orange underline,
+gold progress dots. It changes no slide content and keeps every font size, padding and gap, so slides split into the
+same pages and fit the same screens. Small orange lettering on white is `#9A5414` (AA).
+
 Changing any surface here means re-checking contrast against the photo. The
 audit that produced these numbers screenshots each view twice — normally and
 with every glyph transparent — and scores each text run against the pixels
