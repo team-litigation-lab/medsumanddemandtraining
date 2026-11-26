@@ -2211,7 +2211,7 @@ em.warn{font-style:normal;color:var(--danger);}
 .stage-presenter{width:100%;height:auto;transform:scaleX(-1);align-self:end;pointer-events:none;user-select:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.35));margin-bottom:-6px;}
 .lesson-stage:fullscreen .stage-body{flex:1;min-height:0;align-items:center;grid-template-columns:minmax(0,1fr) clamp(220px,17vw,340px);}
 .lesson-stage:fullscreen .stage-presenter{align-self:end;}
-@media(max-width:1000px){.stage-body{grid-template-columns:1fr;} .stage-presenter{display:none;}}
+@media(max-width:1000px){.stage-body{grid-template-columns:minmax(0,1fr);} .stage-presenter{display:none;}}
 
 /* calendar: side-by-side overlaps + hover details */
 .cal-block[data-lanes]:not([data-lanes="1"]){padding-left:20px;}
@@ -2451,6 +2451,19 @@ body::before{opacity:.40;}
 }
 @media print{
   .topbar,.btn-primary,.btn-navy{background-image:none;box-shadow:none;}
+}
+/* ---------- phones ----------
+   The safety net that keeps every page usable on a phone, as in the Training Portal. The rules
+   above already lay each page out for a narrow screen; these only catch what they miss, so each
+   is wrapped in :where() (no specificity) and any rule above still wins: pictures, video and
+   frames shrink to the screen, and a long unbroken word (an address, a claim or Bates number)
+   breaks rather than running off the right edge. */
+@media(max-width:760px){
+  :where(body){overflow-wrap:break-word;}
+  :where(img,video,iframe,embed,object){max-width:100%;}
+  :where(img,video){height:auto;}
+  :where(pre){white-space:pre-wrap;}
+  :where(input,select,textarea){max-width:100%;}
 }
 </style>
 <script src="/js/portal-gate.js?v=2026.10.21-dashboard"></script>
