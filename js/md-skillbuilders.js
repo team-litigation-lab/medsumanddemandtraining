@@ -69,7 +69,7 @@ body.md-tf-open #app > :not(.topbar):not(.view-mode-strip){visibility:hidden}
 body.md-tf-open #app > .topbar,body.md-tf-open #app > .view-mode-strip{pointer-events:auto}
 /* while a tool is open, only 🧰 Tools is highlighted in the nav */
 body.md-tf-open .nav > button.active{background:transparent;color:#D7DAEC}
-.md-tf-newtab{background:var(--orange)!important;border-color:var(--orange)!important}
+.md-tf-newtab{background:linear-gradient(180deg,#fde7b0 0%,#f5c451 50%,#e0a43a 100%)!important;border-color:#e0a43a!important;color:#1E2340!important}
 .md-tf-body{flex:1;position:relative}
 .md-tf-body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 body.md-tf-open{overflow:hidden}
