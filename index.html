@@ -7175,7 +7175,7 @@ function renderFocusAdmin(rec){
         <span class="fa-state">${x.doneAt?"✓ Done by trainee":x.seenAt?"Seen":"Not seen yet"}</span>
         <button class="btn btn-ghost btn-sm" onclick="adminRemoveFocus('${rec.id}','${x.id}')">Remove</button></li>`).join("")}</ul>` : ""}
     <div class="focus-admin-form">
-      <textarea id="focusText_${sid}" rows="2" placeholder="e.g. Practise BLUF: rewrite your last two status updates so the decision needed is in the first line."></textarea>
+      <textarea id="focusText_${sid}" rows="2" placeholder="e.g. Practice BLUF: rewrite your last two status updates so the decision needed is in the first line."></textarea>
       <select id="focusDay_${sid}"><option value="0">Any day</option>${DAYS.map(d=>`<option value="${d.id}">Day ${d.id}</option>`).join("")}</select>
       <select id="focusPri_${sid}"><option value="normal">Normal</option><option value="high">High priority</option><option value="low">Low</option></select>
       <button class="btn btn-navy btn-sm" onclick="adminAddFocus('${rec.id}')">➕ Add to Focus</button>
@@ -17584,9 +17584,9 @@ window.addEventListener("error", (ev)=>{ if(state.isAdmin && ev && ev.message &&
 <script src="js/slide-scripts/canva-day4.js?v=1"></script>
 <script src="js/slide-scripts/canva-day5.js?v=1"></script>
 <script src="js/md-canva-decks.js?v=1"></script>
-<script src="js/md-updates.js?v=9"></script>
+<script src="js/md-updates.js?v=10"></script>
 <script src="js/md-documents.js?v=2"></script>
-<script src="js/md-skillbuilders.js?v=6"></script>
+<script src="js/md-skillbuilders.js?v=7"></script>
 <script src="js/md-practice.js?v=1"></script>
 <script src="js/daily-activities.js?v=2"></script>
 <script src="js/md-workspace.js?v=2"></script>
@@ -17603,7 +17603,7 @@ window.addEventListener("error", (ev)=>{ if(state.isAdmin && ev && ev.message &&
 <!-- 🟨 lesson cards framed as on the LSH Academy Index: navy along the top fading to gold, on a white card (the same file in every LSH course; the buttons stay as they are) -->
 <script src="/js/lsh-academy-frame.js?v=1"></script>
 <!-- 📋 Compliance and Platform Utilization Monitoring in View Detail: lesson decks, Knowledge Checks, Skill Builders, last opened, last on the platform, 📝 Send Feedback -->
-<script src="/js/lsh-compliance-monitor.js?v=1"></script>
+<script src="/js/lsh-compliance-monitor.js?v=2"></script>
 <script src="/js/lsh-topbar.js?v=3"></script>
 <script src="/js/lsh-one-screen.js?v=1"></script>
 <script src="/js/lsh-footer.js?v=1"></script>

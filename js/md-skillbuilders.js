@@ -121,7 +121,7 @@ const MD_TOOL_DEFAULTS = [
   // (a trainer writes them in LSH Voice's 📚 Scenarios, or they are added to its src/scenarios.js).
   {id:"calls", icon:"📞", name:"Call Sim (☎ LSH Voice)", short:"Call Sim", status:"coming",
    url:"https://cm-training-activity.pages.dev/simulators/call.html", portalSim:true,
-   desc:"Live practice calls on the training phone, spoken aloud: the phone rings, you answer with a headset and the call is graded on its line's Mock Calls Metrics. Medsum & Demand calls (records and billing offices, the client, the adjuster) are planned; until they're live, practise these calls in 🔥 Live Roleplay and in each Skill Builder's live call.",
+   desc:"Live practice calls on the training phone, spoken aloud: the phone rings, you answer with a headset and the call is graded on its line's Mock Calls Metrics. Medsum & Demand calls (records and billing offices, the client, the adjuster) are planned; until they're live, practice these calls in 🔥 Live Roleplay and in each Skill Builder's live call.",
    evidence:"Score", idHint:"Score (e.g. 82%)"},
   {id:"email", icon:"✉️", name:"Email Workspace (LSH Training Portal)", short:"Email Workspace", status:"live",
    url:"https://cm-training-activity.pages.dev/simulators/email.html", portalSim:true,
@@ -792,7 +792,7 @@ window.renderCallSimulator = function(){
     </div>`;
   return `<p class="eyebrow">LSH Sims</p>
     <h1 style="color:var(--navy);font-size:26px;margin:6px 0 8px">🛠 LSH Sims</h1>
-    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Email practice lives on the <b>LSH Training Portal</b> and the calls on <b>☎ LSH Voice</b>, the training phone, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Sim's Medsum &amp; Demand calls aren't live yet — until it is, practise the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
+    <p style="color:var(--ink-soft);font-size:14px;max-width:80ch;margin:0 0 16px">Email practice lives on the <b>LSH Training Portal</b> and the calls on <b>☎ LSH Voice</b>, the training phone, shared by every program. They open here set to <b>Medsum &amp; Demand</b> and carrying your name and batch, so your scores reach your trainer. The Call Sim's Medsum &amp; Demand calls aren't live yet — until it is, practice the calls in 🔥 Live Roleplay and in each Skill Builder's live call.</p>
     <div class="md-tools">${card(calls)}${card(mail)}</div>
     <div class="card" style="padding:14px 18px;font-size:12.8px;color:var(--ink-soft)">Want more? Live Roleplay (🔥) has the client, adjuster and provider-office calls from the lessons, and every Skill Builder has a live call built in.${state.isAdmin?` <b>Admin:</b> results appear on the Training Portal's LSH Sims page when you're signed in there as admin. Addresses are set in 🧰 Tools.`:""}</div>`;
 };
